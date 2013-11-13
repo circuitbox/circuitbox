@@ -1,6 +1,6 @@
 # circuitbox
 
-A dependency-injection framework for node
+A dependency-injection framework for node.js
 
 [![build status](https://secure.travis-ci.org/oddjobsman/circuitbox.png)](http://travis-ci.org/oddjobsman/circuitbox)
 
