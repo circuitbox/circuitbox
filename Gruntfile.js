@@ -38,6 +38,13 @@ module.exports = function (grunt) {
         require: ['expect.js']
       }
     },
+    sloc: {
+      scripts: {
+        files: {
+          'lib': ['**.js']
+        }
+      }
+    },
     watch: {
       js: {
         files: ['**/*.js', '!node_modules/**/*.js'],
@@ -53,8 +60,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-cli');
+  grunt.loadNpmTasks('grunt-sloc');
 
-  grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'watch']);
-  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity']);
+  grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
+  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity', 'sloc']);
   grunt.registerTask('default', ['test']);
 };
