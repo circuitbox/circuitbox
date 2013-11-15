@@ -1,7 +1,7 @@
 {
   "name": "circuitbox",
   "version": "0.0.1",
-  "description": "A dependency-injection framework for node",
+  "description": "A dependency-injection framework for node.js",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/grunt ci"
@@ -19,7 +19,7 @@
     "url": "https://github.com/oddjobsman/circuitbox/issues"
   },
   "dependencies": {
-    "lodash": "~2.3.0"
+    "underscore": "~1.5.2"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
