@@ -4,6 +4,8 @@
  * MIT Licensed
  */
 
+/*jshint nonew: false*/
+
 (function () {
   'use strict';
 
@@ -13,6 +15,7 @@
   var Scopes = require('../../lib/components/scopes');
   var ComponentDefinition = require('../../lib/components/componentdefinition');
   var ComponentCreationException = require('../../lib/components/componentcreationexception');
+  var ComponentDefinitionException = require('../../lib/components/componentdefinitionexception');
 
   describe('ComponentDefinition', function () {
 
@@ -32,14 +35,42 @@
       });
     });
 
-    it('should provide a build method to construct component which throws a an error by default', function () {
+    context('when created with an initializer', function () {
+
+      it('should return initializer function', function () {
+        var initializer = function () {};
+
+        var cd = new ComponentDefinition({
+          name: 'myComponent',
+          initializer: initializer
+        });
+
+        expect(cd.name()).to.be('myComponent');
+        expect(cd.initializer()).to.be(initializer);
+      });
+
+      it('should throw error if initializer is not a function', function () {
+        expect(function () {
+          new ComponentDefinition({
+            name: 'myComponent',
+            initializer: {}
+          });
+        }).throwException(function (e) {
+          expect(e).to.be.a(ComponentDefinitionException);
+          expect(e.message).to.match(/Initializer for 'myComponent' must be a function/);
+        });
+      });
+
+    });
+
+    it('should provide an emit method to construct component which throws a an error by default', function () {
       var cd = new ComponentDefinition({name: 'myComponent'});
 
       expect(function () {
-        cd.build();
+        cd.emit();
       }).to.throwException(function (e) {
         expect(e).to.be.a(ComponentCreationException);
-        expect(e.message).to.match(/Component \'myComponent\' could not be created/);
+        expect(e.message).to.match(/Component 'myComponent' could not be created/);
       });
     });
   });
