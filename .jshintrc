@@ -1,35 +1,36 @@
 {
-    "globals": {
-        "describe": false,
-        "it": false,
-        "before": false,
-        "beforeEach": false,
-        "after": false,
-        "afterEach": false
-    },
+  "globals": {
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false
+  },
 
-    "node": true,
+  "node": true,
 
-    "bitwise": true,
-    "camelcase": true,
-    "curly": true,
-    "eqeqeq": true,
-    "forin": true,
-    "immed": true,
-    "latedef": true,
-    "newcap": true,
-    "noarg": true,
-    "noempty": true,
-    "nonew": true,
-    "plusplus": true,
-    "quotmark": "single",
-    "regexp": true,
-    "undef": true,
-    "unused": true,
-    "strict": true,
-    "trailing": true,
+  "indent": 2,
+  "bitwise": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "plusplus": true,
+  "quotmark": "single",
+  "regexp": true,
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "trailing": true,
 
-    "eqnull": true,
+  "eqnull": true,
 
-    "white": true
+  "white": true
 }
