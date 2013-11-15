@@ -4,6 +4,7 @@ A dependency-injection framework for node.js
 
 [![build status](https://secure.travis-ci.org/oddjobsman/circuitbox.png)](http://travis-ci.org/oddjobsman/circuitbox)
 [![dependency status](https://david-dm.org/oddjobsman/circuitbox.png)](https://david-dm.org/oddjobsman/circuitbox)
+[ ![Codeship Status for oddjobsman/circuitbox](https://www.codeship.io/projects/94d33930-3047-0131-f492-0ee9162a30d7/status?branch=master)](https://www.codeship.io/projects/9530)
 
 ## Objectives
 
