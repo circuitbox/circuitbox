@@ -30,6 +30,20 @@
       });
     });
 
+    context('when created with name and object', function () {
+      it('should emit specified object', function () {
+        var objectValue = 'This is the object';
+
+        var cd = new SpecifiedComponentDefinition({
+          name: 'myComponent',
+          scope: Scopes.singleton,
+          object: objectValue
+        });
+
+        expect(cd.emit()).to.be.equal(objectValue);
+      });
+    });
+
   });
 
 })();
