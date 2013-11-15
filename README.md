@@ -21,13 +21,20 @@ $ npm install --save circuitbox
 ## Example Usage
 
 ``` js
-var circuitbox = require('circuitbox');
-
+module.circuitbox = require('circuitbox');
 var cb = circuitbox.create({
     modules: ['config/commonModule', 'config/webModule']
 });
 ```
 
+``` js
+module.exports = function CreditCardProcessor (processor, transactionLog) {
+	this.chargeOrder = function (order, creditCard) {
+		var tx = processor.processTransaction(creditCard, order.amount);
+		transactionLog.recordPayment(tx);
+	};
+};
+```
 ### Components
 
 Components are objects which provide a service. They usually collaborate with other components that provide other required services. circuitbox prescribes a specific convention with which you can author your components. This conventions helps the component recieve the required dependencies. Below is an example of a component:
@@ -40,4 +47,52 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 		transactionLog.recordPayment(tx);
 	};
 };
+```
+
+### Basic Example
+
+``` js
+(function () {
+  'use strict';
+
+  // our simple message source
+  var simpleMessageSource = function (message) {
+    return {
+      message: function () {
+        return message;
+      }
+    };
+  };
+
+  // Our console message printer
+  var consoleMessagePrinter = function (messageSource) {
+    return {
+      print: function () {
+        console.log(messageSource.message());
+      }
+    };
+  };
+
+  var circuitbox = require('circuitbox');
+
+  // create a circuitbox
+  var cbx = circuitbox.create({
+    modules: [
+      function (cbx) {
+        // the message to be used
+        cbx.for('message').use('This is the message');
+
+        // define the message source
+        cbx.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
+
+        // define the message printer
+        cbx.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
+      }
+    ]
+  });
+
+  // get the message printer and print a message
+  cbx.get('messagePrinter').print();
+
+})();
 ```
