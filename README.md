@@ -97,3 +97,6 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 
 })();
 ```
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/oddjobsman/circuitbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
