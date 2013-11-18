@@ -13,8 +13,8 @@
   var expect = require('expect.js');
 
   var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/components/componentDefinition');
-  var SimpleComponentDefinition = require('../../lib/components/simpleComponentDefinition');
+  var ComponentDefinition = require('../../lib/components/component_Definition');
+  var SimpleComponentDefinition = require('../../lib/components/simple_ComponentDefinition');
 
   describe('SimpleComponentDefinition', function () {
 
