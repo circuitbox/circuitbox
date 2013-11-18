@@ -13,9 +13,9 @@
   var expect = require('expect.js');
 
   var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/components/component_Definition');
+  var ComponentDefinition = require('../../lib/components/componentDefinition');
   var ComponentCreationException = require('../../lib/components/componentCreationException');
-  var ComponentDefinitionException = require('../../lib/components/component_DefinitionException');
+  var ComponentDefinitionException = require('../../lib/components/componentDefinitionException');
 
   describe('ComponentDefinition', function () {
 
