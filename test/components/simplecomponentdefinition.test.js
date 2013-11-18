@@ -13,34 +13,34 @@
   var expect = require('expect.js');
 
   var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/components/componentdefinition');
-  var SpecifiedComponentDefinition = require('../../lib/components/specifiedcomponentdefinition');
+  var ComponentDefinition = require('../../lib/components/componentDefinition');
+  var SimpleComponentDefinition = require('../../lib/components/simpleComponentDefinition');
 
-  describe('SpecifiedComponentDefinition', function () {
+  describe('SimpleComponentDefinition', function () {
 
     it('inherits ComponentDefinition', function () {
-      expect(SpecifiedComponentDefinition.super_).to.be(ComponentDefinition);
+      expect(SimpleComponentDefinition.super_).to.be(ComponentDefinition);
     });
 
     context('when created with name and scope', function () {
       it('should have the specified name and scope', function () {
-        var cd = new SpecifiedComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
+        var cd = new SimpleComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
         expect(cd.name()).to.be('myComponent');
         expect(cd.scope()).to.be(Scopes.singleton);
       });
     });
 
     context('when created with name and object', function () {
-      it('should emit specified object', function () {
+      it('should baseComponent and return a function which emits specified object', function () {
         var objectValue = 'This is the object';
 
-        var cd = new SpecifiedComponentDefinition({
+        var cd = new SimpleComponentDefinition({
           name: 'myComponent',
           scope: Scopes.singleton,
           object: objectValue
         });
 
-        expect(cd.emit()).to.be.equal(objectValue);
+        expect(cd.baseComponent()).to.be.equal(objectValue);
       });
     });
 

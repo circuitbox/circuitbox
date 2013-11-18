@@ -13,9 +13,9 @@
   var expect = require('expect.js');
 
   var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/components/componentdefinition');
-  var ComponentCreationException = require('../../lib/components/componentcreationexception');
-  var ComponentDefinitionException = require('../../lib/components/componentdefinitionexception');
+  var ComponentDefinition = require('../../lib/components/componentDefinition');
+  var ComponentCreationException = require('../../lib/components/componentCreationException');
+  var ComponentDefinitionException = require('../../lib/components/componentDefinitionException');
 
   describe('ComponentDefinition', function () {
 
@@ -49,7 +49,18 @@
         expect(cd.initializer()).to.be(initializer);
       });
 
-      it('should throw error if initializer is not a function', function () {
+      it('should return initializer function name', function () {
+        var cd = new ComponentDefinition({
+          name: 'myComponent',
+          initializer: 'initializer'
+        });
+
+        expect(cd.name()).to.be('myComponent');
+        expect(cd.initializer()).to.be('initializer');
+
+      });
+
+      it('should throw error if initializer is not a function or string', function () {
         expect(function () {
           new ComponentDefinition({
             name: 'myComponent',
@@ -61,17 +72,18 @@
         });
       });
 
-    });
+      it('should provide an baseComponent method which throws an error by default', function () {
+        var cd = new ComponentDefinition({name: 'myComponent'});
 
-    it('should provide an emit method to construct component which throws a an error by default', function () {
-      var cd = new ComponentDefinition({name: 'myComponent'});
-
-      expect(function () {
-        cd.emit();
-      }).to.throwException(function (e) {
-        expect(e).to.be.a(ComponentCreationException);
-        expect(e.message).to.match(/Component 'myComponent' could not be created/);
+        expect(function () {
+          cd.baseComponent();
+        }).to.throwException(function (e) {
+            expect(e).to.be.a(ComponentCreationException);
+            expect(e.message).to.match(/Component 'myComponent' could not be created/);
+          });
       });
+
+
     });
   });
 })();

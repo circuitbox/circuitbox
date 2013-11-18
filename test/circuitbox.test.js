@@ -10,8 +10,8 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var CircuitBox = require('../lib/circuitbox');
-  var NoSuchComponentDefinitionException = require('../lib/components/nosuchcomponentdefinitionexception');
+  var CircuitBox = require('../lib/circuitBox');
+  var NoSuchComponentDefinitionException = require('../lib/components/noSuchComponentDefinitionException');
 
   describe('CircuitBox', function () {
 
