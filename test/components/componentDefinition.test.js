@@ -20,6 +20,7 @@
   describe('ComponentDefinition', function () {
 
     context('when created with only a name', function () {
+
       it('should be created with specified name and prototype scope', function () {
         var cd = new ComponentDefinition({name: 'myComponent'});
         expect(cd.name()).to.be('myComponent');
@@ -72,11 +73,11 @@
         });
       });
 
-      it('should provide an baseComponent method which throws an error by default', function () {
+      it('should provide a method to get base component which throws an error by default', function () {
         var cd = new ComponentDefinition({name: 'myComponent'});
 
         expect(function () {
-          cd.baseComponent();
+          cd.getEmitter();
         }).to.throwException(function (e) {
             expect(e).to.be.a(ComponentCreationException);
             expect(e.message).to.match(/Component 'myComponent' could not be created/);

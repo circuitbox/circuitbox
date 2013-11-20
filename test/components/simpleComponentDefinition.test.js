@@ -31,7 +31,7 @@
     });
 
     context('when created with name and object', function () {
-      it('should baseComponent and return a function which emits specified object', function () {
+      it('should return a function which emits specified object', function () {
         var objectValue = 'This is the object';
 
         var cd = new SimpleComponentDefinition({
@@ -40,7 +40,8 @@
           object: objectValue
         });
 
-        expect(cd.baseComponent()).to.be.equal(objectValue);
+        expect(cd.getEmitter()).to.be.a(Function);
+        expect((cd.getEmitter())()).to.be(objectValue);
       });
     });
 
