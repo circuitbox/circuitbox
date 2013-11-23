@@ -62,7 +62,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-mocha-cli');
   grunt.loadNpmTasks('grunt-sloc');
 
-  grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
-  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity', 'sloc']);
+  grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'watch']);
+  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity']);
   grunt.registerTask('default', ['test']);
 };
