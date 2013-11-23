@@ -22,14 +22,6 @@
       expect(SimpleComponentDefinition.super_).to.be(ComponentDefinition);
     });
 
-    context('when created with name and scope', function () {
-      it('should have the specified name and scope', function () {
-        var cd = new SimpleComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
-        expect(cd.name()).to.be('myComponent');
-        expect(cd.scope()).to.be(Scopes.singleton);
-      });
-    });
-
     context('when created with name and object', function () {
       it('should return a function which emits specified object', function () {
         var objectValue = 'This is the object';
