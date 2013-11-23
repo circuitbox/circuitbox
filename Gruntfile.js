@@ -63,6 +63,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-sloc');
 
   grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
-  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
+  grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity', 'sloc']);
   grunt.registerTask('default', ['test']);
 };
