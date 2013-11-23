@@ -11,6 +11,7 @@
 
   var context = describe;
   var expect = require('expect.js');
+  var _ = require('underscore');
 
   var Scopes = require('../../lib/components/scopes');
   var ComponentDefinition = require('../../lib/components/componentDefinition');
@@ -33,6 +34,18 @@
         var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
         expect(cd.name()).to.be('myComponent');
         expect(cd.scope()).to.be(Scopes.singleton);
+      });
+    });
+
+    context('when created with a name and list of dependencies', function () {
+      it('should be created with specified name and specified dependency list', function () {
+        var dependencies = ['a', 'b'];
+        var cd = new ComponentDefinition({
+          name: 'myComponent',
+          dependencies: dependencies
+        });
+        expect(cd.name()).to.be('myComponent');
+        expect(_.all(cd.dependencies())).to.be.ok();
       });
     });
 
