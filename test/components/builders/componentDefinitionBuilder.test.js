@@ -25,7 +25,7 @@
           .initializeWith(initializer)
           .dependsOn(dependencies)
           .scope(Scopes.singleton)
-          .done();
+          .build();
 
         expect(definition).to.be.a(ComponentDefinition);
         expect(definition.name).to.be('myComponent');

@@ -32,7 +32,7 @@
           .scope(Scopes.singleton)
           .initializeWith(initializer)
           .dependsOn(dependencies)
-          .done();
+          .build();
 
         expect(definition).to.be.a(SimpleComponentDefinition);
         expect(definition.name).to.be('myComponent');
