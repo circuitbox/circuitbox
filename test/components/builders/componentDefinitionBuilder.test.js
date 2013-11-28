@@ -9,13 +9,15 @@
 
   var context = describe;
   var expect = require('expect.js');
+
   var Scopes = require('../../../lib/components/scopes');
+
   var ComponentDefinition = require('../../../lib/components/componentDefinition');
   var ComponentDefinitionBuilder = require('../../../lib/components/builders/componentDefinitionBuilder');
 
   describe('ComponentDefinitionBuilder', function () {
     context('when created with a name, scope, initializer and dependencies', function () {
-      it('must create a ComponentDefinition with the specified name, initializer and dependencies', function () {
+      it('should create a ComponentDefinition with the specified name, initializer and dependencies', function () {
         var initializer = function () {};
         var dependencies = ['a', 'b'];
 
@@ -25,11 +27,12 @@
           .scope(Scopes.singleton)
           .done();
 
+        expect(definition).to.be.a(ComponentDefinition);
         expect(definition.name).to.be('myComponent');
         expect(definition.scope).to.be(Scopes.singleton);
         expect(definition.initializer).to.be(initializer);
         expect(definition.dependencies).to.be(dependencies);
-        expect(definition).to.be.a(ComponentDefinition);
+
       });
     });
   });
