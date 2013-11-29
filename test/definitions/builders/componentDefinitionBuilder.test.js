@@ -12,8 +12,8 @@
 
   var Scopes = require('../../../lib/components/scopes');
 
-  var ComponentDefinition = require('../../../lib/components/componentDefinition');
-  var ComponentDefinitionBuilder = require('../../../lib/components/builders/componentDefinitionBuilder');
+  var ComponentDefinition = require('../../../lib/definitions/componentDefinition');
+  var ComponentDefinitionBuilder = require('../../../lib/definitions/builders/componentDefinitionBuilder');
 
   describe('ComponentDefinitionBuilder', function () {
     context('when created with a name, scope, initializer and dependencies', function () {

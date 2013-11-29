@@ -14,10 +14,10 @@
   var _ = require('underscore');
 
   var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/components/componentDefinition');
+  var ComponentDefinition = require('../../lib/definitions/componentDefinition');
 
   var ComponentCreationError = require('../../lib/components/componentCreationError');
-  var ComponentDefinitionError = require('../../lib/components/componentDefinitionError');
+  var ComponentDefinitionError = require('../../lib/definitions/componentDefinitionError');
 
   describe('ComponentDefinition', function () {
 

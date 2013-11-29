@@ -12,9 +12,9 @@
 
   var Scopes = require('../../../lib/components/scopes');
 
-  var ModuleBasedComponentDefinition = require('../../../lib/components/moduleBasedComponentDefinition');
-  var ComponentDefinitionBuilder = require('../../../lib/components/builders/componentDefinitionBuilder');
-  var ModuleBasedComponentDefinitionBuilder = require('../../../lib/components/builders/moduleBasedComponentDefinitionBuilder');
+  var ModuleBasedComponentDefinition = require('../../../lib/definitions/moduleBasedComponentDefinition');
+  var ComponentDefinitionBuilder = require('../../../lib/definitions/builders/componentDefinitionBuilder');
+  var ModuleBasedComponentDefinitionBuilder = require('../../../lib/definitions/builders/moduleBasedComponentDefinitionBuilder');
 
   describe('ModuleBasedComponentDefinitionBuilder', function () {
 
