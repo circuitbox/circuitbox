@@ -10,7 +10,7 @@
   var expect = require('expect.js');
 
   var definitions = require('../../lib/definitions');
-  var ComponentConfiguration = require('../../lib/config/componentConfiguration');
+  var ComponentConfiguration = require('../../lib/config/configuration');
   var ConfigurationDefinitionBuilderFactory = require('../../lib/definitions/builders');
 
   describe('ComponentConfiguration', function () {
