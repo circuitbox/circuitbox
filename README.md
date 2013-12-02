@@ -79,16 +79,19 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 
   // create a circuitbox
   var cbx = circuitbox.create({
+    options: {
+        logger: winstonLogger
+    },
     modules: [
-      function (cbx) {
+      function (config) {
         // the message to be used
-        cbx.for('message').use('This is the message');
+        config.for('message').use('This is the message');
 
         // define the message source
-        cbx.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
+        config.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
 
         // define the message printer
-        cbx.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
+        config.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
       }
     ]
   });
