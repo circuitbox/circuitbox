@@ -10,15 +10,15 @@
   var expect = require('expect.js');
 
   var definitions = require('../../lib/definitions');
-  var Configuration = require('../../lib/config/configuration');
+  var ComponentConfiguration = require('../../lib/config/componentConfiguration');
   var ConfigurationDefinitionBuilderFactory = require('../../lib/definitions/builders');
 
-  describe('Configuration', function () {
+  describe('ComponentConfiguration', function () {
 
     it('should provide a ComponentDefinitionBuilderFactory to describe component definition', function () {
       var componentName = 'myComponent';
 
-      var config = new Configuration();
+      var config = new ComponentConfiguration();
 
       var factory = config.for(componentName);
       expect(factory).to.be.a(ConfigurationDefinitionBuilderFactory);
@@ -26,7 +26,7 @@
 
     it('should throw error if component name is not specified while describing a component definition', function () {
 
-      var config = new Configuration();
+      var config = new ComponentConfiguration();
 
       expect(function () {
         config.for();
