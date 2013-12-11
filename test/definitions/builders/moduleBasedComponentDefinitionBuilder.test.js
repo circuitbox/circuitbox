@@ -39,7 +39,7 @@
         expect(definition.scope).to.be(Scopes.singleton);
         expect(definition.initializer).to.be(initializer);
         expect(definition.dependencies).to.be(dependencies);
-        expect(definition.getEmitter()()).to.be(moduleId);
+        expect(definition.emitter()).to.be(moduleId);
       });
     });
   });

@@ -20,7 +20,7 @@
       var kernel = new Kernel();
 
       it('should be empty', function () {
-        expect(kernel.hasComponents()).to.be(false);
+        expect(kernel.hasComponents).to.be(false);
       });
 
       it('should throw error if an unregistered component is requested', function () {
@@ -35,19 +35,19 @@
     });
 
     context('when created without a name', function () {
-      var registry = new Kernel();
+      var kernel = new Kernel();
 
       it('should not have a name', function () {
-        expect(registry.name()).not.to.be.ok();
+        expect(kernel.name).not.to.be.ok();
       });
 
     });
 
     context('when created with a name', function () {
-      var registry =  new Kernel({name: 'test'});
+      var kernel =  new Kernel({name: 'test'});
 
       it('should have the specified name', function () {
-        expect(registry.name()).to.be('test');
+        expect(kernel.name).to.be('test');
       });
 
     });

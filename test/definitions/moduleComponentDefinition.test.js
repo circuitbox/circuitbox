@@ -25,7 +25,7 @@
           moduleId: './myComponentModule'
         });
 
-        var result = d.getEmitter()();
+        var result = d.emitter();
 
         expect(result).to.be.a('string');
         expect(result).to.be('./myComponentModule');

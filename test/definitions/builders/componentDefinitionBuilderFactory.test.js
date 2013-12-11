@@ -9,6 +9,11 @@
 
   var context = describe;
   var expect = require('expect.js');
+  var sinon = require('sinon');
+
+  var mockComponentRegistry = {
+    addDefinitionBuilder: function () {}
+  };
 
   var SimpleComponentDefinitionBuilder = require('../../../lib/definitions/builders/simpleComponentDefinitionBuilder');
   var ModuleBasedComponentDefinitionBuilder = require('../../../lib/definitions/builders/moduleBasedComponentDefinitionBuilder');
@@ -17,14 +22,19 @@
 
   describe('ComponentDefinitionBuilderFactory', function () {
 
-    context('when created with a component name', function () {
+    context('when created with a and component registry component name', function () {
       var factory;
 
       beforeEach(function () {
-        factory = new ComponentDefinitionBuilderFactory('myComponent');
+        sinon.spy(mockComponentRegistry, 'addDefinitionBuilder');
+        factory = new ComponentDefinitionBuilderFactory(mockComponentRegistry, 'myComponent');
       });
 
-      it('should return a SimpleComponentDefinitionBuilder when #use() is invoked with an object', function () {
+      afterEach(function () {
+        mockComponentRegistry.addDefinitionBuilder.restore();
+      });
+
+      it('should register and return a SimpleComponentDefinitionBuilder when #use() is invoked with an object', function () {
         var objectValue = 'This is a value';
 
         var definition = factory.use(objectValue);
@@ -33,9 +43,10 @@
         expect(definition.options.name).to.be('myComponent');
         expect(definition.options.object).to.be(objectValue);
 
+        expect(mockComponentRegistry.addDefinitionBuilder.called).to.be(true);
       });
 
-      it('should return a ModuleBasedComponentDefinitionBuilder when #require() is invoked with an module-id', function () {
+      it('should register and return a ModuleBasedComponentDefinitionBuilder when #require() is invoked with an module-id', function () {
         var moduleId = './myComponentModule';
 
         var definition = factory.require(moduleId);
@@ -44,6 +55,7 @@
         expect(definition.options.name).to.be('myComponent');
         expect(definition.options.moduleId).to.be(moduleId);
 
+        expect(mockComponentRegistry.addDefinitionBuilder.called).to.be(true);
       });
 
     });

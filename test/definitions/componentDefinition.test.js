@@ -5,6 +5,7 @@
  */
 
 /*jshint nonew: false*/
+/*jshint expr: true*/
 
 (function () {
   'use strict';
@@ -91,7 +92,7 @@
         var cd = new ComponentDefinition({name: 'myComponent'});
 
         expect(function () {
-          cd.getEmitter();
+          cd.emitter;
         }).to.throwException(function (e) {
             expect(e).to.be.a(ComponentCreationError);
             expect(e.message).to.match(/Component 'myComponent' could not be created/);

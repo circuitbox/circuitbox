@@ -32,8 +32,9 @@
           object: objectValue
         });
 
-        expect(cd.getEmitter()).to.be.a(Function);
-        expect((cd.getEmitter())()).to.be(objectValue);
+        var emitter = cd.emitter;
+        expect(emitter).to.be.a(Function);
+        expect(emitter()).to.be(objectValue);
       });
     });
 
