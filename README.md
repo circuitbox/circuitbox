@@ -1,8 +1,8 @@
-[![Stories in Ready](https://badge.waffle.io/oddjobsman/circuitbox.png?label=ready)](https://waffle.io/oddjobsman/circuitbox)  
 # circuitbox
 
 A dependency-injection framework for node.js
 
+[![Stories in Ready](https://badge.waffle.io/oddjobsman/circuitbox.png?label=ready)](https://waffle.io/oddjobsman/circuitbox)
 [![build status](https://secure.travis-ci.org/oddjobsman/circuitbox.png)](http://travis-ci.org/oddjobsman/circuitbox)
 [![dependency status](https://david-dm.org/oddjobsman/circuitbox.png)](https://david-dm.org/oddjobsman/circuitbox)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/oddjobsman/circuitbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
@@ -98,7 +98,9 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
   });
 
   // get the message printer and print a message
-  cbx.get('messagePrinter').print();
+  cbx.get('messagePrinter', function (printer) {
+    printer.print();
+  })
 
 })();
 ```
