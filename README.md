@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/oddjobsman/circuitbox.png?label=ready)](https://waffle.io/oddjobsman/circuitbox)  
 # circuitbox
 
 A dependency-injection framework for node.js
