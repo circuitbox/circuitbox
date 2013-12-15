@@ -11,6 +11,7 @@
   var expect = require('expect.js');
 
   var Kernel = require('../lib/kernel');
+  var ComponentRegistry = require('../lib/config/componentRegistry');
 
   var NoSuchComponentDefinitionException = require('../lib/definitions/noSuchComponentDefinitionError');
 
@@ -21,6 +22,10 @@
 
       it('should be empty', function () {
         expect(kernel.hasComponents).to.be(false);
+      });
+
+      it('should provide access to its component registry', function () {
+        expect(kernel.registry).to.be.a(ComponentRegistry);
       });
 
       it('should throw error if an unregistered component is requested', function () {
