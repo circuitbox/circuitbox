@@ -7,12 +7,15 @@
 (function () {
   'use strict';
 
+  var context = describe;
   var expect = require('expect.js');
   var sinon = require('sinon');
 
   var definitions = require('../../lib/definitions');
   var ComponentRegistry = require('../../lib/config/componentRegistry');
   var SimpleComponentDefinitionBuilder = require('../../lib/definitions/builders/simpleComponentDefinitionBuilder');
+  var SimpleComponentDefinition = require('../../lib/definitions/simpleComponentDefinition');
+  var NoSuchComponentDefinitionError = definitions.NoSuchComponentDefinitionError;
 
   var ConfigurationDefinitionBuilderFactory = require('../../lib/definitions/builders');
 
@@ -85,6 +88,32 @@
         var factory = registry.for('myComponent');
         expect(factory).to.be.a(ConfigurationDefinitionBuilderFactory);
       });
+    });
+
+    context.skip('when a component definition is required', function () {
+      
+      var registry = new ComponentRegistry();
+        
+      registry.registerModule(function (registry) {
+        registry.for('myComponent').use('This is myComponent');
+      });
+      
+      it('should retrieve component definitions in the registry with specified name', function () {
+        var componentDef = registry.findDefinitionForComponent('myComponent');
+        
+        expect(componentDef).to.be.a(SimpleComponentDefinition);
+        expect(componentDef.name).to.be('myComponent');
+      });
+      
+      it('should throw error when a compoent with specified name is not found', function () {
+        expect(function () {
+          registry.findDefinitionForComponent('unregisteredComponent');
+        }).to.throwError(function (e) {
+          expect(e).to.be.a(NoSuchComponentDefinitionError);
+          expect(e.message).to.match(/Component 'unregisteredComponent' could not be found/);
+        });
+      });
+      
     });
 
   });

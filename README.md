@@ -84,15 +84,15 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
         logger: winstonLogger
     },
     modules: [
-      function (config) {
+      function (registry) {
         // the message to be used
-        config.for('message').use('This is the message');
+        registry.for('message').use('This is the message');
 
         // define the message source
-        config.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
+        registry.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
 
         // define the message printer
-        config.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
+        registry.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
       }
     ]
   });
