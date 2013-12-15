@@ -12,12 +12,14 @@
   var sinon = require('sinon');
 
   var definitions = require('../../lib/definitions');
-  var ComponentRegistry = require('../../lib/config/componentRegistry');
+  var components = require('../../lib/components');
+
+  var ComponentRegistry = components.ComponentRegistry;
   var SimpleComponentDefinitionBuilder = require('../../lib/definitions/builders/simpleComponentDefinitionBuilder');
   var SimpleComponentDefinition = require('../../lib/definitions/simpleComponentDefinition');
   var NoSuchComponentDefinitionError = definitions.NoSuchComponentDefinitionError;
 
-  var ConfigurationDefinitionBuilderFactory = require('../../lib/definitions/builders');
+  var ConfigurationDefinitionBuilderFactory = definitions.ComponentDefinitionBuilderFactory;
 
   describe('ComponentRegistry', function () {
 

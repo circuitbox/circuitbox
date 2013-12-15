@@ -11,7 +11,7 @@
   var expect = require('expect.js');
 
   var Kernel = require('../lib/kernel');
-  var ComponentRegistry = require('../lib/config/componentRegistry');
+  var ComponentRegistry = require('../lib/components/componentRegistry');
 
   var NoSuchComponentDefinitionException = require('../lib/definitions/noSuchComponentDefinitionError');
 
