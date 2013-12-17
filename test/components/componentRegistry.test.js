@@ -84,8 +84,7 @@
       });
     });
 
-    context.skip('when a component definition is required', function () {
-      
+    context('when a component definition is required', function () {
       var registry = new ComponentRegistry();
         
       registry.registerModule(function (registry) {
