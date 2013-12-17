@@ -122,6 +122,65 @@
 
     });
 
+    describe('#isBoolean()', function () {
+      it('should return false if a string is passed', function () {
+        expect(utils.isBoolean('This is a string')).to.be(false);
+      });
+
+      it('should return false if an empty string is passed', function () {
+        expect(utils.isBoolean('')).to.be(false);
+      });
+
+      it('should return false if an integer is passed', function () {
+        expect(utils.isBoolean(3432)).to.be(false);
+      });
+
+      it('should return false if a float is passed', function () {
+        expect(utils.isBoolean(3432.34)).to.be(false);
+      });
+
+      it('should return false if zero is passed', function () {
+        expect(utils.isBoolean(0)).to.be(false);
+      });
+
+      it('should return false if null is passed', function () {
+        expect(utils.isBoolean(null)).to.be(false);
+      });
+
+      it('should return true if true is passed', function () {
+        expect(utils.isBoolean(true)).to.be(true);
+      });
+
+      it('should return true if false is passed', function () {
+        expect(utils.isBoolean(false)).to.be(true);
+      });
+
+      it('should return false if an empty array is passed', function () {
+        expect(utils.isBoolean([])).to.be(false);
+      });
+
+      it('should return false if a non-empty array is passed', function () {
+        expect(utils.isBoolean(['a', 1, null])).to.be(false);
+      });
+
+      it('should return false if an empty object is passed', function () {
+        expect(utils.isBoolean({})).to.be(false);
+      });
+
+      it('should return false if a non-empty object is passed', function () {
+        expect(utils.isBoolean({name: 'John Doe', age: 31})).to.be(false);
+      });
+
+      it('should return false if undefined is passed', function () {
+        expect(utils.isBoolean(undefined)).to.be(false);
+      });
+
+      it('should return false if function is passed', function () {
+        expect(utils.isBoolean(function () {})).to.be(false);
+      });
+
+    });
+
     describe('#isObject()', function () {
       it('should return false if a string is passed', function () {
         expect(utils.isObject('This is a string')).to.be(false);
@@ -310,6 +369,14 @@
         expect(utils.isEmpty(undefined)).to.be(true);
       });
 
+      it('should return false if true is passed', function () {
+        expect(utils.isEmpty(true)).to.be(false);
+      });
+
+      it('should return true if false is passed', function () {
+        expect(utils.isEmpty(false)).to.be(true);
+      });
+
       it('should return false if a non-empty string is passed', function () {
         expect(utils.isEmpty('This is a string')).to.be(false);
       });
@@ -320,6 +387,72 @@
 
       it('should return false if a non-empty object is passed', function () {
         expect(utils.isEmpty({name: 'John Doe', age: 10})).to.be(false);
+      });
+
+    });
+
+    describe('#keys()', function () {
+
+      it('should return an array of all the keys in the specified object', function () {
+        expect(utils.keys({name: 'John Doe', age: 32})).to.be.eql(['name', 'age']);
+      });
+
+      it('should return an empty array if specified object is empty', function () {
+        expect(utils.keys({})).to.be.empty();
+      });
+
+      it('should return an empty array if a non-object is specified', function () {
+        expect(utils.keys([])).to.be.empty();
+        expect(utils.keys(['abc', 343])).to.be.empty();
+        expect(utils.keys('A string value')).to.be.empty();
+        expect(utils.keys(3422)).to.be.empty();
+        expect(utils.keys(true)).to.be.empty();
+        expect(utils.keys(null)).to.be.empty();
+        expect(utils.keys(undefined)).to.be.empty();
+      });
+
+    });
+
+    describe('#values()', function () {
+
+      it('should return an array of all the values in the specified object', function () {
+        var aliveFn = function () {};
+        expect(utils.values({name: 'John Doe', age: 32, account: null, isAlive: aliveFn})).to.be.eql(['John Doe', 32, null, aliveFn]);
+      });
+
+      it('should return an empty array if the specified object is empty', function () {
+        expect(utils.values({})).to.be.empty();
+      });
+
+      it('should return an array of all the values in the specified array', function () {
+        var aliveFn = function () {};
+        expect(utils.values(['John Doe', 32, null, aliveFn])).to.be.eql(['John Doe', 32, null, aliveFn]);
+      });
+
+      it('should return an empty array if the specified array is empty', function () {
+        expect(utils.values([])).to.be.empty();
+      });
+
+      it('should return an array with the specified string as the only item', function () {
+        expect(utils.values('A string value')).to.be.eql(['A string value']);
+      });
+
+      it('should return an array with the specified number as the only item', function () {
+        expect(utils.values(3422)).to.be.eql([3422]);
+      });
+
+      it('should return an array with the specified boolean as the only item', function () {
+        expect(utils.values(true)).to.be.eql([true]);
+      });
+
+      it('should return an array with the specified function as the only item', function () {
+        var aliveFn = function () {};
+        expect(utils.values(aliveFn)).to.be.eql([aliveFn]);
+      });
+
+      it('should return an empty array if null or undefined is specified', function () {
+        expect(utils.values(null)).to.be.empty();
+        expect(utils.values(undefined)).to.be.empty();
       });
 
     });
