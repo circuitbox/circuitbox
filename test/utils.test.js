@@ -394,7 +394,10 @@
     describe('#keys()', function () {
 
       it('should return an array of all the keys in the specified object', function () {
-        expect(utils.keys({name: 'John Doe', age: 32})).to.be.eql(['name', 'age']);
+        var keys = utils.keys({name: 'John Doe', age: 32});
+
+        expect(keys).to.be.contain('name');
+        expect(keys).to.be.contain('age');
       });
 
       it('should return an empty array if specified object is empty', function () {
@@ -417,7 +420,12 @@
 
       it('should return an array of all the values in the specified object', function () {
         var aliveFn = function () {};
-        expect(utils.values({name: 'John Doe', age: 32, account: null, isAlive: aliveFn})).to.be.eql(['John Doe', 32, null, aliveFn]);
+        var values = utils.values({name: 'John Doe', age: 32, account: null, isAlive: aliveFn});
+
+        expect(values).to.be.contain('John Doe');
+        expect(values).to.be.contain(32);
+        expect(values).to.be.contain(null);
+        expect(values).to.be.contain(aliveFn);
       });
 
       it('should return an empty array if the specified object is empty', function () {
@@ -426,7 +434,12 @@
 
       it('should return an array of all the values in the specified array', function () {
         var aliveFn = function () {};
-        expect(utils.values(['John Doe', 32, null, aliveFn])).to.be.eql(['John Doe', 32, null, aliveFn]);
+        var values = utils.values(['John Doe', 32, null, aliveFn]);
+
+        expect(values).to.be.contain('John Doe');
+        expect(values).to.be.contain(32);
+        expect(values).to.be.contain(null);
+        expect(values).to.be.contain(aliveFn);
       });
 
       it('should return an empty array if the specified array is empty', function () {
