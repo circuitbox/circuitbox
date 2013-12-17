@@ -12,7 +12,6 @@
 
   var context = describe;
   var expect = require('expect.js');
-  var _ = require('underscore');
 
   var Scopes = require('../../lib/components/scopes');
   var ComponentDefinition = require('../../lib/definitions/componentDefinition');
@@ -47,7 +46,6 @@
           dependencies: dependencies
         });
         expect(cd.name).to.be('myComponent');
-        expect(_.all(cd.dependencies)).to.be.ok();
       });
     });
 

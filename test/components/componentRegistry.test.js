@@ -15,7 +15,6 @@
   var components = require('../../lib/components');
 
   var ComponentRegistry = components.ComponentRegistry;
-  var SimpleComponentDefinitionBuilder = require('../../lib/definitions/builders/simpleComponentDefinitionBuilder');
   var SimpleComponentDefinition = require('../../lib/definitions/simpleComponentDefinition');
   var NoSuchComponentDefinitionError = definitions.NoSuchComponentDefinitionError;
 
@@ -34,17 +33,17 @@
       expect(module.getCall(0).args[0].for).to.be.a('function');
     });
 
-    it('should register specified module and collect component defintion builders', function () {
+    it('should register specified module and build component defintions', function () {
       var registry = new ComponentRegistry();
 
-      registry.registerModule(function (config) {
+      expect(registry.registerModule(function (config) {
         config.for('myComponent').use('This is a value');
-      });
+      })).to.be(true);
 
-      var registeredDefinitions = registry.registeredDefinitions;
+      var componentDefinitions = registry.registeredDefinitions;
 
-      expect(registeredDefinitions.length).to.be(1);
-      expect(registeredDefinitions[0]).to.be.a(SimpleComponentDefinitionBuilder);
+      expect(componentDefinitions.length).to.be(1);
+      expect(componentDefinitions[0]).to.be.a(SimpleComponentDefinition);
     });
 
     it('should throw error if module attempts to register a component without a name', function () {
@@ -59,28 +58,21 @@
         });
       });
 
-      var registeredDefinitions = registry.registeredDefinitions;
-
-      expect(registeredDefinitions.length).to.be(0);
     });
 
     it('should throw error if module attempts to register a component with the same name as another component', function () {
       var registry = new ComponentRegistry();
 
-      registry.registerModule(function (registry) {
-        registry.for('myComponent').use('This is a value');
-
-        expect(function () {
-          registry.for('myComponent');
-        }).to.throwError(function (e) {
-          expect(e).to.be.a(definitions.ComponentDefinitionError);
-          expect(e.message).to.match(/Another component with the name "myComponent" has already been registered/);
+      expect(function () {
+        registry.registerModule(function (registry) {
+          registry.for('myComponent').use('This is a value');
+          registry.for('myComponent').use('This is another value');
         });
+      }).to.throwError(function (e) {
+        expect(e).to.be.a(definitions.ComponentDefinitionError);
+        expect(e.message).to.match(/Another component with the name "myComponent" has already been registered/);
       });
 
-      var registeredDefinitions = registry.registeredDefinitions;
-
-      expect(registeredDefinitions.length).to.be(1);
     });
 
     it('should provide a ComponentDefinitionBuilderFactory to describe component definition', function () {

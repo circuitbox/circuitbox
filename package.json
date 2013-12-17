@@ -19,9 +19,7 @@
     "url": "https://github.com/oddjobsman/circuitbox/issues"
   },
   "dependencies": {
-    "underscore": "~1.5.2",
-    "enum": "~0.2.5",
-    "underscore.string": "~2.3.3"
+    "enum": "~0.2.5"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",

@@ -14,6 +14,7 @@
         generic: {
           src: ['lib/**/*.js'],
           options: {
+            breakOnErrors: false,
             errorsOnly: false,
             cyclometric: 6,       // default is 3
             halstead: 16,         // default is 8
@@ -64,7 +65,7 @@
     grunt.loadNpmTasks('grunt-sloc');
 
     grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
-    grunt.registerTask('ci', ['jshint', 'mochacli', 'complexity', 'sloc']);
+    grunt.registerTask('ci', ['jshint', 'mochacli', 'sloc']);
     grunt.registerTask('default', ['test']);
   };
 
