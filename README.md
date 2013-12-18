@@ -80,10 +80,7 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
   var circuitbox = require('circuitbox');
 
   // create a circuitbox
-  var cbx = circuitbox.create({
-    options: {
-        logger: winstonLogger
-    },
+  circuitbox.create({
     modules: [
       function (registry) {
         // the message to be used
@@ -96,13 +93,12 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
         registry.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
       }
     ]
+  }, function (cbx) {
+    // get the message printer and print a message
+    cbx.get('messagePrinter', function (printer) {
+      printer.print();
+    });
   });
-
-  // get the message printer and print a message
-  cbx.get('messagePrinter', function (printer) {
-    printer.print();
-  })
-
 })();
 ```
 
