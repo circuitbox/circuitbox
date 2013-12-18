@@ -64,7 +64,7 @@
     grunt.loadNpmTasks('grunt-mocha-cli');
     grunt.loadNpmTasks('grunt-sloc');
 
-    grunt.registerTask('test', ['jshint', 'mochacli', 'complexity', 'sloc', 'watch']);
+    grunt.registerTask('test', ['jshint', 'mochacli', 'sloc', 'watch']);
     grunt.registerTask('ci', ['jshint', 'mochacli', 'sloc']);
     grunt.registerTask('default', ['test']);
   };
