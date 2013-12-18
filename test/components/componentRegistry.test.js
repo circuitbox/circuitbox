@@ -46,6 +46,28 @@
       expect(componentDefinitions[0]).to.be.a(SimpleComponentDefinition);
     });
 
+    it('should register specified module and get assembly list for a specified component', function () {
+      var registry = new ComponentRegistry();
+
+      expect(registry.registerModule(function (config) {
+        config.for('underpants').use('Boxer shorts');
+        config.for('socks').use('These are cotton socks');
+        config.for('trousers').use('Reid & Taylor Trousers').dependsOn(['underpants']);
+        config.for('shoes').use('Hush Puppies').dependsOn(['trousers', 'socks']);
+      })).to.be(true);
+
+      var assemblyList = registry.getAssemblyListFor('shoes');
+
+      expect(assemblyList.length).to.be(4);
+      expect(assemblyList.every(function (definition) {
+        return definition instanceof SimpleComponentDefinition;
+      })).to.be(true);
+      expect(assemblyList[0].name).to.be('socks');
+      expect(assemblyList[1].name).to.be('underpants');
+      expect(assemblyList[2].name).to.be('trousers');
+      expect(assemblyList[3].name).to.be('shoes');
+    });
+
     it('should throw error if module attempts to register a component without a name', function () {
       var registry = new ComponentRegistry();
 
