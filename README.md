@@ -93,9 +93,18 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
         registry.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
       }
     ]
-  }, function (cbx) {
+  }, function (cbxErr, cbx) {
+    if (err) {
+      console.log('Could not create circuitbox');
+      return;
+    }
+
     // get the message printer and print a message
-    cbx.get('messagePrinter', function (printer) {
+    cbx.get('messagePrinter', function (err, printer) {
+      if (err) {
+        console.log('Could not recieve a printer');
+        return;
+      }
       printer.print();
     });
   });
