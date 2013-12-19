@@ -485,5 +485,16 @@
 
     });
 
+    describe('#enumFor()', function () {
+      it('should return an object with the specified constants with values starting from 1', function () {
+        var testEnum = utils.enumFor('a', 'b', 'c');
+
+        expect(testEnum.a).to.be(1);
+        expect(testEnum.b).to.be(2);
+        expect(testEnum.c).to.be(3);
+
+      });
+    });
+
   });
 })();
