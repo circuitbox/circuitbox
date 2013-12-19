@@ -18,9 +18,7 @@
   "bugs": {
     "url": "https://github.com/oddjobsman/circuitbox/issues"
   },
-  "dependencies": {
-    "enum": "~0.2.5"
-  },
+  "dependencies": {},
   "devDependencies": {
     "expect.js": "~0.2.0",
     "grunt-contrib-jshint": "~0.7.1",
