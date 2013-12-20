@@ -10,11 +10,11 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var Scopes = require('../../../lib/components/scopes');
+  var Scopes = require('../lib/scopes');
 
-  var SimpleComponentDefinition = require('../../../lib/definitions/simpleComponentDefinition');
-  var ComponentDefinitionBuilder = require('../../../lib/definitions/builders/componentDefinitionBuilder');
-  var SimpleComponentDefinitionBuilder = require('../../../lib/definitions/builders/simpleComponentDefinitionBuilder');
+  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+  var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
+  var SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder');
 
   describe('SimpleComponentDefinitionBuilder', function () {
 

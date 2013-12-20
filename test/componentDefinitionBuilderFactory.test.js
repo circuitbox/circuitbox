@@ -10,10 +10,10 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var SimpleComponentDefinitionBuilder = require('../../../lib/definitions/builders/simpleComponentDefinitionBuilder');
-  var ModuleBasedComponentDefinitionBuilder = require('../../../lib/definitions/builders/moduleBasedComponentDefinitionBuilder');
+  var SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder');
+  var ModuleBasedComponentDefinitionBuilder = require('../lib/moduleBasedComponentDefinitionBuilder');
 
-  var ComponentDefinitionBuilderFactory = require('../../../lib/definitions/builders');
+  var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
 
   describe('ComponentDefinitionBuilderFactory', function () {
 

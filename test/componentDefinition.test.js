@@ -13,11 +13,11 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var Scopes = require('../../lib/components/scopes');
-  var ComponentDefinition = require('../../lib/definitions/componentDefinition');
+  var Scopes = require('../lib/scopes');
+  var ComponentDefinition = require('../lib/componentDefinition');
 
-  var ComponentCreationError = require('../../lib/components/componentCreationError');
-  var ComponentDefinitionError = require('../../lib/definitions/componentDefinitionError');
+  var ComponentCreationError = require('../lib/componentCreationError');
+  var ComponentDefinitionError = require('../lib/componentDefinitionError');
 
   describe('ComponentDefinition', function () {
 

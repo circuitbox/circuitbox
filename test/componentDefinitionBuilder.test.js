@@ -10,10 +10,10 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var Scopes = require('../../../lib/components/scopes');
+  var Scopes = require('../lib/scopes');
 
-  var ComponentDefinition = require('../../../lib/definitions/componentDefinition');
-  var ComponentDefinitionBuilder = require('../../../lib/definitions/builders/componentDefinitionBuilder');
+  var ComponentDefinition = require('../lib/componentDefinition');
+  var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
 
   describe('ComponentDefinitionBuilder', function () {
     context('when created with a name, scope, initializer and dependencies', function () {

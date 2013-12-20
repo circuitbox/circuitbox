@@ -10,7 +10,7 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var AssemblyContext = require('../../../lib/components').assembly.AssemblyContext;
+  var AssemblyContext = require('../lib/assemblyContext');
 
   describe('AssemblyContext', function () {
     context('when created with a kernel and registry and component resolver', function () {

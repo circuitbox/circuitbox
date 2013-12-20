@@ -11,14 +11,11 @@
   var expect = require('expect.js');
   var sinon = require('sinon');
 
-  var definitions = require('../../lib/definitions');
-  var components = require('../../lib/components');
-
-  var ComponentRegistry = components.ComponentRegistry;
-  var SimpleComponentDefinition = require('../../lib/definitions/simpleComponentDefinition');
-  var NoSuchComponentDefinitionError = definitions.NoSuchComponentDefinitionError;
-
-  var ConfigurationDefinitionBuilderFactory = definitions.ComponentDefinitionBuilderFactory;
+  var ComponentRegistry = require('../lib/componentRegistry');
+  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+  var ComponentDefinitionError = require('../lib/componentDefinitionError');
+  var NoSuchComponentDefinitionError = require('../lib/noSuchComponentDefinitionError');
+  var ConfigurationDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
 
   describe('ComponentRegistry', function () {
 
@@ -75,7 +72,7 @@
         expect(function () {
           registry.for();
         }).to.throwError(function (e) {
-          expect(e).to.be.a(definitions.ComponentDefinitionError);
+          expect(e).to.be.a(ComponentDefinitionError);
           expect(e.message).to.match(/A valid component name must be specified/);
         });
       });
@@ -91,7 +88,7 @@
           registry.for('myComponent').use('This is another value');
         });
       }).to.throwError(function (e) {
-        expect(e).to.be.a(definitions.ComponentDefinitionError);
+        expect(e).to.be.a(ComponentDefinitionError);
         expect(e.message).to.match(/Another component with the name "myComponent" has already been registered/);
       });
 
@@ -108,18 +105,18 @@
 
     context('when a component definition is required', function () {
       var registry = new ComponentRegistry();
-        
+
       registry.registerModule(function (registry) {
         registry.for('myComponent').use('This is myComponent');
       });
-      
+
       it('should retrieve component definitions in the registry with specified name', function () {
         var componentDef = registry.findDefinitionForComponent('myComponent');
-        
+
         expect(componentDef).to.be.a(SimpleComponentDefinition);
         expect(componentDef.name).to.be('myComponent');
       });
-      
+
       it('should throw error when a compoent with specified name is not found', function () {
         expect(function () {
           registry.findDefinitionForComponent('unregisteredComponent');
@@ -128,7 +125,7 @@
           expect(e.message).to.match(/Component 'unregisteredComponent' could not be found/);
         });
       });
-      
+
     });
 
   });

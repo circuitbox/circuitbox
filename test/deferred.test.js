@@ -11,7 +11,7 @@
   var expect = require('expect.js');
   var sinon = require('sinon');
 
-  var deferred = require('../../lib').support.deferred;
+  var deferred = require('../lib/deferred');
 
   describe('deferred', function () {
     it('should return a new instance when invoked', function () {
