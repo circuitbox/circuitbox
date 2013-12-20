@@ -1,4 +1,4 @@
-/*! 
+/*!
  * circuitbox
  * Copyright (c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
  * MIT License
@@ -8,7 +8,7 @@
   'use strict';
 
   var expect = require('expect.js');
-  var utils = require('../lib/utils');
+  var utils = require('../../lib/support/utils');
 
   describe('Utilities', function () {
 
@@ -345,7 +345,7 @@
       });
 
     });
-    
+
 
     describe('#isEmpty()', function () {
 
