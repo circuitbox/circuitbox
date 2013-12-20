@@ -55,28 +55,43 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 
 ### Basic Example
 
+Assuming there is a file named `consoleMessagePrinter.js` in the same folder with the code:
+
+``` js
+(function () {
+  'use strict';
+
+  // Our console message printer
+  // deps is injected by circuitbox with the dependencies
+  function ConsoleMessagePrinter(deps) {
+    return {
+      print: function () {
+        console.log(deps.messageSource.message());
+      }
+    };
+  }
+
+  module.exports = ConsoleMessagePrinter;
+})();
+```
+
+And in our `main.js` file we have code as:
+
 ``` js
 (function () {
   'use strict';
 
   // our simple message source
-  var simpleMessageSource = function (message) {
+  // deps is injected by circuitbox with the dependencies
+  var simpleMessageSource = function (deps) {
     return {
       message: function () {
-        return message;
+        return deps.message;
       }
     };
   };
 
-  // Our console message printer
-  var consoleMessagePrinter = function (messageSource) {
-    return {
-      print: function () {
-        console.log(messageSource.message());
-      }
-    };
-  };
-
+  // require circuitbox
   var circuitbox = require('circuitbox');
 
   // create a circuitbox
@@ -87,28 +102,25 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
         registry.for('message').use('This is the message');
 
         // define the message source
-        registry.for('messageSource').use(simpleMessageSource).requires('message').scope('singleton');
+        registry.for('messageSource').use(simpleMessageSource)
+          .dependsOn('message').scope('singleton');
 
-        // define the message printer
-        registry.for('messagePrinter').use(consoleMessagePrinter).requires('messageSource').scope('singleton');
+        // define the message printer - does a module.require internally
+        registry.for('messagePrinter').requires('./consoleMessagePrinter')
+          .dependsOn('messageSource').scope('singleton');
       }
     ]
-  }, function (cbxErr, cbx) {
-    if (err) {
-      console.log('Could not create circuitbox');
-      return;
-    }
-
+  }).then(function (cbx) {
     // get the message printer and print a message
-    cbx.get('messagePrinter', function (err, printer) {
-      if (err) {
-        console.log('Could not recieve a printer');
-        return;
-      }
+    cbx.get('messagePrinter').then(function (printer) {
       printer.print();
+    }).fail(function (err) {
+      console.log('Could not recieve a printer');
+      return;
     });
+  }).fail(function (err) {
+    console.log('Could not create circuitbox');
   });
+
 })();
 ```
-
-
