@@ -12,11 +12,15 @@
 
   var context = describe;
   var expect = require('expect.js');
+  
+  var errors = require('../lib/errors');
+  var componentDefinitions = require('../lib/componentDefinitions');
 
   var Scopes = require('../lib/scopes');
-  var ComponentDefinition = require('../lib/componentDefinitions').ComponentDefinition;
+  var ComponentDefinition = componentDefinitions.ComponentDefinition;
+  var SimpleComponentDefinition = componentDefinitions.SimpleComponentDefinition;
+  var ModuleBasedComponentDefinition = componentDefinitions.ModuleBasedComponentDefinition;
 
-  var errors = require('../lib/errors');
   var ComponentCreationError = errors.ComponentCreationError;
   var ComponentDefinitionError = errors.ComponentDefinitionError;
 
@@ -29,17 +33,21 @@
         expect(cd.name).to.be('myComponent');
         expect(cd.scope).to.be(Scopes.prototype);
       });
+
     });
 
     context('when created with a name and scope', function () {
+
       it('should be created with specified name and specified scope', function () {
         var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
         expect(cd.name).to.be('myComponent');
         expect(cd.scope).to.be(Scopes.singleton);
       });
+
     });
 
     context('when created with a name and list of dependencies', function () {
+
       it('should be created with specified name and specified dependency list', function () {
         var dependencies = ['a', 'b'];
         var cd = new ComponentDefinition({
@@ -48,6 +56,7 @@
         });
         expect(cd.name).to.be('myComponent');
       });
+
     });
 
     context('when created with an initializer', function () {
@@ -72,7 +81,6 @@
 
         expect(cd.name).to.be('myComponent');
         expect(cd.initializer).to.be('initializer');
-
       });
 
       it('should throw error if initializer is not a function or string', function () {
@@ -98,7 +106,55 @@
           });
       });
 
-
     });
+  });
+
+  describe('SimpleComponentDefinition', function () {
+
+    it('inherits ComponentDefinition', function () {
+      expect(SimpleComponentDefinition.super_).to.be(ComponentDefinition);
+    });
+
+    context('when created with name and object', function () {
+      
+      it('should return a function which emits specified object', function () {
+        var objectValue = 'This is the object';
+
+        var cd = new SimpleComponentDefinition({
+          name: 'myComponent',
+          scope: Scopes.singleton,
+          object: objectValue
+        });
+
+        var emitter = cd.emitter;
+        expect(emitter).to.be.a(Function);
+        expect(emitter()).to.be(objectValue);
+      });
+    });
+
+  });
+  
+  describe('ModuleBasedComponentDefinition', function () {
+    
+    it('inherits ComponentDefinition', function () {
+      expect(ModuleBasedComponentDefinition.super_).to.be(ComponentDefinition);
+    });
+
+    context('when created with name and module id', function () {
+      
+      it('should return a function that emits the specified module id', function () {
+        var d = new ModuleBasedComponentDefinition({
+          name: 'myComponent',
+          moduleId: './myComponentModule'
+        });
+
+        var result = d.emitter();
+
+        expect(result).to.be.a('string');
+        expect(result).to.be('./myComponentModule');
+      });
+      
+    });
+    
   });
 })();

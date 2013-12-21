@@ -18,7 +18,7 @@
 
   var ComponentRegistry = require('../lib/componentRegistry');
   var SimpleComponentDefinition = require('../lib/componentDefinitions').SimpleComponentDefinition;
-  var ConfigurationDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
+  var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilders').ComponentDefinitionBuilderFactory;
 
   describe('ComponentRegistry', function () {
 
@@ -102,7 +102,7 @@
 
       registry.registerModule(function (registry) {
         var factory = registry.for('myComponent');
-        expect(factory).to.be.a(ConfigurationDefinitionBuilderFactory);
+        expect(factory).to.be.a(ComponentDefinitionBuilderFactory);
       });
     });
 
