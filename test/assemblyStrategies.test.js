@@ -4,6 +4,8 @@
  * MIT Licensed
  */
 
+/*jshint expr: true */
+
 (function () {
   'use strict';
 
@@ -25,30 +27,56 @@
 
       var strategy = new SimpleComponentAssemblyStrategy(def);
 
-      strategy.assemble(function (value) {
+      strategy.assemble(function (err, value) {
+        expect(err).to.be.falsy;
         expect(value).to.be(componentValue);
         done();
       });
     });
 
-    it.skip('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
+    it('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
       var targetComponentName = 'myComponent';
       var componentValue = 'This is my message';
 
       var def = new SimpleComponentDefinition({
         name: targetComponentName,
         object: componentValue,
-        initializer: function (cb) {
-          cb(this.toLowerCase());
+        initializer: function () {
+          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
+          return this.toLowerCase();
         }
       });
 
       var strategy = new SimpleComponentAssemblyStrategy(def);
 
-      strategy.assemble(function (value) {
+      strategy.assemble(function (err, value) {
+        expect(err).to.be.falsy;
         expect(value).to.be(componentValue.toLowerCase());
         done();
       });
+
+    });
+
+    it('should assemble component, initialize it with an async initializer and pass component to specified callback', function (done) {
+      var targetComponentName = 'myComponent';
+      var componentValue = 'This is my message';
+
+      var def = new SimpleComponentDefinition({
+        name: targetComponentName,
+        object: componentValue,
+        initializer: function (callBack) {
+          callBack(null, this.toLowerCase());
+        }
+      });
+
+      var strategy = new SimpleComponentAssemblyStrategy(def);
+
+      strategy.assemble(function (err, value) {
+        expect(err).to.be.falsy;
+        expect(value).to.be(componentValue.toLowerCase());
+        done();
+      });
+
     });
 
   });
