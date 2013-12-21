@@ -9,8 +9,15 @@
 
   var context = describe;
   var expect = require('expect.js');
+  var sinon = require('sinon');
 
-  var AssemblyContext = require('../lib/assembly').AssemblyContext;
+  var Scopes = require('../lib/scopes');
+  var SimpleComponentDefinition = require('../lib/componentDefinitions').SimpleComponentDefinition;
+  var ComponentCreationError = require('../lib/errors').ComponentCreationError;
+
+  var assembly = require('../lib/assembly');
+  var AssemblyContext = assembly.AssemblyContext;
+  var Assembler = assembly.Assembler;
 
   describe('AssemblyContext', function () {
 
@@ -18,17 +25,66 @@
       var targetComponentName = 'myComponent';
       var registry = {};
 
-      it('must hold reference to the specified target component name, kernel, registry and component resolver', function () {
-        var callBack = function () {};
-
+      it('must hold reference to the specified target component name, kernel, registry', function () {
         var context = new AssemblyContext(targetComponentName, {
-          registry: registry,
-          callBack: callBack
+          registry: registry
         });
 
         expect(context.targetComponentName).to.be(targetComponentName);
         expect(context.registry).to.be(registry);
-        expect(context.callBack).to.be(callBack);
+      });
+
+    });
+
+  });
+
+  describe('Assembler', function () {
+
+    it('should create a new Assembler for the specified AssemblyContext', function () {
+      var assembler = Assembler.for(new AssemblyContext('myComponent', {}));
+      expect(assembler).to.be.an(Assembler);
+    });
+
+    it('should throw error if Assembler is created without an AssemblyContext', function () {
+      expect(function () {
+        Assembler.for({});
+      }).to.throwError(function (e) {
+        expect(e).to.be.a(ComponentCreationError);
+        expect(e.message).to.match(/Cannot assemble component without a valid assembly context/);
+      });
+    });
+
+    context.skip('when created', function () {
+
+      it('should assemble target component and return a deferred object that passes the component value to completion handler', function () {
+        var registryApi = {
+          getAssemblyListFor: function () {}
+        };
+
+        var targetComponentName = 'myComponent';
+        var componentValue = 'This is my message';
+
+        var mockRegistry = sinon.mock(registryApi);
+
+        mockRegistry.expects('getAssemblyListFor').withArgs('myComponent').returns([
+          new SimpleComponentDefinition({
+            name: targetComponentName,
+            scope: Scopes.singleton,
+            object: componentValue
+          })
+        ]).once();
+
+        var assemblyDoneSpy = sinon.spy();
+        var assemblyFailedSpy = sinon.spy();
+
+        Assembler.for(new AssemblyContext('myComponent', {
+          registry: mockRegistry
+        })).assemble()
+          .done(assemblyDoneSpy)
+          .fail(assemblyFailedSpy);
+
+        expect(assemblyDoneSpy.withArgs(componentValue).calledOnce).to.be(true);
+        expect(assemblyFailedSpy.calledOnce).to.be(false);
       });
 
     });

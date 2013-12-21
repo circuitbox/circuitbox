@@ -21,10 +21,10 @@
       expect(da).not.to.be(db);
     });
 
-    it('should return a promise onto which fulfillment handler can be attached', function () {
+    it('should return a promise onto which completion handler can be attached', function () {
       var promise = deferred().promise;
 
-      expect(promise.then).to.be.a('function');
+      expect(promise.done).to.be.a('function');
     });
 
     it('should return a promise onto which failure handler can be attached', function () {
@@ -35,17 +35,17 @@
 
     describe('Promise', function () {
 
-      it('should register a fulfillment handler and return promise instance', function () {
+      it('should register a completion handler and return promise instance', function () {
         var promise = deferred().promise;
 
-        expect(promise.then(function () {})).to.be(promise);
+        expect(promise.done(function () {})).to.be(promise);
       });
 
-      it('should not register a fulfillment handler if its not a function', function () {
+      it('should not register a completion handler if its not a function', function () {
         var promise = deferred().promise;
 
         expect(function () {
-          promise.then({});
+          promise.done({});
         }).to.throwError();
 
       });
@@ -65,21 +65,12 @@
 
       });
 
-      it('should not register a failure handler it does not accept the error parameter', function () {
-        var promise = deferred().promise;
-
-        expect(function () {
-          promise.fail(function () {});
-        }).to.throwError();
-
-      });
-
       context('when resolved', function () {
-        it('should call the fulfillment handler', function () {
+        it('should call the completion handler', function () {
           var handlerSpy = sinon.spy();
           var dfd = deferred();
 
-          dfd.promise.then(handlerSpy);
+          dfd.promise.done(handlerSpy);
 
           dfd.resolve();
 
@@ -88,11 +79,11 @@
       });
 
       context('when resolved with a value', function () {
-        it('should call the fulfillment handler', function () {
+        it('should call the completion handler with the resolved value', function () {
           var handlerSpy = sinon.spy();
           var dfd = deferred();
 
-          dfd.promise.then(handlerSpy);
+          dfd.promise.done(handlerSpy);
 
           dfd.resolve('This is what you\'ve been waiting for');
 
@@ -101,7 +92,7 @@
       });
 
       context('when rejected with a reason', function () {
-        it('should call the failure handler with reason', function () {
+        it('should call the failure handler with the reason', function () {
           var called = false;
           var dfd = deferred();
 
@@ -116,7 +107,6 @@
         });
       });
     });
-
 
   });
 
