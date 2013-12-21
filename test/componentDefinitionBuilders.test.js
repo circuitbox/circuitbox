@@ -137,7 +137,7 @@
       it('should register and return a ModuleBasedComponentDefinitionBuilder when #require() is invoked with an module-id', function () {
         var moduleId = './myComponentModule';
 
-        var definition = factory.require(moduleId);
+        var definition = factory.requires(moduleId);
 
         expect(definition).to.be.a(ModuleBasedComponentDefinitionBuilder);
         expect(definition.options.name).to.be('myComponent');

@@ -12,7 +12,7 @@
   };
 
   // require circuitbox
-  var circuitbox = require('circuitbox');
+  var circuitbox = require('../lib');
 
   // create a circuitbox
   circuitbox.create({

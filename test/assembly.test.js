@@ -10,9 +10,10 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var AssemblyContext = require('../lib/assemblyContext');
+  var AssemblyContext = require('../lib/assembly').AssemblyContext;
 
   describe('AssemblyContext', function () {
+
     context('when created with a kernel and registry and component resolver', function () {
       var targetComponentName = 'myComponent';
       var registry = {};
@@ -29,7 +30,9 @@
         expect(context.registry).to.be(registry);
         expect(context.callBack).to.be(callBack);
       });
+
     });
+
   });
 
 })();
