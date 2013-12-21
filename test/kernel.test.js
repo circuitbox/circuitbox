@@ -13,8 +13,6 @@
   var Kernel = require('../lib/kernel');
   var ComponentRegistry = require('../lib/componentRegistry');
 
-  var NoSuchComponentDefinitionError = require('../lib/errors').NoSuchComponentDefinitionError;
-
   describe('Kernel', function () {
 
     context('when created', function () {
@@ -26,15 +24,6 @@
 
       it('should provide access to its component registry', function () {
         expect(kernel.registry).to.be.a(ComponentRegistry);
-      });
-
-      it.skip('should throw error if an unregistered component is requested', function () {
-        expect(function () {
-          kernel.get('unregisteredComponent');
-        }).to.throwException(function (e) {
-            expect(e).to.be.a(NoSuchComponentDefinitionError);
-            expect(e.message).to.match(/Component 'unregisteredComponent' could not be found/);
-          });
       });
 
     });
