@@ -14,7 +14,7 @@
   var sinon = require('sinon');
 
   var Configuration = require('../lib/configuration');
-  var ComponentDefinitionError = require('../lib/componentDefinitionError');
+  var ComponentDefinitionError = require('../lib/errors').ComponentDefinitionError;
 
   describe('Configuration', function () {
 

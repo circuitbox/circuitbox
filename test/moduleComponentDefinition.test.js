@@ -10,8 +10,9 @@
   var context = describe;
   var expect = require('expect.js');
 
-  var ComponentDefinition = require('../lib/componentDefinition');
-  var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
+  var componentDefinitions = require('../lib/componentDefinitions');
+  var ComponentDefinition = componentDefinitions.ComponentDefinition;
+  var ModuleBasedComponentDefinition = componentDefinitions.ModuleBasedComponentDefinition;
 
   describe('ModuleBasedComponentDefinition', function () {
     it('inherits ComponentDefinition', function () {

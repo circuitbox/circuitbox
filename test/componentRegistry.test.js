@@ -11,10 +11,13 @@
   var expect = require('expect.js');
   var sinon = require('sinon');
 
+  var errors = require('../lib/errors');
+
+  var ComponentDefinitionError = errors.ComponentDefinitionError;
+  var NoSuchComponentDefinitionError = errors.NoSuchComponentDefinitionError;
+
   var ComponentRegistry = require('../lib/componentRegistry');
-  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-  var ComponentDefinitionError = require('../lib/componentDefinitionError');
-  var NoSuchComponentDefinitionError = require('../lib/noSuchComponentDefinitionError');
+  var SimpleComponentDefinition = require('../lib/componentDefinitions').SimpleComponentDefinition;
   var ConfigurationDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
 
   describe('ComponentRegistry', function () {

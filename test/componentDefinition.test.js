@@ -14,10 +14,11 @@
   var expect = require('expect.js');
 
   var Scopes = require('../lib/scopes');
-  var ComponentDefinition = require('../lib/componentDefinition');
+  var ComponentDefinition = require('../lib/componentDefinitions').ComponentDefinition;
 
-  var ComponentCreationError = require('../lib/componentCreationError');
-  var ComponentDefinitionError = require('../lib/componentDefinitionError');
+  var errors = require('../lib/errors');
+  var ComponentCreationError = errors.ComponentCreationError;
+  var ComponentDefinitionError = errors.ComponentDefinitionError;
 
   describe('ComponentDefinition', function () {
 

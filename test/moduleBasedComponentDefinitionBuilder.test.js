@@ -12,7 +12,7 @@
 
   var Scopes = require('../lib/scopes');
 
-  var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
+  var ModuleBasedComponentDefinition = require('../lib/componentDefinitions').ModuleBasedComponentDefinition;
   var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
   var ModuleBasedComponentDefinitionBuilder = require('../lib/moduleBasedComponentDefinitionBuilder');
 
