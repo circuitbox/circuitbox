@@ -13,7 +13,7 @@
 
   var deferred = require('../lib/deferred');
 
-  describe('deferred', function () {
+  describe('Deferred', function () {
     it('should return a new instance when invoked', function () {
       var da = deferred();
       var db = deferred();
@@ -33,7 +33,7 @@
       expect(promise.fail).to.be.a('function');
     });
 
-    describe('promise', function () {
+    describe('Promise', function () {
 
       it('should register a fulfillment handler and return promise instance', function () {
         var promise = deferred().promise;
