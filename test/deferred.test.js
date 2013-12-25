@@ -33,78 +33,45 @@
       expect(promise.fail).to.be.a('function');
     });
 
-    describe('Promise', function () {
+    context('when resolved', function () {
+      it('should call the completion handler', function () {
+        var handlerSpy = sinon.spy();
+        var dfd = deferred();
 
-      it('should register a completion handler and return promise instance', function () {
-        var promise = deferred().promise;
+        dfd.promise.done(handlerSpy);
 
-        expect(promise.done(function () {})).to.be(promise);
+        dfd.resolve();
+
+        expect(handlerSpy.calledOnce).to.be(true);
       });
+    });
 
-      it('should not register a completion handler if its not a function', function () {
-        var promise = deferred().promise;
+    context('when resolved with a value', function () {
+      it('should call the completion handler with the resolved value', function () {
+        var handlerSpy = sinon.spy();
+        var dfd = deferred();
 
-        expect(function () {
-          promise.done({});
-        }).to.throwError();
+        dfd.promise.done(handlerSpy);
 
+        dfd.resolve('This is what you\'ve been waiting for');
+
+        expect(handlerSpy.withArgs('This is what you\'ve been waiting for').calledOnce).to.be(true);
       });
+    });
 
-      it('should register a failure handler and return promise instance', function () {
-        var promise = deferred().promise;
+    context('when rejected with a reason', function () {
+      it('should call the failure handler with the reason', function () {
+        var called = false;
+        var dfd = deferred();
 
-        expect(promise.fail(function (err) { err.toString(); })).to.be(promise);
-      });
-
-      it('should not register a failure handler if its not a function', function () {
-        var promise = deferred().promise;
-
-        expect(function () {
-          promise.fail({});
-        }).to.throwError();
-
-      });
-
-      context('when resolved', function () {
-        it('should call the completion handler', function () {
-          var handlerSpy = sinon.spy();
-          var dfd = deferred();
-
-          dfd.promise.done(handlerSpy);
-
-          dfd.resolve();
-
-          expect(handlerSpy.calledOnce).to.be(true);
+        dfd.promise.fail(function (err) {
+          expect(err).to.be('wont process');
+          called = true;
         });
-      });
 
-      context('when resolved with a value', function () {
-        it('should call the completion handler with the resolved value', function () {
-          var handlerSpy = sinon.spy();
-          var dfd = deferred();
+        dfd.reject('wont process');
 
-          dfd.promise.done(handlerSpy);
-
-          dfd.resolve('This is what you\'ve been waiting for');
-
-          expect(handlerSpy.withArgs('This is what you\'ve been waiting for').calledOnce).to.be(true);
-        });
-      });
-
-      context('when rejected with a reason', function () {
-        it('should call the failure handler with the reason', function () {
-          var called = false;
-          var dfd = deferred();
-
-          dfd.promise.fail(function (err) {
-            expect(err).to.be('wont process');
-            called = true;
-          });
-
-          dfd.reject('wont process');
-
-          expect(called).to.be(true);
-        });
+        expect(called).to.be(true);
       });
     });
 

@@ -10,11 +10,10 @@
   'use strict';
 
   var expect = require('expect.js');
-
   var utils = require('../lib/utils');
 
-  var SimpleComponentDefinition = require('../lib/componentDefinitions').SimpleComponentDefinition;
-  var SimpleComponentAssemblyStrategy = require('../lib/assemblyStrategies').SimpleComponentAssemblyStrategy;
+  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+  var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
 
   describe('SimpleComponentAssemblyStrategy', function () {
 

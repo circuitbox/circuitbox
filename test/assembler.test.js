@@ -12,31 +12,11 @@
   var sinon = require('sinon');
 
   var Scopes = require('../lib/scopes');
-  var SimpleComponentDefinition = require('../lib/componentDefinitions').SimpleComponentDefinition;
-  var ComponentCreationError = require('../lib/errors').ComponentCreationError;
+  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+  var ComponentCreationError = require('../lib/componentCreationError');
 
-  var assembly = require('../lib/assembly');
-  var AssemblyContext = assembly.AssemblyContext;
-  var Assembler = assembly.Assembler;
-
-  describe('AssemblyContext', function () {
-
-    context('when created with a kernel and registry and component resolver', function () {
-      var targetComponentName = 'myComponent';
-      var registry = {};
-
-      it('must hold reference to the specified target component name, kernel, registry', function () {
-        var context = new AssemblyContext(targetComponentName, {
-          registry: registry
-        });
-
-        expect(context.targetComponentName).to.be(targetComponentName);
-        expect(context.registry).to.be(registry);
-      });
-
-    });
-
-  });
+  var AssemblyContext = require('../lib/assemblyContext');
+  var Assembler = require('../lib/assembler');
 
   describe('Assembler', function () {
 
@@ -49,9 +29,9 @@
       expect(function () {
         Assembler.for({});
       }).to.throwError(function (e) {
-        expect(e).to.be.a(ComponentCreationError);
-        expect(e.message).to.match(/Cannot assemble component without a valid assembly context/);
-      });
+            expect(e).to.be.a(ComponentCreationError);
+            expect(e.message).to.match(/Cannot assemble component without a valid assembly context/);
+          });
     });
 
     context.skip('when created', function () {
