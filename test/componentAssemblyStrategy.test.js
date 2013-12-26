@@ -239,6 +239,54 @@
 
       });
 
+      it('passes the error thrown by a sync function component after invoking it to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var dependencies = {
+          utils: utils,
+          location: 'home'
+        };
+        var baseComponent = function () {
+          throw new Error('an intentional mistake');
+        };
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent,
+          dependencies: ['utils', 'location']
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+        strategy.processBaseComponent(baseComponent, function (err) {
+          expect(err.message).to.match(/an intentional mistake/);
+        });
+
+      });
+
+      it('passes the error sent by an async function component after invoking it to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var dependencies = {
+          utils: utils,
+          location: 'home'
+        };
+        var baseComponent = function (deps, callback) {
+          callback(new Error('an accidental mistake'));
+        };
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent,
+          dependencies: ['utils', 'location']
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+        strategy.processBaseComponent(baseComponent, function (err) {
+          expect(err.message).to.match(/an accidental mistake/);
+        });
+
+      });
+
     });
 
     context('#runInitializer()', function () {
