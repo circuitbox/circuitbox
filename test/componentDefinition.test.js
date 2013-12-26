@@ -90,11 +90,11 @@
             });
       });
 
-      it('should provide a method to get base component which throws an error by default', function () {
+      it('should provide a method to get base value which throws an error by default', function () {
         var cd = new ComponentDefinition({name: 'myComponent'});
 
         expect(function () {
-          cd.emitter;
+          cd.getBaseValue();
         }).to.throwException(function (e) {
               expect(e).to.be.a(ComponentCreationError);
               expect(e.message).to.match(/Component 'myComponent' could not be created/);

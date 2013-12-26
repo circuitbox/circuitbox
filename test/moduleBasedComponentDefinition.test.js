@@ -24,13 +24,13 @@
 
     context('when created with name and module id', function () {
       
-      it('should return a function that emits the specified module id', function () {
+      it('should return the specified module id as the base value', function () {
         var d = new ModuleBasedComponentDefinition({
           name: 'myComponent',
           moduleId: './myComponentModule'
         });
 
-        var result = d.emitter();
+        var result = d.getBaseValue();
 
         expect(result).to.be.a('string');
         expect(result).to.be('./myComponentModule');

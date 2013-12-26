@@ -22,7 +22,7 @@
 
     context('when created with name and object', function () {
 
-      it('should return a function which emits specified object', function () {
+      it('should return a the specified object as base value', function () {
         var objectValue = 'This is the object';
 
         var cd = new SimpleComponentDefinition({
@@ -31,9 +31,8 @@
           object: objectValue
         });
 
-        var emitter = cd.emitter;
-        expect(emitter).to.be.a(Function);
-        expect(emitter()).to.be(objectValue);
+        var baseValue = cd.getBaseValue();
+        expect(baseValue).to.be(objectValue);
       });
     });
 
