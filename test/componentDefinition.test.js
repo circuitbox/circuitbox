@@ -16,7 +16,6 @@
   var Scopes = require('../lib/scopes');
   var ComponentDefinition = require('../lib/componentDefinition');
 
-  var ComponentCreationError = require('../lib/componentCreationError');
   var ComponentDefinitionError = require('../lib/componentDefinitionError');
 
   describe('ComponentDefinition', function () {
@@ -87,17 +86,6 @@
         }).throwException(function (e) {
               expect(e).to.be.a(ComponentDefinitionError);
               expect(e.message).to.match(/Initializer for 'myComponent' must be a function/);
-            });
-      });
-
-      it('should provide a method to get base value which throws an error by default', function () {
-        var cd = new ComponentDefinition({name: 'myComponent'});
-
-        expect(function () {
-          cd.getBaseValue();
-        }).to.throwException(function (e) {
-              expect(e).to.be.a(ComponentCreationError);
-              expect(e.message).to.match(/Component 'myComponent' could not be created/);
             });
       });
 

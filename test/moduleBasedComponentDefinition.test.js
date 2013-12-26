@@ -30,7 +30,7 @@
           moduleId: './myComponentModule'
         });
 
-        var result = d.getBaseValue();
+        var result = d.getModuleId();
 
         expect(result).to.be.a('string');
         expect(result).to.be('./myComponentModule');

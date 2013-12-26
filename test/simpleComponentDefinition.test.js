@@ -28,11 +28,11 @@
         var cd = new SimpleComponentDefinition({
           name: 'myComponent',
           scope: Scopes.singleton,
-          object: objectValue
+          component: objectValue
         });
 
-        var baseValue = cd.getBaseValue();
-        expect(baseValue).to.be(objectValue);
+        var component = cd.getComponent();
+        expect(component).to.be(objectValue);
       });
     });
 

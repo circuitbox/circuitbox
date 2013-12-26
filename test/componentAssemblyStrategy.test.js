@@ -7,6 +7,7 @@
 (function () {
   'use strict';
 
+  var context = describe;
   var expect = require('expect.js');
   var utils = require('../lib/utils');
 
@@ -17,13 +18,13 @@
 
     it('provides a method to build assembly sequence which throws error by default', function () {
       var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+      var component = 'This is my message';
 
       var def = new SimpleComponentDefinition({
         name: targetComponentName,
-        object: componentValue,
+        component: component,
         initializer: function () {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
+          expect(this).to.be(component);     // initializer to be called in the scope of component
           return this.toLowerCase();
         }
       });
@@ -38,236 +39,443 @@
 
     });
 
-    it('provides a default implementation of the runInitializer function', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+    context('#processBaseComponent()', function () {
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function () {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          return this.toLowerCase();
-        }
+      it('returns a null component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = null;
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(null);
+        });
+
       });
 
-      var strategy = new ComponentAssemblyStrategy(def);
+      it('returns a string component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = 'This is a string value';
 
-      var runInitializerFn = strategy.runInitializer;
-      expect(runInitializerFn).to.be.ok();
-      expect(runInitializerFn).to.be.a('function');
-    });
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-    it('should call the specified sync initializer with this as the baseValue', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+        var strategy = new ComponentAssemblyStrategy(def);
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function () {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          return this.toLowerCase();
-        }
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(baseComponent);
+        });
+
       });
 
-      var strategy = new ComponentAssemblyStrategy(def);
+      it('returns a number component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = 2344.34;
 
-      var runInitializerFn = strategy.runInitializer;
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be(componentValue.toLowerCase());
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(baseComponent);
+        });
+
       });
 
-    });
+      it('returns a boolean component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = true;
 
-    it('should call the specified sync initializer passing the dependencies and with this as the baseValue', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
-      var dependencies = {
-        location: 'home'
-      };
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        dependencies: ['location'],
-        initializer: function (deps) {
-          expect(deps.location).to.be('home');
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          return utils.sprintf(this, deps.location).toLowerCase();
-        }
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(baseComponent);
+        });
+
       });
 
-      var strategy = new ComponentAssemblyStrategy(def, dependencies);
+      it('returns a object component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = {name: 'John Doe', age: 21, male: true};
 
-      var runInitializerFn = strategy.runInitializer;
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be('this is my home'.toLowerCase());
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(baseComponent);
+        });
+
       });
 
-    });
+      it('returns a array component as-is to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = [23, 54, 77, 2, 5];
 
-    it('should call the specified async initializer with this as the baseValue', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function (deps, callback) {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          callback(null, this.toLowerCase());
-        }
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be(baseComponent);
+        });
+
       });
 
-      var strategy = new ComponentAssemblyStrategy(def);
+      it('returns the return value of a sync function component after invoking it to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = function () {
+          return 'This is the result';
+        };
 
-      var runInitializerFn = strategy.runInitializer;
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be(componentValue.toLowerCase());
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be('This is the result');
+        });
+
       });
 
-    });
+      it('returns the return value of a sync function component after invoking it with dependencies to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var dependencies = {
+          utils: utils,
+          location: 'home'
+        };
+        var baseComponent = function (deps) {
+          return deps.utils.sprintf('This is my %s', deps.location);
+        };
 
-    it('should call the specified async initializer passing the dependencies and with this as the baseValue', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
-      var dependencies = {
-        location: 'home'
-      };
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent,
+          dependencies: ['utils', 'location']
+        });
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        dependencies: ['location'],
-        initializer: function (deps, callback) {
-          expect(deps.location).to.be('home');
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          callback(null, utils.sprintf(this, deps.location).toLowerCase());
-        }
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be('This is my home');
+        });
+
       });
 
-      var strategy = new ComponentAssemblyStrategy(def, dependencies);
+      it('returns the return value of an async function component after invoking it to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var baseComponent = function (deps, callback) {
+          callback(null, 'This is the result');
+        };
 
-      var runInitializerFn = strategy.runInitializer;
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent
+        });
 
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be('this is my home'.toLowerCase());
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be('This is the result');
+        });
+
       });
 
-    });
+      it('returns the return value of an async function component after invoking it with dependencies to the specified callback', function () {
+        var targetComponentName = 'myComponent';
+        var dependencies = {
+          utils: utils,
+          location: 'home'
+        };
+        var baseComponent = function (deps, callback) {
+          callback(null, deps.utils.sprintf('This is my %s', deps.location));
+        };
 
-    it('should return base value if sync initializer does not return any value', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: baseComponent,
+          dependencies: ['utils', 'location']
+        });
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function (deps, callback) {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          callback(null, null);
-        }
-      });
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
 
-      var strategy = new ComponentAssemblyStrategy(def);
+        strategy.processBaseComponent(baseComponent, function (err, component) {
+          expect(err).to.be(null);
+          expect(component).to.be('This is my home');
+        });
 
-      var runInitializerFn = strategy.runInitializer;
-
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be(componentValue);
-      });
-
-    });
-
-    it('should not invoke initializer if not specified and return base value', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
-
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue
-      });
-
-      var strategy = new ComponentAssemblyStrategy(def);
-
-      var runInitializerFn = strategy.runInitializer;
-
-      runInitializerFn(componentValue, function (err, result) {
-        expect(result).to.be(componentValue);
-      });
-
-    });
-
-    it('should invoke callback with error if sync initializer throws an error', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
-
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function () {
-          throw new Error('an intentional mistake');
-        }
-      });
-
-      var strategy = new ComponentAssemblyStrategy(def);
-
-      var runInitializerFn = strategy.runInitializer;
-
-      runInitializerFn(componentValue, function (err) {
-        expect(err).to.be.an(Error);
-        expect(err.message).to.match(/an intentional mistake/);
-      });
-
-    });
-
-    it('should invoke callback with error if async initializer sends an error', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my %s';
-
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function (deps, callback) {
-          callback(new Error('an accidental mistake'));
-        }
-      });
-
-      var strategy = new ComponentAssemblyStrategy(def);
-
-      var runInitializerFn = strategy.runInitializer;
-
-      runInitializerFn(componentValue, function (err) {
-        expect(err).to.be.an(Error);
-        expect(err.message).to.match(/an accidental mistake/);
       });
 
     });
 
-    it('attempt to assemble calls the callback with an error by default', function () {
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+    context('#runInitializer()', function () {
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        object: componentValue,
-        initializer: function () {
-          expect(this).to.be(componentValue);     // initializer to be called in the scope of base value
-          return this.toLowerCase();
-        }
+      it('provides a default implementation of the runInitializer function', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my message';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function () {
+            expect(this).to.be(component);     // initializer to be called in the scope of component
+            return this.toLowerCase();
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        expect(runInitializerFn).to.be.ok();
+        expect(runInitializerFn).to.be.a('function');
       });
 
-      var strategy = new ComponentAssemblyStrategy(def);
+      it('should call the specified sync initializer with this as the baseValue', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my message';
 
-      expect(function () {
-        strategy.assemble(function () {});
-      }).to.throwError(function (e) {
-            expect(e.message).to.match(/not implemented exception/);
-          });
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function () {
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            return this.toLowerCase();
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be(component.toLowerCase());
+        });
+
+      });
+
+      it('should call the specified sync initializer passing the dependencies and with this as the baseValue', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+        var dependencies = {
+          location: 'home'
+        };
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          dependencies: ['location'],
+          initializer: function (deps) {
+            expect(deps.location).to.be('home');
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            return utils.sprintf(this, deps.location).toLowerCase();
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be('this is my home'.toLowerCase());
+        });
+
+      });
+
+      it('should call the specified async initializer with this as the baseValue', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my message';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function (deps, callback) {
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            callback(null, this.toLowerCase());
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be(component.toLowerCase());
+        });
+
+      });
+
+      it('should call the specified async initializer passing the dependencies and with this as the baseValue', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+        var dependencies = {
+          location: 'home'
+        };
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          dependencies: ['location'],
+          initializer: function (deps, callback) {
+            expect(deps.location).to.be('home');
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            callback(null, utils.sprintf(this, deps.location).toLowerCase());
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be('this is my home'.toLowerCase());
+        });
+
+      });
+
+      it('should return base value if sync initializer does not return any value', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function (deps, callback) {
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            callback(null, null);
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be(component);
+        });
+
+      });
+
+      it('should not invoke initializer if not specified and return base value', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err, result) {
+          expect(result).to.be(component);
+        });
+
+      });
+
+      it('should invoke callback with error if sync initializer throws an error', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function () {
+            throw new Error('an intentional mistake');
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err) {
+          expect(err).to.be.an(Error);
+          expect(err.message).to.match(/an intentional mistake/);
+        });
+
+      });
+
+      it('should invoke callback with error if async initializer sends an error', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my %s';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function (deps, callback) {
+            callback(new Error('an accidental mistake'));
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        var runInitializerFn = strategy.runInitializer;
+
+        runInitializerFn(component, function (err) {
+          expect(err).to.be.an(Error);
+          expect(err.message).to.match(/an accidental mistake/);
+        });
+
+      });
+
+      it('attempt to assemble calls the callback with an error by default', function () {
+        var targetComponentName = 'myComponent';
+        var component = 'This is my message';
+
+        var def = new SimpleComponentDefinition({
+          name: targetComponentName,
+          component: component,
+          initializer: function () {
+            expect(this).to.be(component);     // initializer to be called in the scope of base value
+            return this.toLowerCase();
+          }
+        });
+
+        var strategy = new ComponentAssemblyStrategy(def);
+
+        expect(function () {
+          strategy.assemble(function () {});
+        }).to.throwError(function (e) {
+              expect(e.message).to.match(/not implemented exception/);
+            });
+
+      });
 
     });
 

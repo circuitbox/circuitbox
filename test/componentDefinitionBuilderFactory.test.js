@@ -31,7 +31,7 @@
 
         expect(definition).to.be.a(SimpleComponentDefinitionBuilder);
         expect(definition.options.name).to.be('myComponent');
-        expect(definition.options.object).to.be(objectValue);
+        expect(definition.options.component).to.be(objectValue);
 
         expect(componentList.length).to.be(1);
         expect(componentList[0]).to.be(definition);

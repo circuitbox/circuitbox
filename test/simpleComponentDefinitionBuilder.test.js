@@ -21,14 +21,14 @@
       expect(SimpleComponentDefinitionBuilder.super_).to.be(ComponentDefinitionBuilder);
     });
 
-    context('when created with a name, object, scope, initialzer, and dependencies', function () {
+    context('when created with a name, object, scope, initializer, and dependencies', function () {
 
       it('should create a SimpleComponentDefinition with the specified name, object, scope, initializer and dependencies', function () {
         var initializer = function () {};
         var dependencies = ['a', 'b'];
-        var objectValue = 'This is the object';
+        var component = 'This is the object';
 
-        var definition = new SimpleComponentDefinitionBuilder('myComponent', objectValue)
+        var definition = new SimpleComponentDefinitionBuilder('myComponent', component)
             .scope(Scopes.singleton)
             .initializeWith(initializer)
             .dependsOn(dependencies)
@@ -39,7 +39,7 @@
         expect(definition.scope).to.be(Scopes.singleton);
         expect(definition.initializer).to.be(initializer);
         expect(definition.dependencies).to.be(dependencies);
-        expect(definition.getBaseValue()).to.be(objectValue);
+        expect(definition.getComponent()).to.be(component);
       });
 
     });
