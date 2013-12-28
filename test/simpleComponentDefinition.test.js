@@ -4,38 +4,35 @@
  * MIT Licensed
  */
 
-(function () {
-  'use strict';
+'use strict';
 
-  var context = describe;
-  var expect = require('expect.js');
+var context = describe;
+var expect = require('expect.js');
 
-  var Scopes = require('../lib/scopes');
-  var ComponentDefinition = require('../lib/componentDefinition');
-  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+var Scopes = require('../lib/scopes');
+var ComponentDefinition = require('../lib/componentDefinition');
+var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
 
-  describe('SimpleComponentDefinition', function () {
+describe('SimpleComponentDefinition', function () {
 
-    it('inherits ComponentDefinition', function () {
-      expect(SimpleComponentDefinition.super_).to.be(ComponentDefinition);
-    });
-
-    context('when created with name and object', function () {
-
-      it('should return a the specified object as base value', function () {
-        var objectValue = 'This is the object';
-
-        var cd = new SimpleComponentDefinition({
-          name: 'myComponent',
-          scope: Scopes.singleton,
-          component: objectValue
-        });
-
-        var component = cd.getComponent();
-        expect(component).to.be(objectValue);
-      });
-    });
-
+  it('inherits ComponentDefinition', function () {
+    expect(SimpleComponentDefinition.super_).to.be(ComponentDefinition);
   });
 
-})();
+  context('when created with name and object', function () {
+
+    it('should return a the specified object as base value', function () {
+      var objectValue = 'This is the object';
+
+      var cd = new SimpleComponentDefinition({
+        name: 'myComponent',
+        scope: Scopes.singleton,
+        component: objectValue
+      });
+
+      var component = cd.getComponent();
+      expect(component).to.be(objectValue);
+    });
+  });
+
+});

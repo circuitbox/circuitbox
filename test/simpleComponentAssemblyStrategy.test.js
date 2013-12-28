@@ -6,90 +6,87 @@
 
 /*jshint expr: true */
 
-(function () {
-  'use strict';
+'use strict';
 
-  var expect = require('expect.js');
-  var sinon = require('sinon');
+var expect = require('expect.js');
+var sinon = require('sinon');
 
-  var utils = require('../lib/utils');
+var utils = require('../lib/utils');
 
-  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-  var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
-  var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
+var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
+var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
 
-  describe('SimpleComponentAssemblyStrategy', function () {
+describe('SimpleComponentAssemblyStrategy', function () {
 
-    it('should be a ComponentAssemblyStrategy', function () {
-      expect(SimpleComponentAssemblyStrategy.super_).to.be(ComponentAssemblyStrategy);
+  it('should be a ComponentAssemblyStrategy', function () {
+    expect(SimpleComponentAssemblyStrategy.super_).to.be(ComponentAssemblyStrategy);
+  });
+
+  it('should assemble non-function component and pass to specified callback', function (done) {
+    var targetComponentName = 'myComponent';
+    var component = 'This is my message';
+
+    var def = new SimpleComponentDefinition({
+      name: targetComponentName,
+      component: component
     });
 
-    it('should assemble non-function component and pass to specified callback', function (done) {
-      var targetComponentName = 'myComponent';
-      var component = 'This is my message';
+    var strategy = new SimpleComponentAssemblyStrategy(def);
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        component: component
-      });
+    strategy.assemble(function (err, value) {
+      expect(err).to.be.falsy;
+      expect(value).to.be(component);
+      done();
+    });
+  });
 
-      var strategy = new SimpleComponentAssemblyStrategy(def);
+  it('should assemble function component by invoking it with dependencies and pass its return value to specified callback as component', function (done) {
+    var targetComponentName = 'myComponent';
+    var component = function (deps) {
+      return deps.utils.sprintf('This is my %s', deps.location);
+    };
+    var dependencies = {
+      utils: utils,
+      location: 'home'
+    };
 
-      strategy.assemble(function (err, value) {
-        expect(err).to.be.falsy;
-        expect(value).to.be(component);
-        done();
-      });
+    var def = new SimpleComponentDefinition({
+      name: targetComponentName,
+      component: component,
+      dependencies: ['utils', 'location']
     });
 
-    it('should assemble function component by invoking it with dependencies and pass its return value to specified callback as component', function (done) {
-      var targetComponentName = 'myComponent';
-      var component = function (deps) {
-        return deps.utils.sprintf('This is my %s', deps.location);
-      };
-      var dependencies = {
-        utils: utils,
-        location: 'home'
-      };
+    var strategy = new SimpleComponentAssemblyStrategy(def, dependencies);
 
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        component: component,
-        dependencies: ['utils', 'location']
-      });
+    strategy.assemble(function (err, value) {
+      expect(err).to.be.falsy;
+      expect(value).to.be('This is my home');
+      done();
+    });
+  });
 
-      var strategy = new SimpleComponentAssemblyStrategy(def, dependencies);
+  it('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
+    var targetComponentName = 'myComponent';
+    var component = 'This is my message';
 
-      strategy.assemble(function (err, value) {
-        expect(err).to.be.falsy;
-        expect(value).to.be('This is my home');
-        done();
-      });
+    var initializerSpy = sinon.spy();
+
+    var def = new SimpleComponentDefinition({
+      name: targetComponentName,
+      component: component,
+      initializer: initializerSpy
     });
 
-    it('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
-      var targetComponentName = 'myComponent';
-      var component = 'This is my message';
+    var strategy = new SimpleComponentAssemblyStrategy(def);
 
-      var initializerSpy = sinon.spy();
-
-      var def = new SimpleComponentDefinition({
-        name: targetComponentName,
-        component: component,
-        initializer: initializerSpy
-      });
-
-      var strategy = new SimpleComponentAssemblyStrategy(def);
-
-      strategy.assemble(function (err, value) {
-        expect(err).to.be.falsy;
-        expect(value).to.be(component);
-        expect(initializerSpy.calledOnce).to.be(true);
-        done();
-      });
-
+    strategy.assemble(function (err, value) {
+      expect(err).to.be.falsy;
+      expect(value).to.be(component);
+      expect(initializerSpy.calledOnce).to.be(true);
+      done();
     });
 
   });
 
-})();
+});

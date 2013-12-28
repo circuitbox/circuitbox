@@ -4,56 +4,53 @@
  * MIT Licensed
  */
 
-(function () {
-  'use strict';
+'use strict';
 
-  var expect = require('expect.js');
+var expect = require('expect.js');
 
-  var promise = require('../lib/promise');
+var promise = require('../lib/promise');
 
-  describe('Promise', function () {
+describe('Promise', function () {
 
-    it('should register a completion handler and return promise instance', function () {
-      var handlerBag = {};
+  it('should register a completion handler and return promise instance', function () {
+    var handlerBag = {};
 
-      var p = promise(handlerBag);
-      var completionHandler = function () {};
+    var p = promise(handlerBag);
+    var completionHandler = function () {};
 
-      expect(p.done(completionHandler)).to.be(p);
-      expect(handlerBag.thenHandler).to.be(completionHandler);
-    });
+    expect(p.done(completionHandler)).to.be(p);
+    expect(handlerBag.thenHandler).to.be(completionHandler);
+  });
 
-    it('should not register a completion handler if its not a function', function () {
-      var p = promise({});
+  it('should not register a completion handler if its not a function', function () {
+    var p = promise({});
 
-      expect(function () {
-        p.done({});
-      }).to.throwError();
-
-    });
-
-    it('should register a failure handler and return promise instance', function () {
-      var handlerBag = {};
-
-      var p = promise(handlerBag);
-
-      var failHandler = function (err) {
-        err.toString();
-      };
-
-      expect(p.fail(failHandler)).to.be(p);
-      expect(handlerBag.failHandler).to.be(failHandler);
-    });
-
-    it('should not register a failure handler if its not a function', function () {
-      var p = promise({});
-
-      expect(function () {
-        p.fail({});
-      }).to.throwError();
-
-    });
+    expect(function () {
+      p.done({});
+    }).to.throwError();
 
   });
 
-})();
+  it('should register a failure handler and return promise instance', function () {
+    var handlerBag = {};
+
+    var p = promise(handlerBag);
+
+    var failHandler = function (err) {
+      err.toString();
+    };
+
+    expect(p.fail(failHandler)).to.be(p);
+    expect(handlerBag.failHandler).to.be(failHandler);
+  });
+
+  it('should not register a failure handler if its not a function', function () {
+    var p = promise({});
+
+    expect(function () {
+      p.fail({});
+    }).to.throwError();
+
+  });
+
+});

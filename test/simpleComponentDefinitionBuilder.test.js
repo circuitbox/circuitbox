@@ -4,46 +4,43 @@
  * MIT Licensed
  */
 
-(function () {
-  'use strict';
+'use strict';
 
-  var context = describe;
-  var expect = require('expect.js');
+var context = describe;
+var expect = require('expect.js');
 
-  var Scopes = require('../lib/scopes');
-  var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-  var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
-  var SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder');
+var Scopes = require('../lib/scopes');
+var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
+var SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder');
 
-  describe('SimpleComponentDefinitionBuilder', function () {
+describe('SimpleComponentDefinitionBuilder', function () {
 
-    it('inherits ComponentDefinitionBuilder', function () {
-      expect(SimpleComponentDefinitionBuilder.super_).to.be(ComponentDefinitionBuilder);
-    });
+  it('inherits ComponentDefinitionBuilder', function () {
+    expect(SimpleComponentDefinitionBuilder.super_).to.be(ComponentDefinitionBuilder);
+  });
 
-    context('when created with a name, object, scope, initializer, and dependencies', function () {
+  context('when created with a name, object, scope, initializer, and dependencies', function () {
 
-      it('should create a SimpleComponentDefinition with the specified name, object, scope, initializer and dependencies', function () {
-        var initializer = function () {};
-        var dependencies = ['a', 'b'];
-        var component = 'This is the object';
+    it('should create a SimpleComponentDefinition with the specified name, object, scope, initializer and dependencies', function () {
+      var initializer = function () {};
+      var dependencies = ['a', 'b'];
+      var component = 'This is the object';
 
-        var definition = new SimpleComponentDefinitionBuilder('myComponent', component)
-            .scope(Scopes.singleton)
-            .initializeWith(initializer)
-            .dependsOn(dependencies)
-            .build();
+      var definition = new SimpleComponentDefinitionBuilder('myComponent', component)
+          .scope(Scopes.singleton)
+          .initializeWith(initializer)
+          .dependsOn(dependencies)
+          .build();
 
-        expect(definition).to.be.a(SimpleComponentDefinition);
-        expect(definition.name).to.be('myComponent');
-        expect(definition.scope).to.be(Scopes.singleton);
-        expect(definition.initializer).to.be(initializer);
-        expect(definition.dependencies).to.be(dependencies);
-        expect(definition.getComponent()).to.be(component);
-      });
-
+      expect(definition).to.be.a(SimpleComponentDefinition);
+      expect(definition.name).to.be('myComponent');
+      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.initializer).to.be(initializer);
+      expect(definition.dependencies).to.be(dependencies);
+      expect(definition.getComponent()).to.be(component);
     });
 
   });
 
-})();
+});
