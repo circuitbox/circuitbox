@@ -17,10 +17,12 @@ describe('ComponentAssemblyStrategy', function () {
 
   it('should have a getter to return the dependencies passed to it', function () {
     var targetComponentName = 'myComponent';
+
     var dependencies = {
       utils: utils,
       location: 'home'
     };
+
     var baseComponent = function (deps) {
       return deps.utils.sprintf('This is my %s', deps.location);
     };

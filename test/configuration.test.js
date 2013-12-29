@@ -28,9 +28,7 @@ describe('Configuration', function () {
     });
 
     it('should register all modules specified providing them an instance of the kernel\'s registry', function () {
-      var mockRegistryView = {
-        for: function () {}
-      };
+      var mockRegistryView = { for: function () {} };
 
       var mockKernel = {
         registry: {
@@ -53,9 +51,7 @@ describe('Configuration', function () {
     });
 
     it('should throw error if one of the modules specified is not a function', function () {
-      var mockRegistryView = {
-        for: function () {}
-      };
+      var mockRegistryView = { for: function () {} };
 
       var mockKernel = {
         registry: {

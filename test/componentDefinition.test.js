@@ -83,9 +83,9 @@ describe('ComponentDefinition', function () {
           initializer: {}
         });
       }).throwException(function (e) {
-            expect(e).to.be.a(ComponentDefinitionError);
-            expect(e.message).to.match(/Initializer for 'myComponent' must be a function/);
-          });
+        expect(e).to.be.a(ComponentDefinitionError);
+        expect(e.message).to.match(/Initializer for 'myComponent' must be a function/);
+      });
     });
 
   });

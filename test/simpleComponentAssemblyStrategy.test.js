@@ -46,6 +46,7 @@ describe('SimpleComponentAssemblyStrategy', function () {
     var component = function (deps) {
       return deps.utils.sprintf('This is my %s', deps.location);
     };
+
     var dependencies = {
       utils: utils,
       location: 'home'
