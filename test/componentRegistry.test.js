@@ -53,7 +53,7 @@ describe('ComponentRegistry', function () {
       config.for('shoes').use('Hush Puppies').dependsOn(['trousers', 'socks']);
     })).to.be(true);
 
-    var assemblyList = registry.getAssemblyListFor('shoes');
+    var assemblyList = registry.assemblyListFor('shoes');
 
     expect(assemblyList.length).to.be(4);
     expect(assemblyList.every(function (definition) {
