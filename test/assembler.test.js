@@ -6,7 +6,6 @@
 
 'use strict';
 
-var context = describe;
 var expect = require('expect.js');
 var sinon = require('sinon');
 
@@ -33,39 +32,33 @@ describe('Assembler', function () {
         });
   });
 
-  context.skip('when created', function () {
+  it('should assemble target component and return a promise that will return the component value to completion handler', function (done) {
+    var registryApi = {
+      assemblyListFor: function () {}
+    };
 
-    it('should assemble target component and return a deferred object that passes the component value to completion handler', function () {
-      var registryApi = {
-        getAssemblyListFor: function () {}
-      };
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
 
-      var targetComponentName = 'myComponent';
-      var componentValue = 'This is my message';
+    var mockRegistry = sinon.mock(registryApi);
 
-      var mockRegistry = sinon.mock(registryApi);
+    mockRegistry.expects('assemblyListFor').withArgs('myComponent').returns([
+      new SimpleComponentDefinition({
+        name: targetComponentName,
+        scope: Scopes.singleton,
+        component: componentValue
+      })
+    ]).once();
 
-      mockRegistry.expects('getAssemblyListFor').withArgs('myComponent').returns([
-        new SimpleComponentDefinition({
-          name: targetComponentName,
-          scope: Scopes.singleton,
-          object: componentValue
-        })
-      ]).once();
-
-      var assemblyDoneSpy = sinon.spy();
-      var assemblyFailedSpy = sinon.spy();
-
-      Assembler.for(new AssemblyContext('myComponent', {
-        registry: mockRegistry
-      })).assemble()
-        .done(assemblyDoneSpy)
-        .fail(assemblyFailedSpy);
-
-      expect(assemblyDoneSpy.withArgs(componentValue).calledOnce).to.be(true);
-      expect(assemblyFailedSpy.calledOnce).to.be(false);
-    });
-
+    Assembler.for(new AssemblyContext('myComponent', {
+      registry: registryApi
+    })).assemble()
+      .done(function (value) {
+        expect(value).to.be(componentValue);
+        done();
+      }, function (err) {
+          console.log(err);
+        });
   });
 
 });

@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "async": "~0.2.9",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "when": "~2.7.0"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
