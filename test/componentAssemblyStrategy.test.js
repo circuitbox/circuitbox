@@ -15,6 +15,27 @@ var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
 
 describe('ComponentAssemblyStrategy', function () {
 
+  it('should have a getter to return the dependencies passed to it', function () {
+    var targetComponentName = 'myComponent';
+    var dependencies = {
+      utils: utils,
+      location: 'home'
+    };
+    var baseComponent = function (deps) {
+      return deps.utils.sprintf('This is my %s', deps.location);
+    };
+
+    var def = new SimpleComponentDefinition({
+      name: targetComponentName,
+      component: baseComponent,
+      dependencies: ['utils', 'location']
+    });
+
+    var strategy = new ComponentAssemblyStrategy(def, dependencies);
+
+    expect(strategy.dependencies).to.be(dependencies);
+  });
+
   it('provides a method to build assembly sequence which throws error by default', function () {
     var targetComponentName = 'myComponent';
     var component = 'This is my message';
