@@ -32,6 +32,33 @@ describe('Assembler', function () {
         });
   });
 
+  it('should assemble target component and return to specified handler', function (done) {
+    var registryApi = {
+      assemblyListFor: function () {}
+    };
+
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
+
+    var mockRegistry = sinon.mock(registryApi);
+
+    mockRegistry.expects('assemblyListFor').withArgs('myComponent').returns([
+      new SimpleComponentDefinition({
+        name: targetComponentName,
+        scope: Scopes.singleton,
+        component: componentValue
+      })
+    ]).once();
+
+    Assembler.for(new AssemblyContext('myComponent', {
+      registry: registryApi
+    })).assemble(function (err, value) {
+      expect(err).to.be(null);
+      expect(value).to.be(componentValue);
+      done();
+    });
+  });
+
   it('should assemble target component and return a promise that will return the component value to completion handler', function (done) {
     var registryApi = {
       assemblyListFor: function () {}
