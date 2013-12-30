@@ -16,32 +16,40 @@ var Configuration = require('../lib/configuration');
 var ComponentDefinitionError = require('../lib/componentDefinitionError');
 
 describe('Configuration', function () {
+  var kernelViewApi;
+  var mockKernelView;
 
-  context('when created with a kernel and options', function () {
+  beforeEach(function () {
+    kernelViewApi = {
+      setName: function () {},
+      registerModule: function () {}
+    };
+
+    mockKernelView = sinon.mock(kernelViewApi);
+  });
+
+  afterEach(function () {
+    mockKernelView.verify();
+  });
+
+  context('when created with a kernel-view and options', function () {
 
     it('should set the name of the kernel if provided in options', function () {
-      var mockKernel = {};
+      mockKernelView.expects('setName').withArgs('myKernel').once();
 
-      new Configuration(mockKernel, {name: 'myKernel'});
-
-      expect(mockKernel.name).to.be('myKernel');
+      new Configuration(kernelViewApi, {name: 'myKernel'});
     });
 
     it('should register all modules specified providing them an instance of the kernel\'s registry', function () {
       var mockRegistryView = { for: function () {} };
 
-      var mockKernel = {
-        registry: {
-          registerModule: function (module) {
-            module(mockRegistryView);
-          }
-        }
-      };
-
       var moduleASpy = sinon.spy();
       var moduleBSpy = sinon.spy();
 
-      new Configuration(mockKernel, {modules: [
+      mockKernelView.expects('registerModule').withArgs(moduleASpy).callsArgWith(0, mockRegistryView).once();
+      mockKernelView.expects('registerModule').withArgs(moduleBSpy).callsArgWith(0, mockRegistryView).once();
+
+      new Configuration(kernelViewApi, {modules: [
         moduleASpy,
         moduleBSpy
       ]});
@@ -51,20 +59,10 @@ describe('Configuration', function () {
     });
 
     it('should throw error if one of the modules specified is not a function', function () {
-      var mockRegistryView = { for: function () {} };
-
-      var mockKernel = {
-        registry: {
-          registerModule: function (module) {
-            module(mockRegistryView);
-          }
-        }
-      };
-
       var moduleASpy = sinon.spy();
 
       expect(function () {
-        new Configuration(mockKernel, {modules: [
+        new Configuration(kernelViewApi, {modules: [
           moduleASpy,
           {}
         ]});

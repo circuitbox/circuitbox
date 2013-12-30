@@ -10,7 +10,6 @@ var context = describe;
 var expect = require('expect.js');
 
 var Kernel = require('../lib/kernel');
-var ComponentRegistry = require('../lib/componentRegistry');
 
 describe('Kernel', function () {
 
@@ -19,10 +18,6 @@ describe('Kernel', function () {
 
     it('should be empty', function () {
       expect(kernel.hasComponents).to.be(false);
-    });
-
-    it('should provide access to its component registry', function () {
-      expect(kernel.registry).to.be.a(ComponentRegistry);
     });
 
   });
