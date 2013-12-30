@@ -18,8 +18,8 @@ var AssemblyContext = require('../lib/assemblyContext');
 var Assembler = require('../lib/assembler');
 
 describe('Assembler', function () {
-  var registryApi,
-      mockRegistry;
+  var registryApi;
+  var mockRegistry;
 
   beforeEach(function () {
     registryApi = {
