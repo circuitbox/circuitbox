@@ -107,15 +107,17 @@ circuitbox.create({
         .dependsOn('messageSource').scope('singleton');
     }
   ]
-}).then(function (cbx) {
+}).done(function (cbx) {
+  
   // get the message printer and print a message
-  cbx.get('messagePrinter').then(function (printer) {
+  cbx.get('messagePrinter').done(function (printer) {
     printer.print();
-  }).fail(function (err) {
+  }, function (err) {
     console.log('Could not recieve a printer');
     return;
   });
-}).fail(function (err) {
+
+}, function (err) {
   console.log('Could not create circuitbox');
 });
 ```
