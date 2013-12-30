@@ -1,8 +1,9 @@
 {
   "name": "circuitbox",
-  "version": "0.0.60",
+  "version": "1.0.0-alpha.1",
   "description": "A dependency-injection framework for node.js",
   "main": "./lib/index.js",
+  "homepage": "http://circuitbox.oddjobsman.me",
   "scripts": {
     "test": "node_modules/.bin/grunt ci"
   },
