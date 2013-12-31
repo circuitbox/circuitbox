@@ -7,6 +7,7 @@ A dependency-injection framework for node.js
 [![dependency status](https://david-dm.org/oddjobsman/circuitbox.png)](https://david-dm.org/oddjobsman/circuitbox)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/oddjobsman/circuitbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 [![status](https://sourcegraph.com/api/repos/github.com/oddjobsman/circuitbox/badges/status.png)](https://sourcegraph.com/github.com/oddjobsman/circuitbox)
+[![NPM](https://nodei.co/npm/circuitbox.png?stars=true&downloads=true)](https://nodei.co/npm/circuitbox/)
 
 ## Objectives
 
