@@ -59,7 +59,7 @@ describe('Assembler', function () {
 
     mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: componentValue
     })).once();
 
@@ -79,13 +79,13 @@ describe('Assembler', function () {
 
     var locationComponentDefinition = new SimpleComponentDefinition({
       name: 'location',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: location
     });
 
     var messageComponentDefinition = new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['location'],
       component: function (deps) {
         return utils.sprintf(message, deps.location);
@@ -136,13 +136,13 @@ describe('Assembler', function () {
 
     var citiesComponentDefinition = new SimpleComponentDefinition({
       name: 'cities',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: ['Mumbai', 'Bangalore']
     });
 
     var locationComponentDefinition = new SimpleComponentDefinition({
       name: 'location',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['cities'],
       component: function (deps) {
         return deps.cities[0];
@@ -151,13 +151,13 @@ describe('Assembler', function () {
 
     var utilsComponentDefinition = new SimpleComponentDefinition({
       name: 'utils',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: utils
     });
 
     var languagesComponentDefinition = new SimpleComponentDefinition({
       name: 'languages',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: {
         'Mumbai': 'Marathi',
         'Bangalore': 'Kannada'
@@ -166,7 +166,7 @@ describe('Assembler', function () {
 
     var messageComponentDefinition = new SimpleComponentDefinition({
       name: 'message',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['languages', 'utils', 'location'],
       component: function (deps) {
         var location = deps.location;
@@ -177,7 +177,7 @@ describe('Assembler', function () {
 
     var printerComponentDefinition = new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['message', 'utils', 'cities'],
       component: function (deps) {
         return deps.utils.sprintf('%s You may also want to travel to %s', deps.message, deps.cities[1]);
@@ -242,7 +242,7 @@ describe('Assembler', function () {
 
     mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: componentValue
     })).once();
 
@@ -264,13 +264,13 @@ describe('Assembler', function () {
 
     var locationComponentDefinition = new SimpleComponentDefinition({
       name: 'location',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: location
     });
 
     var messageComponentDefinition = new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['location'],
       component: function (deps) {
         return utils.sprintf(message, deps.location);
@@ -302,13 +302,13 @@ describe('Assembler', function () {
 
     var citiesComponentDefinition = new SimpleComponentDefinition({
       name: 'cities',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: ['Mumbai', 'Bangalore']
     });
 
     var locationComponentDefinition = new SimpleComponentDefinition({
       name: 'location',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['cities'],
       component: function (deps) {
         return deps.cities[0];
@@ -317,13 +317,13 @@ describe('Assembler', function () {
 
     var utilsComponentDefinition = new SimpleComponentDefinition({
       name: 'utils',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: utils
     });
 
     var languagesComponentDefinition = new SimpleComponentDefinition({
       name: 'languages',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       component: {
         'Mumbai': 'Marathi',
         'Bangalore': 'Kannada'
@@ -332,7 +332,7 @@ describe('Assembler', function () {
 
     var messageComponentDefinition = new SimpleComponentDefinition({
       name: 'message',
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['languages', 'utils', 'location'],
       component: function (deps) {
         var location = deps.location;
@@ -343,7 +343,7 @@ describe('Assembler', function () {
 
     var printerComponentDefinition = new SimpleComponentDefinition({
       name: targetComponentName,
-      scope: Scopes.singleton,
+      scope: Scopes.prototype,
       dependencies: ['message', 'utils', 'cities'],
       component: function (deps) {
         return deps.utils.sprintf('%s You may also want to travel to %s', deps.message, deps.cities[1]);

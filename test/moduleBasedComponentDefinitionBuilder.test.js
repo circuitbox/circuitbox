@@ -28,14 +28,14 @@ describe('ModuleBasedComponentDefinitionBuilder', function () {
       var moduleId = './myComponentModule';
 
       var definition = new ModuleBasedComponentDefinitionBuilder('myComponent', moduleId)
-          .scope(Scopes.singleton)
+          .scope(Scopes.prototype)
           .initializeWith(initializer)
           .dependsOn(dependencies)
           .build();
 
       expect(definition).to.be.a(ModuleBasedComponentDefinition);
       expect(definition.name).to.be('myComponent');
-      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.scope).to.be(Scopes.prototype);
       expect(definition.initializer).to.be(initializer);
       expect(definition.dependencies).to.be(dependencies);
       expect(definition.getModuleId()).to.be(moduleId);

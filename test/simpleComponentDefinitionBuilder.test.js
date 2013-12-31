@@ -28,14 +28,14 @@ describe('SimpleComponentDefinitionBuilder', function () {
       var component = 'This is the object';
 
       var definition = new SimpleComponentDefinitionBuilder('myComponent', component)
-          .scope(Scopes.singleton)
+          .scope(Scopes.prototype)
           .initializeWith(initializer)
           .dependsOn(dependencies)
           .build();
 
       expect(definition).to.be.a(SimpleComponentDefinition);
       expect(definition.name).to.be('myComponent');
-      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.scope).to.be(Scopes.prototype);
       expect(definition.initializer).to.be(initializer);
       expect(definition.dependencies).to.be(dependencies);
       expect(definition.getComponent()).to.be(component);

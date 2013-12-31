@@ -26,7 +26,7 @@ describe('SimpleComponentDefinition', function () {
 
       var cd = new SimpleComponentDefinition({
         name: 'myComponent',
-        scope: Scopes.singleton,
+        scope: Scopes.prototype,
         component: objectValue
       });
 

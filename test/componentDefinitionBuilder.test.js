@@ -24,12 +24,12 @@ describe('ComponentDefinitionBuilder', function () {
       var definition = new ComponentDefinitionBuilder('myComponent')
           .initializeWith(initializer)
           .dependsOn(dependencies)
-          .scope(Scopes.singleton)
+          .scope(Scopes.prototype)
           .build();
 
       expect(definition).to.be.a(ComponentDefinition);
       expect(definition.name).to.be('myComponent');
-      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.scope).to.be(Scopes.prototype);
       expect(definition.initializer).to.be(initializer);
       expect(definition.dependencies).to.be(dependencies);
 
@@ -42,12 +42,12 @@ describe('ComponentDefinitionBuilder', function () {
       var definition = new ComponentDefinitionBuilder('myComponent')
           .initializeWith(initializer)
           .dependsOn('a,b')
-          .scope(Scopes.singleton)
+          .scope(Scopes.prototype)
           .build();
 
       expect(definition).to.be.a(ComponentDefinition);
       expect(definition.name).to.be('myComponent');
-      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.scope).to.be(Scopes.prototype);
       expect(definition.initializer).to.be(initializer);
       expect(definition.dependencies).to.be.eql(dependencies);
 
@@ -60,12 +60,12 @@ describe('ComponentDefinitionBuilder', function () {
       var definition = new ComponentDefinitionBuilder('myComponent')
           .initializeWith(initializer)
           .dependsOn('a', 'b')
-          .scope(Scopes.singleton)
+          .scope(Scopes.prototype)
           .build();
 
       expect(definition).to.be.a(ComponentDefinition);
       expect(definition.name).to.be('myComponent');
-      expect(definition.scope).to.be(Scopes.singleton);
+      expect(definition.scope).to.be(Scopes.prototype);
       expect(definition.initializer).to.be(initializer);
       expect(definition.dependencies).to.be.eql(dependencies);
 
