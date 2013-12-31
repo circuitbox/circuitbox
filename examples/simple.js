@@ -22,11 +22,11 @@ circuitbox.create({
 
       // define the message source
       registry.for('messageSource').use(simpleMessageSource)
-        .dependsOn('message').scope('singleton');
+        .dependsOn('message');
 
       // define the message printer - does a module.require internally
       registry.for('messagePrinter').requires('./consoleMessagePrinter')
-        .dependsOn('messageSource').scope('singleton');
+        .dependsOn('messageSource');
     }
   ]
 }).done(function (cbx) {
