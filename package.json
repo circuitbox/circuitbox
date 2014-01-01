@@ -15,7 +15,9 @@
     "url": "https://github.com/oddjobsman/circuitbox"
   },
   "keywords": [
-    "ioc di node js dependency injection"
+    "ioc", 
+    "di",
+    "dependency injection"
   ],
   "author": "oddjobsman <oddjobsman@ranganathkini.com>",
   "license": "MIT",
