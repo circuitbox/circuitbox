@@ -267,7 +267,6 @@ So what are the next set of features on the project?
   -  redis
 
 Head over to the [waffle.io](https://waffle.io/oddjobsman/circuitbox) page for a better view of things to come.
-```
 
 ## Contributing
 
