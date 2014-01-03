@@ -3,6 +3,7 @@
 var fs = require('fs');
 var gulp = require('gulp');
 var tasks = require('gulp-load-tasks')({scope: ['devDependencies']});
+var stylish = require('jshint-stylish');
 
 function loadJsHintConfig() {
   return JSON.parse(String(fs.readFileSync('./.jshintrc', 'utf8')));
@@ -14,7 +15,7 @@ gulp.task('lint', function () {
 
   gulp.src(['./gulpfile.js', './lib/**/*.js', './test/**/*.js', './examples/**/*.js'])
     .pipe(jshint(config))
-    .pipe(jshint.reporter('default'));
+    .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('test', ['lint'], function () {
