@@ -6,7 +6,6 @@ A dependency injection framework for node.js. It does true dependency injection 
 [![build status](https://secure.travis-ci.org/oddjobsman/circuitbox.png)](http://travis-ci.org/oddjobsman/circuitbox)
 [![dependency status](https://david-dm.org/oddjobsman/circuitbox.png)](https://david-dm.org/oddjobsman/circuitbox)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/oddjobsman/circuitbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 [![NPM](https://nodei.co/npm/circuitbox.png?stars=true&downloads=true)](https://nodei.co/npm/circuitbox/)
 
