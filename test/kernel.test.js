@@ -56,17 +56,16 @@ describe('Kernel', function () {
   });
 
   context('when created without a name', function () {
-    Kernel()
-      .done(function (kernel) {
-        it('should not have a name', function () {
+    it('should not have a name', function () {
+      Kernel().done(function (kernel) {
           expect(kernel.name).not.to.be.ok();
         });
-      });
+    });
   });
 
   context('when created with a name', function () {
-    Kernel({name: 'test'}, function (err, kernel) {
-      it('should have the specified name', function () {
+    it('should have the specified name', function () {
+      Kernel({name: 'test'}, function (err, kernel) {
         expect(kernel.name).to.be('test');
       });
     });

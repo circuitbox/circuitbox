@@ -35,10 +35,10 @@ circuitbox.create({
   cbx.get('messagePrinter').done(function (printer) {
     printer.print();
   }, function (err) {
-    console.log('Could not recieve a printer');
+    console.log('Could not recieve a printer', err);
     return;
   });
 
 }, function (err) {
-  console.log('Could not create circuitbox');
+  console.log('Could not create circuitbox', err);
 });
