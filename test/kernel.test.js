@@ -28,7 +28,7 @@ describe('Kernel', function () {
           }).dependsOn(['composer']).initializeWith(function () {
             return this.toLowerCase();
           });
-          registry.for('randomNumber').use(function() {
+          registry.for('randomNumber').use(function () {
             return Math.random();
           }).scope(Scopes.singleton);
         }
