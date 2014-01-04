@@ -21,6 +21,8 @@ var Assembler = require('../lib/assembler');
 describe('Assembler', function () {
   var registryApi;
   var mockRegistry;
+  var kernelViewApi;
+  var mockKernelView;
 
   beforeEach(function () {
     registryApi = {
@@ -28,11 +30,18 @@ describe('Assembler', function () {
       findDefinitionForComponent: function () {}
     };
 
+    kernelViewApi = {
+      findSingleton: function () {},
+      storeSingleton: function () {}
+    };
+
     mockRegistry = sinon.mock(registryApi);
+    mockKernelView = sinon.mock(kernelViewApi);
   });
 
   afterEach(function () {
     mockRegistry.verify();
+    mockKernelView.verify();
   });
 
   it('should create a new Assembler for the specified AssemblyContext', function () {
@@ -64,6 +73,7 @@ describe('Assembler', function () {
     })).once();
 
     Assembler.for(new AssemblyContext('myComponent', {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble(function (err, value) {
       expect(err).to.be(null);
@@ -105,6 +115,7 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('location').returns(locationComponentDefinition).once();
 
     Assembler.for(new AssemblyContext('message', {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble(function (err, value) {
       if (err) {
@@ -121,6 +132,7 @@ describe('Assembler', function () {
     mockRegistry.expects('assemblyListFor').withArgs(targetComponentName).throws(new NoSuchComponentDefinitionError('location')).once();
 
     var assembler = Assembler.for(new AssemblyContext('message', {
+      kernelView: kernelViewApi,
       registry: registryApi
     }));
 
@@ -223,6 +235,7 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('languages').returns(languagesComponentDefinition).once();
 
     Assembler.for(new AssemblyContext(targetComponentName, {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble(function (err, value) {
       expect(err).to.be(null);
@@ -247,6 +260,7 @@ describe('Assembler', function () {
     })).once();
 
     Assembler.for(new AssemblyContext('myComponent', {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble()
     .done(function (value) {
@@ -290,6 +304,7 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('location').returns(locationComponentDefinition).once();
 
     Assembler.for(new AssemblyContext('message', {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble().done(function (value) {
       expect(value).to.be('This is my Bangalore');
@@ -389,12 +404,70 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('languages').returns(languagesComponentDefinition).once();
 
     Assembler.for(new AssemblyContext(targetComponentName, {
+      kernelView: kernelViewApi,
       registry: registryApi
     })).assemble().done(function (value) {
       expect(value).to.be('This is my Mumbai. We speak Marathi here. You may also want to travel to Bangalore');
       done();
     });
 
+  });
+
+  it('should check for singleton instance with kernel for component in singleton scope before assembling component', function (done) {
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
+
+    mockRegistry.expects('assemblyListFor').withArgs('myComponent').returns([
+      targetComponentName
+    ]).once();
+
+    mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
+      name: targetComponentName,
+      scope: Scopes.singleton,
+      component: componentValue
+    })).once();
+
+    mockKernelView.expects('findSingleton').withArgs(targetComponentName).returns(componentValue).once();
+
+    Assembler.for(new AssemblyContext('myComponent', {
+      kernelView: kernelViewApi,
+      registry: registryApi
+    })).assemble()
+    .done(function (value) {
+      expect(value).to.be(componentValue);
+      done();
+    }, function (err) {
+      done(err);
+    });
+  });
+
+  it('should store assembled singleton instance with kernel for component in singleton scope if not present and return component to callback', function (done) {
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
+
+    mockRegistry.expects('assemblyListFor').withArgs('myComponent').returns([
+      targetComponentName
+    ]).once();
+
+    mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
+      name: targetComponentName,
+      scope: Scopes.singleton,
+      component: componentValue
+    })).once();
+
+    mockKernelView.expects('findSingleton').withArgs(targetComponentName).returns(null).once();
+    mockKernelView.expects('storeSingleton').withArgs(targetComponentName, componentValue).once();
+
+    Assembler.for(new AssemblyContext('myComponent', {
+      kernelView: kernelViewApi,
+      registry: registryApi
+    })).assemble()
+    .done(function (value) {
+      expect(value).to.be(componentValue);
+      done();
+    }, function (err) {
+      done(err);
+    });
   });
 
 });

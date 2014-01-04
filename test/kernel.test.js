@@ -11,6 +11,7 @@
 var context = describe;
 var expect = require('expect.js');
 
+var Scopes = require('../lib/scopes');
 var Kernel = require('../lib/kernel');
 
 describe('Kernel', function () {
@@ -27,6 +28,9 @@ describe('Kernel', function () {
           }).dependsOn(['composer']).initializeWith(function () {
             return this.toLowerCase();
           });
+          registry.for('randomNumber').use(function() {
+            return Math.random();
+          }).scope(Scopes.singleton);
         }
       ]
     }, function (err, kernel) {
@@ -47,8 +51,22 @@ describe('Kernel', function () {
           expect(message).to.be('hello world! this is john doe');
           done();
         }, function (err) {
-          console.log(err);
-          expect().fail();
+          done(err);
+        });
+      });
+
+      it('should return the same singleton component to the specified handler on multiple requests', function (done) {
+        kernel.get('randomNumber').done(function (firstRandomNumber) {
+
+          kernel.get('randomNumber').done(function (nextRandomNumber) {
+            expect(nextRandomNumber).to.be(firstRandomNumber);
+            done();
+          }, function (err) {
+            done(err);
+          });
+
+        }, function (err) {
+          done(err);
         });
       });
     });
