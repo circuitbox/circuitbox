@@ -23,11 +23,16 @@ gulp.task('test', ['lint'], function () {
     .pipe(tasks.mocha({reporter: 'spec'}));
 });
 
-gulp.task('default', ['test'], function () {
+gulp.task('sloc', function () {
+  gulp.src('./lib/**/*.js')
+    .pipe(tasks.sloc());
+});
+
+gulp.task('default', ['test', 'sloc'], function () {
   gulp.watch(['./gulpfile.js', './lib/**/*.js', './test/**/*.js', './examples/**/*.js'], function (event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
     gulp.run('test');
   });
 });
 
-gulp.task('ci', ['test'], function () {});
+gulp.task('ci', ['test', 'sloc'], function () {});
