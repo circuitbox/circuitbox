@@ -31,7 +31,7 @@ gulp.task('sloc', function () {
 gulp.task('default', ['test', 'sloc'], function () {
   gulp.watch(['./gulpfile.js', './lib/**/*.js', './test/**/*.js', './examples/**/*.js'], function (event) {
     console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
-    gulp.run('test');
+    gulp.run('lint', 'test', 'sloc');
   });
 });
 
