@@ -32,7 +32,10 @@ describe('Assembler', function () {
 
     kernelViewApi = {
       findSingleton: function () {},
-      storeSingleton: function () {}
+      storeSingleton: function () {},
+      isQueuedForAssembly: function () {},
+      enqueueForAssembly: function () {},
+      onAssemblyComplete: function () {}
     };
 
     mockRegistry = sinon.mock(registryApi);
@@ -71,6 +74,8 @@ describe('Assembler', function () {
       scope: Scopes.prototype,
       component: componentValue
     })).once();
+
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
 
     Assembler.for(new AssemblyContext('myComponent', {
       kernelView: kernelViewApi,
@@ -114,6 +119,9 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(messageComponentDefinition).once();
     mockRegistry.expects('findDefinitionForComponent').withArgs('location').returns(locationComponentDefinition).once();
 
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('location').returns(false).once();
+
     Assembler.for(new AssemblyContext('message', {
       kernelView: kernelViewApi,
       registry: registryApi
@@ -130,6 +138,8 @@ describe('Assembler', function () {
     var targetComponentName = 'message';
 
     mockRegistry.expects('assemblyListFor').withArgs(targetComponentName).throws(new NoSuchComponentDefinitionError('location')).once();
+
+    //mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
 
     var assembler = Assembler.for(new AssemblyContext('message', {
       kernelView: kernelViewApi,
@@ -234,6 +244,13 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('cities').returns(citiesComponentDefinition).exactly(2);
     mockRegistry.expects('findDefinitionForComponent').withArgs('languages').returns(languagesComponentDefinition).once();
 
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('message').returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('utils').returns(false).exactly(2);
+    mockKernelView.expects('isQueuedForAssembly').withArgs('location').returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('cities').returns(false).exactly(2);
+    mockKernelView.expects('isQueuedForAssembly').withArgs('languages').returns(false).once();
+
     Assembler.for(new AssemblyContext(targetComponentName, {
       kernelView: kernelViewApi,
       registry: registryApi
@@ -258,6 +275,8 @@ describe('Assembler', function () {
       scope: Scopes.prototype,
       component: componentValue
     })).once();
+
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
 
     Assembler.for(new AssemblyContext('myComponent', {
       kernelView: kernelViewApi,
@@ -302,6 +321,9 @@ describe('Assembler', function () {
 
     mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(messageComponentDefinition).once();
     mockRegistry.expects('findDefinitionForComponent').withArgs('location').returns(locationComponentDefinition).once();
+
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('location').returns(false).once();
 
     Assembler.for(new AssemblyContext('message', {
       kernelView: kernelViewApi,
@@ -403,6 +425,13 @@ describe('Assembler', function () {
     mockRegistry.expects('findDefinitionForComponent').withArgs('utils').returns(utilsComponentDefinition).exactly(2);
     mockRegistry.expects('findDefinitionForComponent').withArgs('languages').returns(languagesComponentDefinition).once();
 
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('message').returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('utils').returns(false).exactly(2);
+    mockKernelView.expects('isQueuedForAssembly').withArgs('location').returns(false).once();
+    mockKernelView.expects('isQueuedForAssembly').withArgs('cities').returns(false).exactly(2);
+    mockKernelView.expects('isQueuedForAssembly').withArgs('languages').returns(false).once();
+
     Assembler.for(new AssemblyContext(targetComponentName, {
       kernelView: kernelViewApi,
       registry: registryApi
@@ -427,7 +456,38 @@ describe('Assembler', function () {
       component: componentValue
     })).once();
 
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
     mockKernelView.expects('findSingleton').withArgs(targetComponentName).returns(componentValue).once();
+
+    Assembler.for(new AssemblyContext('myComponent', {
+      kernelView: kernelViewApi,
+      registry: registryApi
+    })).assemble()
+    .done(function (value) {
+      expect(value).to.be(componentValue);
+      done();
+    }, function (err) {
+      done(err);
+    });
+  });
+
+  it('should place component on assembly queue before assembling singleton component', function (done) {
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
+
+    mockRegistry.expects('assemblyListFor').withArgs('myComponent').returns([
+      targetComponentName
+    ]).once();
+
+    mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
+      name: targetComponentName,
+      scope: Scopes.singleton,
+      component: componentValue
+    })).once();
+
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+    mockKernelView.expects('findSingleton').withArgs(targetComponentName).returns(null).once();
+    mockKernelView.expects('enqueueForAssembly').withArgs(targetComponentName).once();
 
     Assembler.for(new AssemblyContext('myComponent', {
       kernelView: kernelViewApi,
@@ -455,7 +515,9 @@ describe('Assembler', function () {
       component: componentValue
     })).once();
 
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
     mockKernelView.expects('findSingleton').withArgs(targetComponentName).returns(null).once();
+    mockKernelView.expects('enqueueForAssembly').withArgs(targetComponentName).once();
     mockKernelView.expects('storeSingleton').withArgs(targetComponentName, componentValue).once();
 
     Assembler.for(new AssemblyContext('myComponent', {

@@ -10,6 +10,7 @@
 
 var context = describe;
 var expect = require('expect.js');
+var async = require('async');
 
 var Scopes = require('../lib/scopes');
 var Kernel = require('../lib/kernel');
@@ -56,18 +57,31 @@ describe('Kernel', function () {
       });
 
       it('should return the same singleton component to the specified handler on multiple requests', function (done) {
-        kernel.get('randomNumber').done(function (firstRandomNumber) {
 
-          kernel.get('randomNumber').done(function (nextRandomNumber) {
-            expect(nextRandomNumber).to.be(firstRandomNumber);
-            done();
-          }, function (err) {
+        async.series([
+          function (asyncCallback) {
+            kernel.get('randomNumber').done(function (firstRandomNumber) {
+              asyncCallback(null, firstRandomNumber);
+            }, function (err) {
+              done(err);
+            });
+          },
+          function (asyncCallback) {
+            kernel.get('randomNumber').done(function (nextRandomNumber) {
+              asyncCallback(null, nextRandomNumber);
+            }, function (err) {
+              done(err);
+            });
+          }
+        ], function (err, results) {
+          if (err) {
             done(err);
-          });
-
-        }, function (err) {
-          done(err);
+            return;
+          }
+          expect(results[0]).to.be(results[1]);
+          done();
         });
+
       });
     });
 
