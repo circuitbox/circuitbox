@@ -136,6 +136,11 @@ This is not dependency injection but dependency lookup where the container is si
 
 For dependency injection to work, the container must first be given (or detect) the component configuration ahead-of-time. During execution, when the program asks the container for a component, the container uses the target component's configuration, assembles its dependencies, creates & initializes the target component and then gives it to the program for use.
 
+#### Lock-In
+In the `desire` code example shown above, also observe the lock-in. Since you are directly accessing the `desire` container, you are bound to `desire`'s API and if you decide to move away from the library, you will need to change your code at several places where there is a reference to `desire`.
+
+You do not want this kind of forced relationship with a framework.
+
 ### Design Principles
 1. Provide true dependency injection where container knows all the components it hosts and knows how to create, initialize them with their dependencies.
 2. Support node.js' asynchronus style. The asynchronous style is one of the key differentiators for apps built on node. It is very core to node being fast and scalable. I wanted to ensure I bring this style to circuitbox ensuring that components might need to be created or initialized asynchronously.
@@ -254,7 +259,6 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 ### Roadmap
 So what are the next set of features on the project?
 
-- Support for singleton and prototype scopes - it is kind of in, but does not work as expected
 - Support for aliasing components with additional names
 - An event-bus implementation where components in the container can publish/subscribe to application-specific events
 - Bindings to popular libraries. These however, may be published as separate libraries. I am considering  such as:
