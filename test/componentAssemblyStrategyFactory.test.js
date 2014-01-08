@@ -6,7 +6,7 @@
 
 'use strict';
 
-var _ = require('underscore');
+var _ = require('lodash');
 var expect = require('expect.js');
 
 var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');

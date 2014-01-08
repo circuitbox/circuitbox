@@ -1,6 +1,6 @@
 {
   "name": "circuitbox",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A dependency-injection framework for node.js",
   "main": "./lib/index.js",
   "homepage": "http://circuitbox.oddjobsman.me",
@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "async": "~0.2.9",
-    "underscore": "~1.5.2",
     "when": "~2.7.0",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
@@ -38,8 +38,8 @@
     "gulp-load-tasks": "~0.1.0",
     "sloc": "0.0.4",
     "jshint-stylish": "~0.1.4",
-    "gulp-sloc": "~1.0.0",
     "gulp-mocha": "~0.2.0",
-    "gulp-jshint": "~1.3.4"
+    "gulp-jshint": "~1.3.4",
+    "gulp-sloc": "~1.0.1"
   }
 }
