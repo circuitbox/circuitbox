@@ -58,7 +58,7 @@ describe('Kernel', function () {
 
       it('should return the same singleton component to the specified handler on multiple requests', function (done) {
 
-        async.series([
+        async.parallel([
           function (asyncCallback) {
             kernel.get('randomNumber').done(function (firstRandomNumber) {
               asyncCallback(null, firstRandomNumber);
