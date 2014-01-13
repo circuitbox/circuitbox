@@ -40,6 +40,7 @@
     "gulp-sloc": "~1.0.1",
     "mocha": "~1.17.0",
     "gulp-mocha": "~0.3.0",
-    "gulp": "~3.3.0"
+    "gulp": "~3.3.0",
+    "gulp-plumber": "~0.5.6"
   }
 }

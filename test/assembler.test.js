@@ -48,7 +48,22 @@ describe('Assembler', function () {
   });
 
   it('should create a new Assembler for the specified AssemblyContext', function () {
-    var assembler = Assembler.for(new AssemblyContext('myComponent', {}));
+    var targetComponentName = 'myComponent';
+    var componentValue = 'This is my message';
+
+    mockRegistry.expects('findDefinitionForComponent').withArgs(targetComponentName).returns(new SimpleComponentDefinition({
+      name: targetComponentName,
+      scope: Scopes.prototype,
+      component: componentValue
+    })).once();
+
+    mockKernelView.expects('isQueuedForAssembly').withArgs(targetComponentName).returns(false).once();
+
+    var assembler = Assembler.for(new AssemblyContext('myComponent', {
+      registry: registryApi,
+      kernelView: kernelViewApi
+    }));
+
     expect(assembler).to.be.an(Assembler);
   });
 

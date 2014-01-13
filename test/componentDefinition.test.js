@@ -37,6 +37,20 @@ describe('ComponentDefinition', function () {
       expect(cd.scope).to.be(Scopes.singleton);
     });
 
+    it('should indicate that component is a singleton if created with singleton scope', function () {
+      var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
+      expect(cd.name).to.be('myComponent');
+      expect(cd.scope).to.be(Scopes.singleton);
+      expect(cd.isSingleton).to.be(true);
+    });
+
+    it('should indicate that component is not a singleton if created with prototype scope', function () {
+      var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.prototype});
+      expect(cd.name).to.be('myComponent');
+      expect(cd.scope).to.be(Scopes.prototype);
+      expect(cd.isSingleton).to.be(false);
+    });
+
   });
 
   context('when created with a name and list of dependencies', function () {
