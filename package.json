@@ -8,7 +8,7 @@
     "test": "node_modules/.bin/gulp ci"
   },
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.9"
   },
   "repository": {
     "type": "git",

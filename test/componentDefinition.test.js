@@ -21,10 +21,10 @@ describe('ComponentDefinition', function () {
 
   context('when created with only a name', function () {
 
-    it('should be created with specified name and prototype scope', function () {
+    it('should be created with specified name and singleton scope by default', function () {
       var cd = new ComponentDefinition({name: 'myComponent'});
       expect(cd.name).to.be('myComponent');
-      expect(cd.scope).to.be(Scopes.prototype);
+      expect(cd.scope).to.be(Scopes.singleton);
     });
 
   });
@@ -32,13 +32,13 @@ describe('ComponentDefinition', function () {
   context('when created with a name and scope', function () {
 
     it('should be created with specified name and specified scope', function () {
-      var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
+      var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.prototype});
       expect(cd.name).to.be('myComponent');
-      expect(cd.scope).to.be(Scopes.singleton);
+      expect(cd.scope).to.be(Scopes.prototype);
     });
 
     it('should indicate that component is a singleton if created with singleton scope', function () {
-      var cd = new ComponentDefinition({name: 'myComponent', scope: Scopes.singleton});
+      var cd = new ComponentDefinition({name: 'myComponent'});
       expect(cd.name).to.be('myComponent');
       expect(cd.scope).to.be(Scopes.singleton);
       expect(cd.isSingleton).to.be(true);
