@@ -36,7 +36,7 @@ describe('ComponentDefinitionBuilderFactory', function () {
       expect(componentList[0]).to.be(definition);
     });
 
-    it('should register and return a ModuleBasedComponentDefinitionBuilder when #require() is invoked with an module-id', function () {
+    it('should return a ModuleBasedComponentDefinitionBuilder when #require() is invoked with an module-id and pushed to componentList', function () {
       var moduleId = './myComponentModule';
 
       var definition = factory.requires(moduleId);
@@ -44,6 +44,22 @@ describe('ComponentDefinitionBuilderFactory', function () {
       expect(definition).to.be.a(ModuleBasedComponentDefinitionBuilder);
       expect(definition.options.name).to.be('myComponent');
       expect(definition.options.moduleId).to.be(moduleId);
+
+      expect(componentList.length).to.be(1);
+      expect(componentList[0]).to.be(definition);
+    });
+
+    it('should register a the specified definition builder with the specified method', function () {
+      var objectValue = 'This is a value';
+
+      ComponentDefinitionBuilderFactory.registerBuilder('foo', SimpleComponentDefinitionBuilder);
+      factory = new ComponentDefinitionBuilderFactory(componentList, 'myComponent');
+
+      var definition = factory.foo(objectValue);
+
+      expect(definition).to.be.a(SimpleComponentDefinitionBuilder);
+      expect(definition.options.name).to.be('myComponent');
+      expect(definition.options.component).to.be(objectValue);
 
       expect(componentList.length).to.be(1);
       expect(componentList[0]).to.be(definition);
