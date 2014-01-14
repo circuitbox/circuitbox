@@ -36,4 +36,35 @@ describe('Utilities', function () {
     });
   });
 
+  describe('#normalizeModulePath()', function () {
+    var originalCwd;
+
+    beforeEach(function () {
+      originalCwd = process.cwd;
+      process.cwd = function () {
+        return '/foo/bar';
+      };
+    });
+
+    afterEach(function () {
+      process.cwd = originalCwd;
+    });
+
+    it('should return module ID as-is if absolute', function () {
+      expect(utils.normalizeModulePath('foo')).to.be('foo');
+    });
+
+    it('should return path relativized to process.cwd() if relative to current directory', function () {
+      expect(utils.normalizeModulePath('./voo')).to.be('/foo/bar/voo');
+    });
+
+    it('should return path relativized to process.cwd() if relative to parent directory', function () {
+      expect(utils.normalizeModulePath('../voo')).to.be('/foo/voo');
+    });
+
+    it('should return path relativized to process.cwd() if relative to module root directory', function () {
+      expect(utils.normalizeModulePath('/voo')).to.be('/foo/bar/voo');
+    });
+  });
+
 });

@@ -67,10 +67,29 @@ describe('Configuration', function () {
           {}
         ]});
       }).to.throwError(function (e) {
+        console.log(e.message);
         expect(e).to.be.a(ComponentDefinitionError);
-        expect(e.message).to.match(/Cannot initialize module which is not a function/);
+        expect(e.message).to.match(/Cannot initialize module which is not a function or module-id$/);
       });
 
+    });
+
+    it('should register modules specified as a mix of module-id strings and functions providing them an instance of the kernel\'s registry', function () {
+      var mockRegistryView = { for: function () {} };
+
+      var aModuleSpy = require('./fixtures/aModule');
+      var moduleBSpy = sinon.spy();
+
+      mockKernelView.expects('registerModule').withArgs(aModuleSpy).callsArgWith(0, mockRegistryView).once();
+      mockKernelView.expects('registerModule').withArgs(moduleBSpy).callsArgWith(0, mockRegistryView).once();
+
+      new Configuration(kernelViewApi, {modules: [
+        './test/fixtures/aModule',
+        moduleBSpy
+      ]});
+
+      expect(aModuleSpy.withArgs(mockRegistryView).calledOnce).to.be(true);
+      expect(moduleBSpy.withArgs(mockRegistryView).calledOnce).to.be(true);
     });
 
   });
