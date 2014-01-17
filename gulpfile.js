@@ -20,16 +20,7 @@ gulp.task('lint', function (done) {
     });
 });
 
-gulp.task('instrument', ['lint'], function (done) {
-  gulp.src(['./lib/**/*.js'])
-    .pipe(plumber())
-    .pipe(tasks.istanbul())
-    .on('end', function () {
-      done();
-    });
-});
-
-gulp.task('test', ['instrument'], function (done) {
+gulp.task('test', ['lint'], function (done) {
   gulp.src(['./test/**/*.js', '!./test/fixtures/*'])
       .pipe(plumber())
       .pipe(tasks.mocha({reporter: 'spec'}))
