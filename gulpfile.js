@@ -22,21 +22,20 @@ gulp.task('lint', function (done) {
 
 gulp.task('test', ['lint'], function (done) {
   gulp.src(['./test/**/*.js', '!./test/fixtures/*'])
-      .pipe(plumber())
-      .pipe(tasks.mocha({reporter: 'spec'}))
-      .pipe(tasks.istanbul.writeReports())
-      .on('end', function () {
-        done();
-      });
+    .pipe(plumber())
+    .pipe(tasks.mocha({reporter: 'spec'}))
+    .on('end', function () {
+      done();
+    });
 });
 
 gulp.task('sloc', function (done) {
   gulp.src('./lib/**/*.js')
+    .pipe(tasks.plumber())
+    .pipe(tasks.sloc())
     .on('end', function () {
       done();
-    })
-    .pipe(tasks.plumber())
-    .pipe(tasks.sloc());
+    });
 });
 
 gulp.task('default', ['test', 'sloc'], function () {
