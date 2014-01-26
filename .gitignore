@@ -4,3 +4,4 @@ node_modules/
 *.sublime-*
 .idea/
 *.log
+coverage/
