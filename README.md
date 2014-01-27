@@ -91,6 +91,16 @@ circuitbox.create({
 
 ### Motivation
 
+#### Application Size
+
+The node.js platform was for long dismissed as a platform to build hobby projects and toy project. However that view has now changed. node.js has become a serious application development platform.
+
+This seriousness has now led many organizations to consider building enterprise-scale applications with node. Now that people are building these large-scale applications, the idea of modularity, componentizing and dependency injection take more prominence.
+
+From my experience, no application starts big. All applications start small and then grow large. As applications grow the number of moving parts that need to work together also grows. Unless there is a lot of discipline applied, managing these little parts and ensuring they work together accurately can be quite a challenge.
+
+I see dependency-injection as an important core capability to address this challenge. It has been battle tested in other popular platforms like Java/.NET. DI allows you to cleanly identify components and efficiently manage dependencies between them.
+
 #### Tight Coupling
 One of the pain points I built circuitbox to solve was the tight-coupling and testability of node.js modules. I believe, though JavaScript has a dynamic type-system, it is not free from the problems of tight-coupling. In node, each uses the `require` method to import code from other modules. Although this is a core feature of node, it actually introduces tight-coupling between the two modules.
 
@@ -101,7 +111,7 @@ A problem I have experienced while maintaining some PHP code is where one file h
 
 Some particulars problems I have come to experience are:
 
-- Module code interspersed with `require` calls makes it readablity and maintainability hard.
+- Module code interspersed with `require` calls makes its readablity and maintainability hard.
 - Referencing modules within your library using the package name assuming they are always hosted inside another.
 - Dynamic `require` calls where you are not sure which module gets imported.
 
@@ -262,7 +272,7 @@ So what are the next set of features on the project?
 
 - Support for aliasing components with additional names
 - An event-bus implementation where components in the container can publish/subscribe to application-specific events
-- Bindings to popular libraries. These however, may be published as separate libraries. I am considering  such as:
+- Bindings to popular libraries. These however, may be published as separate libraries. I am considering  libraries such as:
   -  express
   -  mongoose
   -  mysql
