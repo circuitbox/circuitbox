@@ -8,6 +8,8 @@
 
 'use strict';
 
+var EventEmitter = require('events').EventEmitter;
+
 var context = describe;
 var expect = require('expect.js');
 var async = require('async');
@@ -83,8 +85,14 @@ describe('Kernel', function () {
         });
 
       });
-    });
 
+      it('should register events.EventEmitter as bus component', function () {
+        kernel.get('bus').done(function (bus) {
+          expect(bus).to.be.an(EventEmitter);
+        });
+      });
+      
+    });
   });
 
   context('when created without a name', function () {
