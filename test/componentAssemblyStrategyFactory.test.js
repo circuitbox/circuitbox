@@ -9,6 +9,9 @@
 var _ = require('lodash');
 var expect = require('expect.js');
 
+var utils = require('../lib/utils');
+
+var ComponentDefinition = require('../lib/componentDefinition');
 var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
 var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
 
@@ -16,6 +19,19 @@ var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStr
 var ModuleBasedComponentAssemblyStrategy = require('../lib/moduleBasedComponentAssemblyStrategy');
 
 var ComponentAssemblyStrategyFactory = require('../lib/componentAssemblyStrategyFactory');
+
+function TestComponentDefinition() {
+  var self = this;
+  var options = arguments[0] || {};
+
+  ComponentDefinition.call(self, options);
+
+  self.getComponent = function getComponent() {
+    return options.component;
+  };
+}
+
+utils.inherits(TestComponentDefinition, ComponentDefinition);
 
 describe('ComponentAssemblyStrategyFactory', function () {
 
@@ -76,6 +92,26 @@ describe('ComponentAssemblyStrategyFactory', function () {
     var strategy = ComponentAssemblyStrategyFactory.strategyFor(definition, dependencies);
 
     expect(strategy).to.be.a(ModuleBasedComponentAssemblyStrategy);
+    expect(strategy.dependencies).to.be(dependencies);
+  });
+
+  it('should register the specified ComponentAssemblyStrategy for the specified ComponentDefinition and return a new component', function () {
+    var dependencies = {
+      name: 'Foo',
+      message: 'Hello, World!'
+    };
+
+    ComponentAssemblyStrategyFactory.registerAssemblyStrategy(TestComponentDefinition, SimpleComponentAssemblyStrategy);
+
+    var definition = new TestComponentDefinition({
+      name: 'myComponent',
+      component: 'This is a component',
+      dependencies: _.keys(dependencies)
+    });
+
+    var strategy = ComponentAssemblyStrategyFactory.strategyFor(definition, dependencies);
+
+    expect(strategy).to.be.a(SimpleComponentAssemblyStrategy);
     expect(strategy.dependencies).to.be(dependencies);
   });
 
