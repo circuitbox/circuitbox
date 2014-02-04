@@ -272,7 +272,7 @@ So what are the next set of features on the project?
 
 - Support for aliasing components with additional names
 - Bindings to popular libraries. These however, may be published as separate libraries. I am considering  libraries such as:
-  -  express - In progress. See (circuitbox-express)[https://github.com/oddjobsman/circuitbox-express]
+  -  express - In progress. See [circuitbox-express](https://github.com/oddjobsman/circuitbox-express)
   -  mongoose
   -  mysql
   -  redis
