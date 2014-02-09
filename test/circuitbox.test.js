@@ -1,3 +1,9 @@
+/*!
+ * circuitbox
+ * Copyright(c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
+ * MIT Licensed
+ */
+ 
 'use strict';
 
 var expect = require('expect.js');
