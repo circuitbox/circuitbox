@@ -115,4 +115,26 @@ describe('ComponentAssemblyStrategyFactory', function () {
     expect(strategy.dependencies).to.be(dependencies);
   });
 
+  it('should throw error if attempting to register a specified ComponentAssemblyStrategy for a non-ComponentDefinition', function () {
+    var nonComponentDefinition = function Foo() {
+    };
+
+    expect(function () {
+      ComponentAssemblyStrategyFactory.registerAssemblyStrategy(nonComponentDefinition, SimpleComponentAssemblyStrategy);
+    }).to.throwError(function (e) {
+      expect(e.message).to.be('Cannot register assembly strategy for a non-ComponentDefinition');
+    });
+  });
+
+  it('should throw error if attempting to register a non-ComponentAssemblyStrategy for a specified ComponentDefinition', function () {
+    var nonAssemblyStrategy = function Foo() {
+    };
+
+    expect(function () {
+      ComponentAssemblyStrategyFactory.registerAssemblyStrategy(TestComponentDefinition, nonAssemblyStrategy);
+    }).to.throwError(function (e) {
+      expect(e.message).to.be('Cannot register a non-ComponentAssemblyStrategy');
+    });
+  });
+
 });
