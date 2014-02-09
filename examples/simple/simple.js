@@ -11,7 +11,7 @@ var simpleMessageSource = function (deps) {
 };
 
 // require circuitbox
-var circuitbox = require('../lib');
+var circuitbox = require('../../lib');
 
 // create a circuitbox
 circuitbox.create({
