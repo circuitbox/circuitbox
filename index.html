@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Circuitbox : A dependency-injection framework for node.js" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Circuitbox</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/circuitbox/circuitbox">View on GitHub</a>
+
+          <h1 id="project_title">Circuitbox</h1>
+          <h2 id="project_tagline">A dependency-injection framework for node.js</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/circuitbox/circuitbox/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/circuitbox/circuitbox/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="circuitbox" class="anchor" href="#circuitbox"><span class="octicon octicon-link"></span></a>circuitbox</h1>
+
+<p>A dependency injection framework for node.js. It does true dependency injection and also supports asynchronous creation and initialization of components.</p>
+
+<p><a href="http://badge.fury.io/js/circuitbox"><img src="https://badge.fury.io/js/circuitbox.png" alt="NPM version"></a>
+<a href="http://travis-ci.org/oddjobsman/circuitbox"><img src="https://secure.travis-ci.org/oddjobsman/circuitbox.png" alt="build status"></a>
+<a href="https://david-dm.org/oddjobsman/circuitbox"><img src="https://david-dm.org/oddjobsman/circuitbox.png" alt="dependency status"></a>
+<a href="https://coveralls.io/r/oddjobsman/circuitbox?branch=master"><img src="https://coveralls.io/repos/oddjobsman/circuitbox/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/oddjobsman/circuitbox/trend.png" alt="Bitdeli Badge"></a></p>
+
+<p><a href="https://nodei.co/npm/circuitbox/"><img src="https://nodei.co/npm/circuitbox.png?stars=true&amp;downloads=true" alt="NPM"></a></p>
+
+<p>Its design has been influenced by frameworks like <a href="http://projects.spring.io/spring-framework/">Spring</a> and <a href="https://code.google.com/p/google-guice/">Google Guice</a> and <a href="http://docs.structuremap.net/">StructureMap</a>.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>This module can be installed via npm:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>npm install --save circuitbox
+</pre></div>
+
+<h3>
+<a name="tldr-example" class="anchor" href="#tldr-example"><span class="octicon octicon-link"></span></a>tl;dr Example</h3>
+
+<p>Assuming there is a file named <code>consoleMessagePrinter.js</code> in the same folder with the code:</p>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="c1">// Our console message printer</span>
+<span class="c1">// deps is injected by circuitbox with the dependencies</span>
+<span class="kd">function</span> <span class="nx">ConsoleMessagePrinter</span><span class="p">(</span><span class="nx">deps</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">deps</span><span class="p">.</span><span class="nx">messageSource</span><span class="p">.</span><span class="nx">message</span><span class="p">());</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">ConsoleMessagePrinter</span><span class="p">;</span>
+</pre></div>
+
+<p>And in our <code>main.js</code> file we have code as:</p>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="c1">// our simple message source</span>
+<span class="c1">// deps is injected by circuitbox with the dependencies</span>
+<span class="kd">var</span> <span class="nx">simpleMessageSource</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">deps</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">deps</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// require circuitbox</span>
+<span class="kd">var</span> <span class="nx">circuitbox</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'circuitbox'</span><span class="p">);</span>
+
+<span class="c1">// create a circuitbox</span>
+<span class="nx">circuitbox</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="nx">modules</span><span class="o">:</span> <span class="p">[</span>
+    <span class="kd">function</span> <span class="p">(</span><span class="nx">registry</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// the message to be used</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'message'</span><span class="p">).</span><span class="nx">use</span><span class="p">(</span><span class="s1">'This is the message'</span><span class="p">);</span>
+
+      <span class="c1">// define the message source</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'messageSource'</span><span class="p">).</span><span class="nx">use</span><span class="p">(</span><span class="nx">simpleMessageSource</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'message'</span><span class="p">);</span>
+
+      <span class="c1">// define the message printer - does a module.require internally</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'messagePrinter'</span><span class="p">).</span><span class="nx">requires</span><span class="p">(</span><span class="s1">'./consoleMessagePrinter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'messageSource'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">cbx</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// get the message printer and print a message</span>
+  <span class="nx">cbx</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'messagePrinter'</span><span class="p">).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">printer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">printer</span><span class="p">.</span><span class="nx">print</span><span class="p">();</span>
+  <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Could not recieve a printer'</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">});</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Could not create circuitbox'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h3>
+<a name="motivation" class="anchor" href="#motivation"><span class="octicon octicon-link"></span></a>Motivation</h3>
+
+<h4>
+<a name="application-size" class="anchor" href="#application-size"><span class="octicon octicon-link"></span></a>Application Size</h4>
+
+<p>The node.js platform was for long dismissed as a platform to build hobby projects and toy project. However that view has now changed. node.js has become a serious application development platform.</p>
+
+<p>This seriousness has now led many organizations to consider building enterprise-scale applications with node. Now that people are building these large-scale applications, the idea of modularity, componentizing and dependency injection take more prominence.</p>
+
+<p>From my experience, no application starts big. All applications start small and then grow large. As applications grow the number of moving parts that need to work together also grows. Unless there is a lot of discipline applied, managing these little parts and ensuring they work together accurately can be quite a challenge.</p>
+
+<p>I see dependency-injection as an important core capability to address this challenge. It has been battle tested in other popular platforms like Java/.NET. DI allows you to cleanly identify components and efficiently manage dependencies between them.</p>
+
+<h4>
+<a name="tight-coupling" class="anchor" href="#tight-coupling"><span class="octicon octicon-link"></span></a>Tight Coupling</h4>
+
+<p>One of the pain points I built circuitbox to solve was the tight-coupling and testability of node.js modules. I believe, though JavaScript has a dynamic type-system, it is not free from the problems of tight-coupling. In node, each uses the <code>require</code> method to import code from other modules. Although this is a core feature of node, it actually introduces tight-coupling between the two modules.</p>
+
+<p>I would consider node's <code>require</code> to be Java/C#'s (or even JavaScript) <code>new</code> operator. Newing up objects internally causes tight coupling between two objects or in node's case two modules.</p>
+
+<h4>
+<a name="code-smells" class="anchor" href="#code-smells"><span class="octicon octicon-link"></span></a>Code smells</h4>
+
+<p>A problem I have experienced while maintaining some PHP code is where one file has several includes. This causes the file to be very fragmented and very difficult to read and maintain. Unfortunately, I have seen a lot of projects where code was being ported over from PHP but not restructured or re-structured poorly. And the problems with fragmented code comes into node.js too.</p>
+
+<p>Some particulars problems I have come to experience are:</p>
+
+<ul>
+<li>Module code interspersed with <code>require</code> calls makes its readablity and maintainability hard.</li>
+<li>Referencing modules within your library using the package name assuming they are always hosted inside another.</li>
+<li>Dynamic <code>require</code> calls where you are not sure which module gets imported.</li>
+</ul><p>I am not claiming that all of these problems can be solved with dependency injection. It would take some discipline from the developers and a little nudge from the frameworks/tools you use to prevent the pitfalls.</p>
+
+<h4>
+<a name="testability" class="anchor" href="#testability"><span class="octicon octicon-link"></span></a>Testability</h4>
+
+<p>Using a TDD/BDD workflow really changes the way you approach the construction and maintenance of your code. I do not want to write another rant about how useful these workflows are except to say they should be a quint-essential part of your development process and practice.</p>
+
+<p>Tightly coupled modules are hard to test. You really have to work hard for it and use <a href="https://github.com/thlorenz/proxyquire">magic</a> to stub out the internal uses of <code>require</code> in a node.js module. The community is divided over a reliable method to stub <code>require</code> calls out. You do not want to spend a lot of time stubbing dependencies when testing a component. If you do, then TDD/BDD is not working for you.</p>
+
+<h4>
+<a name="dependency-injection-vs-dependency-lookup" class="anchor" href="#dependency-injection-vs-dependency-lookup"><span class="octicon octicon-link"></span></a>Dependency Injection vs. Dependency Lookup</h4>
+
+<p>Currently, there are a lot of libraries out there that claim to do dependency-injection, <a href="https://npmjs.org/browse/keyword/dependency%20injection">about 40 of them</a>. By my assessment, I saw that a significant number of them don't do dependency-injection. Case-in-point, the <a href="https://npmjs.org/package/desire">desire</a> framework:</p>
+
+<div class="highlight highlight-js"><pre><span class="kd">var</span> <span class="nx">App</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">desire</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">ui</span> <span class="o">=</span> <span class="nx">desire</span><span class="p">(</span><span class="s1">'ui'</span><span class="p">)</span>
+  <span class="kd">var</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">desire</span><span class="p">(</span><span class="s1">'version'</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'application version '</span> <span class="o">+</span> <span class="nx">version</span><span class="p">)</span>
+      <span class="nx">ui</span><span class="p">.</span><span class="nx">show</span><span class="p">()</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'ui is visible'</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+
+<p>Here <code>App</code> is a function that creates an object with a <code>run</code> method. See how it is doing dependency lookup in the line <code>var ui = desire('ui')</code>? The <code>desire</code> container is not smart enough to automatically inject <code>ui</code> into <code>App</code> and make it available for use. Most frameworks seem to have used this style.</p>
+
+<p>This is not dependency injection but dependency lookup where the container is simply acting as a registry of components and each component has to lookup this registry and retrieve its dependencies before execution. The problem here is that the names of the components are still hard-wired into the target components and that becomes hard for changing things later. For instance, what if I wanted 2 different types of <code>ui</code> components later, one named <code>webui</code> and other named <code>androidui</code> and <code>App</code> would need to use the right one based on where it has started?</p>
+
+<p>For dependency injection to work, the container must first be given (or detect) the component configuration ahead-of-time. During execution, when the program asks the container for a component, the container uses the target component's configuration, assembles its dependencies, creates &amp; initializes the target component and then gives it to the program for use.</p>
+
+<h4>
+<a name="lock-in" class="anchor" href="#lock-in"><span class="octicon octicon-link"></span></a>Lock-In</h4>
+
+<p>In the <code>desire</code> code example shown above, also observe the lock-in. Since you are directly accessing the <code>desire</code> container, you are bound to <code>desire</code>'s API and if you decide to move away from the library, you will need to change your code at several places where there is a reference to <code>desire</code>.</p>
+
+<p>You do not want this kind of forced relationship with a framework.</p>
+
+<h3>
+<a name="design-principles" class="anchor" href="#design-principles"><span class="octicon octicon-link"></span></a>Design Principles</h3>
+
+<ol>
+<li>Provide true dependency injection where container knows all the components it hosts and knows how to create, initialize them with their dependencies.</li>
+<li>Support node.js' asynchronus style. The asynchronous style is one of the key differentiators for apps built on node. It is very core to node being fast and scalable. I wanted to ensure I bring this style to circuitbox ensuring that components might need to be created or initialized asynchronously.</li>
+<li>Encourage components to be testable</li>
+<li>Be nice, dont lock-in - provide a simple way to wire components together without requiring components to be tightly-coupled with <code>circuitbox</code>.</li>
+<li>Allow existing node.js library modules to be used with circuitbox and provide the same DI facility for them.</li>
+</ol><h3>
+<a name="a-taste-of-circuitbox" class="anchor" href="#a-taste-of-circuitbox"><span class="octicon octicon-link"></span></a>A Taste of Circuitbox</h3>
+
+<p>So lets take a look at <code>circuitbox</code>, first let me define a component in a file <code>consoleMessagePrinter.js</code> with the code:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">ConsoleMessagePrinter</span><span class="p">(</span><span class="nx">deps</span><span class="p">)</span> <span class="p">{</span>
+  <span class="s1">'use strict'</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">print</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">deps</span><span class="p">.</span><span class="nx">messageSource</span><span class="p">.</span><span class="nx">message</span><span class="p">());</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Notice here that the code looks quite close dependency lookup style code of the <code>desire</code> example I provided earlier. However, the component does not get direct access to the registry. It gets a parameter called <code>deps</code> which at runtime will include all the dependencies that was declared for the component. The component then takes a reference of its dependency and uses it. In this case <code>ConsoleMessagePrinter</code> uses a <code>messageSource</code> as a dependency to get the message which it prints to the <code>console</code>.</p>
+
+<p>The point to notice here is that you wrap your component code with a function closure that takes the component's dependencies as a parameter. It then returns the actual component which will be used by other components. I call this function closure as a 'creator function' or 'creator'.</p>
+
+<p>Wrapping your existing component code with a 'creator' is probably the only thing that <code>circuitbox</code> asks you do to make the component dependency injectable.</p>
+
+<p>Next, lets define the <code>messageSource</code> component and how we can wire this up with <code>circuitbox</code>. I put the following code in a file called <code>main.js</code>:</p>
+
+<div class="highlight highlight-js"><pre><span class="s1">'use strict'</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">simpleMessageSource</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">deps</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">deps</span><span class="p">.</span><span class="nx">message</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="c1">// require circuitbox</span>
+<span class="kd">var</span> <span class="nx">circuitbox</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'circuitbox'</span><span class="p">);</span>
+
+<span class="c1">// create a circuitbox</span>
+<span class="nx">circuitbox</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="nx">modules</span><span class="o">:</span> <span class="p">[</span>
+    <span class="kd">function</span> <span class="p">(</span><span class="nx">registry</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// the message to be used</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'message'</span><span class="p">).</span><span class="nx">use</span><span class="p">(</span><span class="s1">'This is the message'</span><span class="p">);</span>
+
+      <span class="c1">// define the message source</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'messageSource'</span><span class="p">).</span><span class="nx">use</span><span class="p">(</span><span class="nx">simpleMessageSource</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'message'</span><span class="p">);</span>
+
+      <span class="c1">// define the message printer - does a module.require internally</span>
+      <span class="nx">registry</span><span class="p">.</span><span class="k">for</span><span class="p">(</span><span class="s1">'messagePrinter'</span><span class="p">).</span><span class="nx">requires</span><span class="p">(</span><span class="s1">'./consoleMessagePrinter'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'messageSource'</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">cbx</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// get the message printer and print a message</span>
+  <span class="nx">cbx</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'messagePrinter'</span><span class="p">).</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">printer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">printer</span><span class="p">.</span><span class="nx">print</span><span class="p">();</span>
+  <span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Could not recieve a printer'</span><span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">});</span>
+
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Could not create circuitbox'</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<p>In this snippet, we initially define a <code>simpleMessageSource</code> component which also is wrapped in a creator. It needs a <code>message</code> as a dependency which is provided via the <code>deps</code> parameter.</p>
+
+<p>We then import the <code>circuitbox</code> library and create a new instance of it using the <code>create</code> method. The method takes component configuration as an object hash in its parameter. This configuration object should contain a <code>modules</code> attribute that represents an <code>Array</code> of functions that define modules. Modules are a good way of logically grouping your components. <code>circuitbox</code> provides a fluent API to express component definitions to help readability.</p>
+
+<p>In this case we have a single module function which accepts one parameter named <code>registry</code>. It represents the component registry that <code>circuitbox</code> will use to lookup components. This function is where modules can define the components to <code>circuitbox</code> that must be served during runtime.</p>
+
+<p>First, we define the <code>message</code> component which is a simple string value. Yes, components can be complex functions, objects, arrays, strings, booleans, numbers. Even <code>null</code> value. The definition starts with the <code>for</code> method where we provide the name of the component and chain to the <code>use</code> method to tell <code>circuitbox</code> to use the specified value as the component.</p>
+
+<p>The next component we define is the <code>messageSource</code>. Note that the component is defined in the same file. Again, we call the<code>for</code> and <code>use</code> method to point it to the <code>simpleMessageSource</code> creator function. We then chain on to call the <code>dependsOn</code> where we declare that <code>messageSource</code> depends on <code>message</code>. This is the way we tell <code>circuitbox</code> about a component's depdendencies and it will do the injection at runtime. The injection logic <code>circuitbox</code> uses is name-based. So ensure you name your components correctly.</p>
+
+<p>Finally we define the <code>messagePrinter</code> component. Here we start the definition with a <code>for</code> but then call the <code>requires</code> method and pass it the path of the <code>consoleMessagePrinter.js</code> module. This method tell <code>circuitbox</code> to use node.js's <code>require</code> method to import an external module. This imports the code from the file and points to the <code>ConsoleMessagePrinter</code> component we discussed earlier.</p>
+
+<p>Great, so far so good. Now we have defined all our components to <code>circuitbox</code>, so how do we kickstart? In the spirit of asynchronous style of node.js, <code>circuitbox</code> implements asynchronous constructs in many places:</p>
+
+<ol>
+<li>Creating an <code>circuitbox</code> is asynchronous</li>
+<li>A component creator function can be asynchronous</li>
+<li>A component initializer function can also be asynchronous</li>
+<li>Component retrieval is asynchronous.</li>
+</ol><p><code>circuitbox</code> provides 2 styles of asynchronous constructs, the <a href="http://book.mixu.net/node/ch7.html">callback</a> style and the promises style. The <code>create</code> method on <code>circuitbox</code> not only takes the component configuration, you can optionally specify a callback function as the second parameter. This callback function takes 2 parameter an <code>err</code> parameter and the <code>circuitbox</code> parameter. The former is provided if there was an error initializing the configuration and creating a container. The latter is a fully initialized <code>circuitbox</code> DI container which can be used to request components.</p>
+
+<p>The above code snippet demonstrates the <a href="http://promises-aplus.github.io/promises-spec/">promise</a> style of asynchronous constructs. <code>circuitbox</code> uses the <a href="https://github.com/cujojs/when">when.js</a> library for implementing promises. If the <code>create</code> method is not provided a callback, it triggers an initialization of the DI container and returns a promise object. We chain onto the promise object and call the <code>done</code> method which recieves a fully initialized <code>circuitbox</code> container.</p>
+
+<p>Regardless of the style you prefer to use, once you have a instance of <code>circuitbox</code> container, you can call the <code>get</code> method passing the name of the component you require. Like the <code>create</code> method, the <code>get</code> method also takes an optional callback which is called when the requested component is created and initialized. As demonstrated above, the <code>get</code> method also returns a promise object in the absence of a callback argument.</p>
+
+<h3>
+<a name="components" class="anchor" href="#components"><span class="octicon octicon-link"></span></a>Components</h3>
+
+<p>Components are objects which provide a service. They usually collaborate with other components that provide other required services. circuitbox prescribes a specific convention with which you can author your components. This conventions helps the component recieve the required dependencies. Below is an example of a component:</p>
+
+<div class="highlight highlight-js"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">CreditCardProcessor</span> <span class="p">(</span><span class="nx">processor</span><span class="p">,</span> <span class="nx">transactionLog</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">chargeOrder</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">order</span><span class="p">,</span> <span class="nx">creditCard</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">tx</span> <span class="o">=</span> <span class="nx">processor</span><span class="p">.</span><span class="nx">processTransaction</span><span class="p">(</span><span class="nx">creditCard</span><span class="p">,</span> <span class="nx">order</span><span class="p">.</span><span class="nx">amount</span><span class="p">);</span>
+        <span class="nx">transactionLog</span><span class="p">.</span><span class="nx">recordPayment</span><span class="p">(</span><span class="nx">tx</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+
+<h3>
+<a name="roadmap" class="anchor" href="#roadmap"><span class="octicon octicon-link"></span></a>Roadmap</h3>
+
+<p>So what are the next set of features on the project?</p>
+
+<ul>
+<li>Support for aliasing components with additional names</li>
+<li>Bindings to popular libraries. These however, may be published as separate libraries. I am considering  libraries such as:
+
+<ul>
+<li> express - In progress. See <a href="https://github.com/oddjobsman/circuitbox-express">circuitbox-express</a>
+</li>
+<li> mongoose</li>
+<li> mysql</li>
+<li> redis</li>
+</ul>
+</li>
+</ul><p>Head over to the <a href="https://waffle.io/oddjobsman/circuitbox">waffle.io</a> page for a better view of things to come.</p>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Follow the <a href="http://github.com/oddjobsman/circuitbox/wiki/Coding-Conventions">coding conventions</a>
+</li>
+<li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Circuitbox maintained by <a href="https://github.com/circuitbox">circuitbox</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
