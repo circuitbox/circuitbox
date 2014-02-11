@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var gulp = require('gulp');
-var tasks = require('gulp-load-tasks')({scope: ['devDependencies']});
+var tasks = require('gulp-load-plugins')({scope: ['devDependencies']});
 var stylish = require('jshint-stylish');
 
 var plumber = tasks.plumber;
