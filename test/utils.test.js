@@ -6,6 +6,7 @@
 
 'use strict';
 
+var _ = require('lodash');
 var expect = require('expect.js');
 var utils = require('../lib/utils');
 
@@ -26,12 +27,40 @@ describe('Utilities', function () {
   });
 
   describe('#enumFor()', function () {
+    it('should return empty object if no constants specified', function () {
+      var testEnum = utils.enumFor();
+
+      expect(_.isEmpty(testEnum)).to.be(true);
+    });
+
     it('should return an object with the specified constants with values starting from 1', function () {
       var testEnum = utils.enumFor('a', 'b', 'c');
 
       expect(testEnum.a).to.be(1);
       expect(testEnum.b).to.be(2);
       expect(testEnum.c).to.be(3);
+
+    });
+
+    it('should return an object with the specified array constants with values starting from 1', function () {
+      var testEnum = utils.enumFor(['a', 'b', 'c']);
+
+      expect(testEnum.a).to.be(1);
+      expect(testEnum.b).to.be(2);
+      expect(testEnum.c).to.be(3);
+
+    });
+
+    it('should return an object with the specified constants with specified values', function () {
+      var testEnum = utils.enumFor({
+        'a': 3,
+        'b': 2,
+        'c': 1
+      });
+
+      expect(testEnum.a).to.be(3);
+      expect(testEnum.b).to.be(2);
+      expect(testEnum.c).to.be(1);
 
     });
   });
