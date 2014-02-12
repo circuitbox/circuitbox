@@ -27,13 +27,11 @@
   },
   "dependencies": {
     "async": "~0.2.10",
-    "underscore.string": "~2.3.3",
-    "lodash": "~2.4.1",
-    "when": "~2.8.0"
+    "underscore": "~1.6.0",
+    "q": "~1.0.0"
   },
   "devDependencies": {
     "mocha-lcov-reporter": "0.0.1",
-    "expect.js": "~0.2.0",
     "jshint-stylish": "~0.1.5",
     "sinon": "~1.8.1",
     "mocha": "~1.17.1",
@@ -44,6 +42,7 @@
     "gulp": "~3.5.2",
     "gulp-plumber": "~0.5.6",
     "gulp-load-plugins": "~0.3.0",
-    "gulp-sloc": "~1.0.3"
+    "gulp-sloc": "~1.0.3",
+    "chai": "~1.9.0"
   }
 }
