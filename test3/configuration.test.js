@@ -12,8 +12,8 @@ var context = describe;
 var expect = require('expect.js');
 var sinon = require('sinon');
 
-var Configuration = require('../lib/configuration');
-var ComponentDefinitionError = require('../lib/componentDefinitionError');
+var Configuration = require('./configuration');
+var ComponentDefinitionError = require('./componentDefinitionError');
 
 describe('Configuration', function () {
   var kernelViewApi;
@@ -84,7 +84,7 @@ describe('Configuration', function () {
       mockKernelView.expects('registerModule').withArgs(moduleBSpy).callsArgWith(0, mockRegistryView).once();
 
       new Configuration(kernelViewApi, {modules: [
-        './test/fixtures/aModule',
+        './test3/fixtures/aModule',
         moduleBSpy
       ]});
 

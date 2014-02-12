@@ -8,9 +8,9 @@
 
 var expect = require('expect.js');
 
-var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
-var ComponentAssemblyStrategyFactory = require('../lib/componentAssemblyStrategyFactory');
-var binder = require('../lib/binder');
+var ComponentDefinitionBuilderFactory = require('./componentDefinitionBuilderFactory');
+var ComponentAssemblyStrategyFactory = require('./componentAssemblyStrategyFactory');
+var binder = require('./binder');
 
 describe('Binder', function () {
 

@@ -10,11 +10,11 @@
 
 var expect = require('expect.js');
 
-var utils = require('../lib/utils');
+var utils = require('./utils');
 
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
-var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
-var ModuleBasedComponentAssemblyStrategy = require('../lib/moduleBasedComponentAssemblyStrategy');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
+var ComponentAssemblyStrategy = require('./componentAssemblyStrategy');
+var ModuleBasedComponentAssemblyStrategy = require('./moduleBasedComponentAssemblyStrategy');
 
 describe('ModuleBasedComponentAssemblyStrategy', function () {
 
@@ -27,7 +27,7 @@ describe('ModuleBasedComponentAssemblyStrategy', function () {
 
     var def = new ModuleBasedComponentDefinition({
       name: targetComponentName,
-      moduleId: './test/fixtures/stringComponent'
+      moduleId: './test3/fixtures/stringComponent'
     });
 
     var strategy = new ModuleBasedComponentAssemblyStrategy(def);
@@ -48,7 +48,7 @@ describe('ModuleBasedComponentAssemblyStrategy', function () {
 
     var def = new ModuleBasedComponentDefinition({
       name: targetComponentName,
-      moduleId: './test/fixtures/helloMessageComposer',
+      moduleId: './test3/fixtures/helloMessageComposer',
       dependencies: ['utils', 'name']
     });
 
@@ -66,7 +66,7 @@ describe('ModuleBasedComponentAssemblyStrategy', function () {
 
     var def = new ModuleBasedComponentDefinition({
       name: targetComponentName,
-      moduleId: './test/fixtures/objectComponent',
+      moduleId: './test3/fixtures/objectComponent',
       initializer: function () {
         return this.firstName + ' ' + this.lastName;
       }

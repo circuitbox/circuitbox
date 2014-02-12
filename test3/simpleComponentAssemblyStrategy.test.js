@@ -11,11 +11,11 @@
 var expect = require('expect.js');
 var sinon = require('sinon');
 
-var utils = require('../lib/utils');
+var utils = require('./utils');
 
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
-var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ComponentAssemblyStrategy = require('./componentAssemblyStrategy');
+var SimpleComponentAssemblyStrategy = require('./simpleComponentAssemblyStrategy');
 
 describe('SimpleComponentAssemblyStrategy', function () {
 

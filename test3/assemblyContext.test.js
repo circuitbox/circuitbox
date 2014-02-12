@@ -9,7 +9,7 @@
 var context = describe;
 var expect = require('expect.js');
 
-var AssemblyContext = require('../lib/assemblyContext');
+var AssemblyContext = require('./assemblyContext');
 
 describe('AssemblyContext', function () {
 

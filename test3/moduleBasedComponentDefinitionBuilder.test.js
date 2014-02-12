@@ -9,10 +9,10 @@
 var context = describe;
 var expect = require('expect.js');
 
-var Scopes = require('../lib/scopes');
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
-var ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder');
-var ModuleBasedComponentDefinitionBuilder = require('../lib/moduleBasedComponentDefinitionBuilder');
+var Scopes = require('./scopes');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
+var ComponentDefinitionBuilder = require('./componentDefinitionBuilder');
+var ModuleBasedComponentDefinitionBuilder = require('./moduleBasedComponentDefinitionBuilder');
 
 describe('ModuleBasedComponentDefinitionBuilder', function () {
 

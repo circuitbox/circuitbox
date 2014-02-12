@@ -8,16 +8,16 @@
 
 var sinon = require('sinon');
 
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
 
-var SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder');
-var ModuleBasedComponentDefinitionBuilder = require('../lib/moduleBasedComponentDefinitionBuilder');
+var SimpleComponentDefinitionBuilder = require('./simpleComponentDefinitionBuilder');
+var ModuleBasedComponentDefinitionBuilder = require('./moduleBasedComponentDefinitionBuilder');
 
-var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
-var ModuleBasedComponentAssemblyStrategy = require('../lib/moduleBasedComponentAssemblyStrategy');
+var SimpleComponentAssemblyStrategy = require('./simpleComponentAssemblyStrategy');
+var ModuleBasedComponentAssemblyStrategy = require('./moduleBasedComponentAssemblyStrategy');
 
-var basicBinding = require('../lib/basicBinding');
+var basicBinding = require('./basicBinding');
 
 var binderApi = {
   definitionBuilder: function () {},

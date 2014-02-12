@@ -7,20 +7,20 @@
 'use strict';
 
 var expect = require('expect.js');
-var utils = require('../lib/utils');
+var utils = require('./utils');
 var sinon = require('sinon');
 
-var Scopes = require('../lib/scopes');
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
-var ComponentCreationError = require('../lib/componentCreationError');
-var NoSuchComponentDefinitionError = require('../lib/noSuchComponentDefinitionError');
+var Scopes = require('./scopes');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
+var ComponentCreationError = require('./componentCreationError');
+var NoSuchComponentDefinitionError = require('./noSuchComponentDefinitionError');
 
-var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
-var ComponentAssemblyStrategyFactory = require('../lib/componentAssemblyStrategyFactory');
+var ComponentDefinitionBuilderFactory = require('./componentDefinitionBuilderFactory');
+var ComponentAssemblyStrategyFactory = require('./componentAssemblyStrategyFactory');
 
-var AssemblyContext = require('../lib/assemblyContext');
-var Assembler = require('../lib/assembler');
+var AssemblyContext = require('./assemblyContext');
+var Assembler = require('./assembler');
 
 describe('Assembler', function () {
   var registryApi;
@@ -28,11 +28,11 @@ describe('Assembler', function () {
   var kernelViewApi;
   var mockKernelView;
 
-  ComponentDefinitionBuilderFactory.registerBuilder('use', require('../lib/simpleComponentDefinitionBuilder'));
-  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('../lib/moduleBasedComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('use', require('./simpleComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('./moduleBasedComponentDefinitionBuilder'));
 
-  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(SimpleComponentDefinition, require('../lib/simpleComponentAssemblyStrategy'));
-  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(ModuleBasedComponentDefinition, require('../lib/moduleBasedComponentAssemblyStrategy'));
+  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(SimpleComponentDefinition, require('./simpleComponentAssemblyStrategy'));
+  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(ModuleBasedComponentDefinition, require('./moduleBasedComponentAssemblyStrategy'));
 
   beforeEach(function () {
     registryApi = {

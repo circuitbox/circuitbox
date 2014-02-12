@@ -14,8 +14,8 @@ var context = describe;
 var expect = require('expect.js');
 var async = require('async');
 
-var Scopes = require('../lib/scopes');
-var Kernel = require('../lib/kernel');
+var Scopes = require('./scopes');
+var Kernel = require('./kernel');
 
 describe('Kernel', function () {
 
@@ -24,8 +24,8 @@ describe('Kernel', function () {
       modules: [
         function (registry) {
           registry.for('name').use('John Doe');
-          registry.for('utils').requires('./lib/utils');
-          registry.for('composer').requires('./test/fixtures/helloMessageComposer').dependsOn(['name', 'utils']);
+          registry.for('utils').requires('./lib3/utils');
+          registry.for('composer').requires('./test3/fixtures/helloMessageComposer').dependsOn(['name', 'utils']);
           registry.for('message').use(function (deps) {
             return deps.composer.getMessage();
           }).dependsOn(['composer']).initializeWith(function () {

@@ -8,7 +8,7 @@
 
 var _ = require('lodash');
 var expect = require('expect.js');
-var utils = require('../lib/utils');
+var utils = require('./utils');
 
 describe('Utilities', function () {
 
