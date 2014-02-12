@@ -12,8 +12,12 @@ var sinon = require('sinon');
 
 var Scopes = require('../lib/scopes');
 var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
+var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
 var ComponentCreationError = require('../lib/componentCreationError');
 var NoSuchComponentDefinitionError = require('../lib/noSuchComponentDefinitionError');
+
+var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
+var ComponentAssemblyStrategyFactory = require('../lib/componentAssemblyStrategyFactory');
 
 var AssemblyContext = require('../lib/assemblyContext');
 var Assembler = require('../lib/assembler');
@@ -23,6 +27,12 @@ describe('Assembler', function () {
   var mockRegistry;
   var kernelViewApi;
   var mockKernelView;
+
+  ComponentDefinitionBuilderFactory.registerBuilder('use', require('../lib/simpleComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('../lib/moduleBasedComponentDefinitionBuilder'));
+
+  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(SimpleComponentDefinition, require('../lib/simpleComponentAssemblyStrategy'));
+  ComponentAssemblyStrategyFactory.registerAssemblyStrategy(ModuleBasedComponentDefinition, require('../lib/moduleBasedComponentAssemblyStrategy'));
 
   beforeEach(function () {
     registryApi = {

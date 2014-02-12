@@ -19,6 +19,9 @@ var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuild
 
 describe('ComponentRegistry', function () {
 
+  ComponentDefinitionBuilderFactory.registerBuilder('use', require('../lib/simpleComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('../lib/moduleBasedComponentDefinitionBuilder'));
+
   it('should call the module passing a registry to register components', function () {
     var registry = new ComponentRegistry();
 
