@@ -8,10 +8,10 @@
 
 var context = describe;
 var expect = require('expect.js');
-var utils = require('../lib/utils');
+var utils = require('./utils');
 
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ComponentAssemblyStrategy = require('../lib/componentAssemblyStrategy');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ComponentAssemblyStrategy = require('./componentAssemblyStrategy');
 
 describe('ComponentAssemblyStrategy', function () {
 

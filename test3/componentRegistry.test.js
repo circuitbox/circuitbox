@@ -10,17 +10,17 @@ var context = describe;
 var expect = require('expect.js');
 var sinon = require('sinon');
 
-var ComponentDefinitionError = require('../lib/componentDefinitionError');
-var NoSuchComponentDefinitionError = require('../lib/noSuchComponentDefinitionError');
+var ComponentDefinitionError = require('./componentDefinitionError');
+var NoSuchComponentDefinitionError = require('./noSuchComponentDefinitionError');
 
-var ComponentRegistry = require('../lib/componentRegistry');
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory');
+var ComponentRegistry = require('./componentRegistry');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ComponentDefinitionBuilderFactory = require('./componentDefinitionBuilderFactory');
 
 describe('ComponentRegistry', function () {
 
-  ComponentDefinitionBuilderFactory.registerBuilder('use', require('../lib/simpleComponentDefinitionBuilder'));
-  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('../lib/moduleBasedComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('use', require('./simpleComponentDefinitionBuilder'));
+  ComponentDefinitionBuilderFactory.registerBuilder('requires', require('./moduleBasedComponentDefinitionBuilder'));
 
   it('should call the module passing a registry to register components', function () {
     var registry = new ComponentRegistry();

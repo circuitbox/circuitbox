@@ -9,8 +9,8 @@
 var expect = require('expect.js');
 var sinon = require('sinon');
 
-var binder = require('../lib/binder');
-var extender = require('../lib/extender');
+var binder = require('./binder');
+var extender = require('./extender');
 
 describe('Extender', function () {
 
@@ -24,7 +24,7 @@ describe('Extender', function () {
   });
 
   it('should load a specified binding module passing it a binder', function () {
-    extender.loadBindings(['./test/fixtures/aBinding']);
+    extender.loadBindings(['./test3/fixtures/aBinding']);
   });
 
   it('should prefix binding module id with "circuitbox-", then load it by passing it a binder', function (done) {

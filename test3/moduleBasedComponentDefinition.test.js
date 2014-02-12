@@ -12,8 +12,8 @@
 var context = describe;
 var expect = require('expect.js');
 
-var ComponentDefinition = require('../lib/componentDefinition');
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
+var ComponentDefinition = require('./componentDefinition');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
 
 describe('ModuleBasedComponentDefinition', function () {
   

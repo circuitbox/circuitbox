@@ -9,16 +9,16 @@
 var _ = require('lodash');
 var expect = require('expect.js');
 
-var utils = require('../lib/utils');
+var utils = require('./utils');
 
-var ComponentDefinition = require('../lib/componentDefinition');
-var SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
-var ModuleBasedComponentDefinition = require('../lib/moduleBasedComponentDefinition');
+var ComponentDefinition = require('./componentDefinition');
+var SimpleComponentDefinition = require('./simpleComponentDefinition');
+var ModuleBasedComponentDefinition = require('./moduleBasedComponentDefinition');
 
-var SimpleComponentAssemblyStrategy = require('../lib/simpleComponentAssemblyStrategy');
-var ModuleBasedComponentAssemblyStrategy = require('../lib/moduleBasedComponentAssemblyStrategy');
+var SimpleComponentAssemblyStrategy = require('./simpleComponentAssemblyStrategy');
+var ModuleBasedComponentAssemblyStrategy = require('./moduleBasedComponentAssemblyStrategy');
 
-var ComponentAssemblyStrategyFactory = require('../lib/componentAssemblyStrategyFactory');
+var ComponentAssemblyStrategyFactory = require('./componentAssemblyStrategyFactory');
 
 function TestComponentDefinition() {
   var self = this;

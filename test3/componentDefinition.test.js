@@ -12,10 +12,10 @@
 var context = describe;
 var expect = require('expect.js');
 
-var Scopes = require('../lib/scopes');
-var ComponentDefinition = require('../lib/componentDefinition');
+var Scopes = require('./scopes');
+var ComponentDefinition = require('./componentDefinition');
 
-var ComponentDefinitionError = require('../lib/componentDefinitionError');
+var ComponentDefinitionError = require('./componentDefinitionError');
 
 describe('ComponentDefinition', function () {
 
