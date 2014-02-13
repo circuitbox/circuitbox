@@ -28,7 +28,8 @@
   "dependencies": {
     "async": "~0.2.10",
     "underscore": "~1.6.0",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "underscore-contrib": "~0.2.1"
   },
   "devDependencies": {
     "mocha-lcov-reporter": "0.0.1",
