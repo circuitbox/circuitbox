@@ -5,7 +5,7 @@ A dependency injection framework for node.js. It does true dependency injection 
 [![NPM version](https://badge.fury.io/js/circuitbox.png)](http://badge.fury.io/js/circuitbox)
 [![build status](https://secure.travis-ci.org/circuitbox/circuitbox.png)](http://travis-ci.org/circuitbox/circuitbox)
 [![dependency status](https://david-dm.org/circuitbox/circuitbox.png)](https://david-dm.org/circuitbox/circuitbox)
-[![Coverage Status](https://coveralls.io/repos/circuitbox/circuitbox/badge.png?branch=master)](https://coveralls.io/r/oddjobsman/circuitbox?branch=master)
+[![Coverage Status](https://coveralls.io/repos/circuitbox/circuitbox/badge.png?branch=master)](https://coveralls.io/r/circuitbox/circuitbox?branch=master)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/circuitbox/circuitbox/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 [![NPM](https://nodei.co/npm/circuitbox.png?stars=true&downloads=true)](https://nodei.co/npm/circuitbox/)
