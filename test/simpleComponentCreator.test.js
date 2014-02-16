@@ -9,7 +9,7 @@
 var expect = require('chai').expect,
     sinon = require('sinon'),
     fmt = require('util').format,
-    SimpleComponent = require('../lib/SimpleComponent'),
+    SimpleComponent = require('../lib/simpleComponent'),
     ComponentCreator = require('../lib/componentCreator'),
     SimpleComponentCreator = require('../lib/simpleComponentCreator');
 
