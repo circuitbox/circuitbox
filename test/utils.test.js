@@ -6,9 +6,14 @@
 
 'use strict';
 
-var expect = require('chai').expect;
+var _ = require('underscore'),
+    async = require('async'),
+    expect = require('chai').expect,
+    sinon = require('sinon');
 
 describe('Utilities', function () {
+  /*jshint expr: true*/
+
   var utils = require('../lib/utils');
 
   describe('#normalizeModulePath()', function () {
@@ -43,4 +48,28 @@ describe('Utilities', function () {
     });
   });
 
+  describe('#bindAllTo()', function () {
+    var bindAllTo = utils.bindAllTo;
+
+    it('should bind the specified function to the specified object', function () {
+      var cxt = 'foo bar',
+          f = function () { return this.toUpperCase(); },
+          bf = bindAllTo(cxt, f)[0];
+
+      expect(bf()).to.be.equal('FOO BAR');
+    });
+
+    it('should bind all the specified functions to the specified object', function () {
+      var cxt = 'foo bar',
+          fxs = _.times(10, function () { return sinon.spy(); }),
+          bf = bindAllTo(cxt, fxs);
+
+      async.waterfall(bf, function () {
+        _.each(fxs, function (fx) {
+          fx.calledOn(cxt);
+        });
+      });
+
+    });
+  });
 });
