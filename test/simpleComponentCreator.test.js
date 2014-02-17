@@ -9,6 +9,7 @@
 var expect = require('chai').expect,
     sinon = require('sinon'),
     fmt = require('util').format,
+    Component = require('../lib/component'),
     SimpleComponent = require('../lib/simpleComponent'),
     ComponentCreator = require('../lib/componentCreator'),
     SimpleComponentCreator = require('../lib/simpleComponentCreator');
@@ -51,6 +52,20 @@ describe('SimpleComponentCreator', function () {
       expect(r).to.be.equal('This is my home');
       done();
     });
+  });
+
+  it('should throw error if created with a Component other than SimpleComponent', function () {
+    var n = 'myComponent',
+      deps = {
+        fmt: fmt,
+        location: 'home'
+      },
+      c = new Component(n, { dependencies: ['fmt', 'location'] });
+
+    expect(function () {
+      /*jshint nonew: false*/
+      new SimpleComponentCreator(c, deps);
+    }).to.throw('SimpleComponentCreator cannot create Component');
   });
 
   it('should invoke callback with error if base value creation threw an error', function (done) {
