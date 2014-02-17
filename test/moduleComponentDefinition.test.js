@@ -8,10 +8,10 @@
 
 var expect = require('chai').expect,
     sinon = require('sinon'),
-    Component = require('../lib/component'),
-    ModuleComponent = require('../lib/moduleComponent');
+    ComponentDefinition = require('../lib/componentDefinition'),
+    ModuleComponentDefinition = require('../lib/moduleComponentDefinition');
 
-describe('ModuleComponent', function () {
+describe('ModuleComponentDefinition', function () {
   /*jshint expr: false*/
 
   it('should not be possible to create without a module-id', function () {
@@ -19,15 +19,15 @@ describe('ModuleComponent', function () {
     expect(function () {
       /*jshint nonew: false*/
 
-      new ModuleComponent('myComponent');
+      new ModuleComponentDefinition('myComponent');
     }).to.throw('must specify a valid module-id');
 
   });
 
-  it('should be a Component', function () {
-    var c = new ModuleComponent('myComponent', 'foo');
+  it('should be a ComponentDefinition', function () {
+    var c = new ModuleComponentDefinition('myComponent', 'foo');
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
 
   });
 
@@ -36,7 +36,7 @@ describe('ModuleComponent', function () {
 
     process.cwd = sinon.stub().returns('/foo/bar');
 
-    var c = new ModuleComponent('myComponent', './foo');
+    var c = new ModuleComponentDefinition('myComponent', './foo');
 
     expect(c.moduleId).to.be.equal('/foo/bar/foo');
 
@@ -48,7 +48,7 @@ describe('ModuleComponent', function () {
 
     process.cwd = sinon.stub().returns('/foo/bar');
 
-    var c = new ModuleComponent('myComponent', './foo');
+    var c = new ModuleComponentDefinition('myComponent', './foo');
 
     expect(function () {
       c.load();

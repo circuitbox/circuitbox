@@ -8,17 +8,17 @@
 
 var expect = require('chai').expect,
     sinon = require('sinon'),
-    ModuleComponent = require('../lib/moduleComponent'),
-    ComponentBuilder = require('../lib/componentBuilder'),
-    ModuleComponentBuilder = require('../lib/moduleComponentBuilder');
+    ModuleComponentDefinition = require('../lib/moduleComponentDefinition'),
+    ComponentDefinitionBuilder = require('../lib/componentDefinitionBuilder'),
+    ModuleComponentDefinitionBuilder = require('../lib/moduleComponentDefinitionBuilder');
 
-describe('ModuleComponentBuilder', function () {
+describe('ModuleComponentDefinitionBuilder', function () {
 
-  it('inherits ComponentBuilder', function () {
-    expect(ModuleComponentBuilder.super_).to.be.equal(ComponentBuilder);
+  it('inherits ComponentDefinitionBuilder', function () {
+    expect(ModuleComponentDefinitionBuilder.super_).to.be.equal(ComponentDefinitionBuilder);
   });
 
-  it('should create a ModuleComponent with the specified name, module-id, scope, initializer and dependencies', function () {
+  it('should create a ModuleComponentDefinition with the specified name, module-id, scope, initializer and dependencies', function () {
     var originalCwd = process.cwd,
         i = function () {},
         deps = ['a', 'b'],
@@ -26,13 +26,13 @@ describe('ModuleComponentBuilder', function () {
 
     process.cwd = sinon.stub().returns('/foo/bar');
 
-    var d = new ModuleComponentBuilder('myComponent', mid)
+    var d = new ModuleComponentDefinitionBuilder('myComponent', mid)
         .scopedAs('prototype')
         .initializeWith(i)
         .dependsOn(deps)
         .build();
 
-    expect(d).to.be.instanceof(ModuleComponent);
+    expect(d).to.be.instanceof(ModuleComponentDefinition);
     expect(d.name).to.be.equal('myComponent');
     expect(d.scope).to.be.equal('prototype');
     expect(d.initializer).to.be.equal(i);

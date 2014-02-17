@@ -7,28 +7,28 @@
 'use strict';
 
 var expect = require('chai').expect,
-    Component = require('../lib/component');
+    ComponentDefinition = require('../lib/componentDefinition');
 
-describe('Component', function () {
+describe('ComponentDefinition', function () {
   /*jshint expr: true */
 
   it('should not be able to create a component without a name', function () {
     expect(function () {
       /*jshint nonew: false*/
 
-      new Component();
+      new ComponentDefinition();
     }).to.throw('must specify component name');
   });
 
   it('should return the specified component name', function () {
     var n = 'myComponent',
-        c = new Component(n);
+        c = new ComponentDefinition(n);
 
     expect(c.name).to.be.equal(n);
   });
 
   it('should be created with a singleton scope by default if no scope is specified', function () {
-    var c = new Component('myComponent');
+    var c = new ComponentDefinition('myComponent');
 
     expect(c.scope).to.be.equal('singleton');
     expect(c.isSingleton()).to.be.true;
@@ -36,7 +36,7 @@ describe('Component', function () {
   });
 
   it('should be created with a specified prototype scope', function () {
-    var c = new Component('myComponent', {scope: 'prototype'});
+    var c = new ComponentDefinition('myComponent', {scope: 'prototype'});
 
     expect(c.scope).to.be.equal('prototype');
     expect(c.isSingleton()).to.be.false;
@@ -44,7 +44,7 @@ describe('Component', function () {
   });
 
   it('should be created with a specified singleton scope', function () {
-    var c = new Component('myComponent', {scope: 'singleton'});
+    var c = new ComponentDefinition('myComponent', {scope: 'singleton'});
 
     expect(c.scope).to.be.equal('singleton');
     expect(c.isSingleton()).to.be.true;
@@ -52,7 +52,7 @@ describe('Component', function () {
   });
 
   it('should not have any dependencies by default if no dependencies is specified', function () {
-    var c = new Component('myComponent');
+    var c = new ComponentDefinition('myComponent');
 
     expect(c.dependencies).to.be.empty;
     expect(c.hasDependencies()).to.be.false;
@@ -60,7 +60,7 @@ describe('Component', function () {
   });
 
   it('should have the specified dependencies', function () {
-    var c = new Component('myComponent', {dependencies: ['a', 'b']});
+    var c = new ComponentDefinition('myComponent', {dependencies: ['a', 'b']});
 
     expect(c.dependencies).to.be.eql(['a', 'b']);
     expect(c.hasDependencies()).to.be.true;
@@ -68,7 +68,7 @@ describe('Component', function () {
   });
 
   it('should not have any initializer by default if no initializer is specified', function () {
-    var c = new Component('myComponent');
+    var c = new ComponentDefinition('myComponent');
 
     expect(c.initializer).to.be.undefined;
     expect(c.hasInitializer()).to.be.false;
@@ -77,7 +77,7 @@ describe('Component', function () {
 
   it('should have the specified initializer function', function () {
     var i = function () {},
-        c = new Component('myComponent', {initializer: i});
+        c = new ComponentDefinition('myComponent', {initializer: i});
 
     expect(c.initializer).to.be.a('function');
     expect(c.initializer).to.be.equal(i);
@@ -87,7 +87,7 @@ describe('Component', function () {
 
   it('should have the specified initializer function name', function () {
     var i = 'initMe',
-        c = new Component('myComponent', {initializer: i});
+        c = new ComponentDefinition('myComponent', {initializer: i});
 
     expect(c.initializer).to.be.a('string');
     expect(c.initializer).to.be.equal(i);
@@ -99,7 +99,7 @@ describe('Component', function () {
     /*jshint nonew: false*/
 
     expect(function () {
-      new Component('myComponent', {initializer: {}});
+      new ComponentDefinition('myComponent', {initializer: {}});
     }).to.throw('Initializer for \'myComponent\' must be a function or string');
 
   });

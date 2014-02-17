@@ -7,7 +7,7 @@
 'use strict';
 
 var expect = require('chai').expect,
-    SimpleComponent = require('../lib/simpleComponent'),
+    SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
     SimpleComponentCreator = require('../lib/simpleComponentCreator'),
     ComponentCreatorFactory = require('../lib/componentCreatorFactory');
 
@@ -18,13 +18,13 @@ describe('ComponentCreatorFactory', function () {
     ComponentCreatorFactory._reset();
   });
 
-  it('should register the specified ComponentCreator for the specified Component and returns it when requested', function () {
+  it('should register the specified ComponentCreator for the specified ComponentDefinition and returns it when requested', function () {
     var n = 'myComponent',
         base = 'This is a component',
-        c = new SimpleComponent(n, base),
+        c = new SimpleComponentDefinition(n, base),
         cc;
 
-    ComponentCreatorFactory.registerCreator(SimpleComponent, SimpleComponentCreator);
+    ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
 
     cc = new ComponentCreatorFactory().creatorFor(c);
 
@@ -32,14 +32,14 @@ describe('ComponentCreatorFactory', function () {
     expect(cc.dependencies).to.be.empty;
   });
 
-  it('should register the specified ComponentCreator for the specified Component and dependencies and returns it when requested', function () {
+  it('should register the specified ComponentCreator for the specified ComponentDefinition and dependencies and returns it when requested', function () {
     var n = 'myComponent',
         base = 'This is a component',
         deps = ['foo', {name: 'bar'}],
-        c = new SimpleComponent(n, base),
+        c = new SimpleComponentDefinition(n, base),
         cc;
 
-    ComponentCreatorFactory.registerCreator(SimpleComponent, SimpleComponentCreator);
+    ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
 
     cc = new ComponentCreatorFactory().creatorFor(c, deps);
 
@@ -47,16 +47,16 @@ describe('ComponentCreatorFactory', function () {
     expect(cc.dependencies).to.be.eql(deps);
   });
 
-  it('should throw error when there is no ComponentCreator registered for the specified registered Component type', function () {
+  it('should throw error when there is no ComponentCreator registered for the specified registered ComponentDefinition type', function () {
     var n = 'myComponent',
         base = 'This is a component',
-        c = new SimpleComponent(n, base);
+        c = new SimpleComponentDefinition(n, base);
 
     expect(function () {
       /*jshint nonew: true*/
 
       new ComponentCreatorFactory().creatorFor(c);
-    }).to.throw('no registered ComponentCreator for component type SimpleComponent');
+    }).to.throw('no registered ComponentCreator for component type SimpleComponentDefinition');
   });
 
 });

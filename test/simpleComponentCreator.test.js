@@ -9,8 +9,8 @@
 var expect = require('chai').expect,
     sinon = require('sinon'),
     fmt = require('util').format,
-    Component = require('../lib/component'),
-    SimpleComponent = require('../lib/simpleComponent'),
+    ComponentDefinition = require('../lib/componentDefinition'),
+    SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator'),
     SimpleComponentCreator = require('../lib/simpleComponentCreator');
 
@@ -24,7 +24,7 @@ describe('SimpleComponentCreator', function () {
   it('should assemble non-function component and pass to specified callback', function (done) {
     var n = 'myComponent',
         v = 'This is my message',
-        d = new SimpleComponent(n, v);
+        d = new SimpleComponentDefinition(n, v);
 
     var cc = new SimpleComponentCreator(d);
 
@@ -44,7 +44,7 @@ describe('SimpleComponentCreator', function () {
         fmt: fmt,
         location: 'home'
       },
-      c = new SimpleComponent(n, v, { dependencies: ['fmt', 'location'] }),
+      c = new SimpleComponentDefinition(n, v, { dependencies: ['fmt', 'location'] }),
       cc = new SimpleComponentCreator(c, deps);
 
     cc.create(function (err, r) {
@@ -54,18 +54,18 @@ describe('SimpleComponentCreator', function () {
     });
   });
 
-  it('should throw error if created with a Component other than SimpleComponent', function () {
+  it('should throw error if created with a ComponentDefinition other than SimpleComponentDefinition', function () {
     var n = 'myComponent',
       deps = {
         fmt: fmt,
         location: 'home'
       },
-      c = new Component(n, { dependencies: ['fmt', 'location'] });
+      c = new ComponentDefinition(n, { dependencies: ['fmt', 'location'] });
 
     expect(function () {
       /*jshint nonew: false*/
       new SimpleComponentCreator(c, deps);
-    }).to.throw('SimpleComponentCreator cannot create Component');
+    }).to.throw('SimpleComponentCreator cannot create ComponentDefinition');
   });
 
   it('should invoke callback with error if base value creation threw an error', function (done) {
@@ -73,7 +73,7 @@ describe('SimpleComponentCreator', function () {
       v = function () {
         throw new Error('accidental mistake');
       },
-      c = new SimpleComponent(n, v),
+      c = new SimpleComponentDefinition(n, v),
       cc = new SimpleComponentCreator(c);
 
     cc.create(function (err) {
@@ -86,7 +86,7 @@ describe('SimpleComponentCreator', function () {
     var n = 'myComponent',
         v = 'This is my message',
         izr = sinon.spy(),
-        c = new SimpleComponent(n, v, { initializer: izr }),
+        c = new SimpleComponentDefinition(n, v, { initializer: izr }),
         cc = new SimpleComponentCreator(c);
 
     cc.create(function (err, r) {
@@ -110,7 +110,7 @@ describe('SimpleComponentCreator', function () {
       izr = function () {
         throw new Error('accidental mistake');
       },
-      c = new SimpleComponent(n, v, { dependencies: ['fmt', 'location'], initializer: izr }),
+      c = new SimpleComponentDefinition(n, v, { dependencies: ['fmt', 'location'], initializer: izr }),
       cc = new SimpleComponentCreator(c, deps);
 
     cc.create(function (err) {

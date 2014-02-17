@@ -7,10 +7,10 @@
 'use strict';
 
 var expect = require('chai').expect,
-    Component = require('../lib/component'),
-    SimpleComponent = require('../lib/simpleComponent');
+    ComponentDefinition = require('../lib/componentDefinition'),
+    SimpleComponentDefinition = require('../lib/simpleComponentDefinition');
 
-describe('SimpleComponent', function () {
+describe('SimpleComponentDefinition', function () {
   /*jshint expr: true*/
 
   it('should not be possible to create without a value', function () {
@@ -18,49 +18,49 @@ describe('SimpleComponent', function () {
     expect(function () {
       /*jshint nonew: false*/
 
-      new SimpleComponent('myComponent');
+      new SimpleComponentDefinition('myComponent');
     }).to.throw('must specify component value');
 
   });
 
-  it('should be a Component', function () {
-    var c = new SimpleComponent('myComponent', 'foo');
+  it('should be a ComponentDefinition', function () {
+    var c = new SimpleComponentDefinition('myComponent', 'foo');
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
 
   });
 
   it('should have the specified value', function () {
     var v = {};
-    var c = new SimpleComponent('myComponent', v);
+    var c = new SimpleComponentDefinition('myComponent', v);
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
     expect(c.value).to.be.equal(v);
   });
 
   it('should able to specify a function as component value', function () {
     var v = function () {};
-    var c = new SimpleComponent('myComponent', v);
+    var c = new SimpleComponentDefinition('myComponent', v);
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
     expect(c.value).to.be.equal(v);
 
   });
 
   it('should able to specify null as a component value', function () {
     var v = null;
-    var c = new SimpleComponent('myComponent', v);
+    var c = new SimpleComponentDefinition('myComponent', v);
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
     expect(c.value).to.be.null;
 
   });
 
   it('should able to specify false as a component value', function () {
     var v = false;
-    var c = new SimpleComponent('myComponent', v);
+    var c = new SimpleComponentDefinition('myComponent', v);
 
-    expect(c).to.be.instanceof(Component);
+    expect(c).to.be.instanceof(ComponentDefinition);
     expect(c.value).to.be.false;
 
   });
@@ -69,7 +69,7 @@ describe('SimpleComponent', function () {
     var o = {},
         i = function () {},
         d = ['a', 'b', 'c'],
-        c = new SimpleComponent('myComponent', o, { scope: 'prototype', initializer: i, dependencies: d });
+        c = new SimpleComponentDefinition('myComponent', o, { scope: 'prototype', initializer: i, dependencies: d });
 
     expect(c.value).to.be.equal(o);
 

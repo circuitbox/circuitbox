@@ -8,8 +8,8 @@
 
 var expect = require('chai').expect,
     fmt = require('util').format,
-    Component = require('../lib/component'),
-    ModuleComponent = require('../lib/moduleComponent'),
+    ComponentDefinition = require('../lib/componentDefinition'),
+    ModuleComponentDefinition = require('../lib/moduleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator'),
     ModuleComponentCreator = require('../lib/moduleComponentCreator');
 
@@ -22,7 +22,7 @@ describe('ModuleComponentCreator', function () {
 
   it('should assemble non-function component and pass to specified callback', function (done) {
     var n = 'myComponent',
-        c = new ModuleComponent(n, './test/fixtures/stringComponent'),
+        c = new ModuleComponentDefinition(n, './test/fixtures/stringComponent'),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err, r) {
@@ -32,18 +32,18 @@ describe('ModuleComponentCreator', function () {
     });
   });
 
-  it('should throw error if created with a Component other than ModuleComponent', function () {
+  it('should throw error if created with a ComponentDefinition other than ModuleComponentDefinition', function () {
     var n = 'myComponent',
       deps = {
         fmt: fmt,
         location: 'home'
       },
-      c = new Component(n, { dependencies: ['fmt', 'location'] });
+      c = new ComponentDefinition(n, { dependencies: ['fmt', 'location'] });
 
     expect(function () {
       /*jshint nonew: false*/
       new ModuleComponentCreator(c, deps);
-    }).to.throw('ModuleComponentCreator cannot create Component');
+    }).to.throw('ModuleComponentCreator cannot create ComponentDefinition');
   });
 
   it('should assemble function component by invoking it with dependencies and pass its return value to specified callback as component', function (done) {
@@ -52,7 +52,7 @@ describe('ModuleComponentCreator', function () {
         fmt: fmt,
         name: 'Homer Simpson'
       },
-      c = new ModuleComponent(n, './test/fixtures/helloMessageComposer', { dependencies: ['fmt', 'name'] }),
+      c = new ModuleComponentDefinition(n, './test/fixtures/helloMessageComposer', { dependencies: ['fmt', 'name'] }),
       cc = new ModuleComponentCreator(c, deps);
 
     cc.create(function (err, r) {
@@ -64,7 +64,7 @@ describe('ModuleComponentCreator', function () {
 
   it('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
     var n = 'myComponent',
-      c = new ModuleComponent(n, './test/fixtures/objectComponent', {
+      c = new ModuleComponentDefinition(n, './test/fixtures/objectComponent', {
         initializer: function () {
           return this.firstName + ' ' + this.lastName;
         }
@@ -81,7 +81,7 @@ describe('ModuleComponentCreator', function () {
 
   it('should invoke callback with error if base value creation threw an error', function (done) {
     var n = 'myComponent',
-        c = new ModuleComponent(n, './test/fixtures/errorThrower'),
+        c = new ModuleComponentDefinition(n, './test/fixtures/errorThrower'),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err) {
@@ -95,7 +95,7 @@ describe('ModuleComponentCreator', function () {
         izr = function () {
           throw new Error('accidental mistake');
         },
-        c = new ModuleComponent(n, './test/fixtures/stringComponent', { initializer: izr }),
+        c = new ModuleComponentDefinition(n, './test/fixtures/stringComponent', { initializer: izr }),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err) {

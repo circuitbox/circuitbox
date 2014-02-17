@@ -9,7 +9,7 @@
 var context = describe,
     expect = require('chai').expect,
     fmt = require('util').format,
-    SimpleComponent = require('../lib/simpleComponent'),
+    SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator');
 
 describe('ComponentCreator', function () {
@@ -24,7 +24,7 @@ describe('ComponentCreator', function () {
       base = function (deps) {
         return deps.fmt.sprintf('This is my %s', deps.location);
       },
-      d = new SimpleComponent(n, base, {
+      d = new SimpleComponentDefinition(n, base, {
         dependencies: ['utils', 'location']
       }),
       c = new ComponentCreator(d, deps);
@@ -35,7 +35,7 @@ describe('ComponentCreator', function () {
   it('provides a method #creationSequence() to build creation sequence that throws error by default', function () {
     var n = 'myComponent',
       base = 'This is my message',
-      def = new SimpleComponent(n, base, {
+      def = new SimpleComponentDefinition(n, base, {
         initializer: function () {
           expect(this).to.be.equal(base);     // initializer to be called in the scope of base
           return this.toLowerCase();
@@ -52,7 +52,7 @@ describe('ComponentCreator', function () {
   it('should throw an error if an attempt is made to #create()', function () {
     var n = 'myComponent',
       base = 'This is my message',
-      d = new SimpleComponent(n, base, {
+      d = new SimpleComponentDefinition(n, base, {
         initializer: function () {
           return this.toLowerCase();
         }
@@ -70,7 +70,7 @@ describe('ComponentCreator', function () {
     it('returns a null component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = null,
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -83,7 +83,7 @@ describe('ComponentCreator', function () {
     it('returns a string component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = 'This is a string value',
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -96,7 +96,7 @@ describe('ComponentCreator', function () {
     it('returns a number component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = 2344.34,
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -109,7 +109,7 @@ describe('ComponentCreator', function () {
     it('returns a boolean component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = true,
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -122,7 +122,7 @@ describe('ComponentCreator', function () {
     it('returns a object component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = {name: 'John Doe', age: 21, male: true},
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -135,7 +135,7 @@ describe('ComponentCreator', function () {
     it('returns an array component as-is to the specified callback', function () {
       var n = 'myComponent',
         base = [23, 54, 77, 2, 5],
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -150,7 +150,7 @@ describe('ComponentCreator', function () {
         base = function () {
           return 'This is the result';
         },
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -169,7 +169,7 @@ describe('ComponentCreator', function () {
         base = function (deps) {
           return deps.fmt('This is my %s', deps.location);
         },
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           dependencies: ['utils', 'location']
         }),
         c = new ComponentCreator(d, deps);
@@ -186,7 +186,7 @@ describe('ComponentCreator', function () {
         base = function (deps, cb) {
           cb(null, 'This is the result');
         },
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.buildBase(base, function (err, r) {
@@ -206,7 +206,7 @@ describe('ComponentCreator', function () {
         base = function (deps, cb) {
           cb(null, deps.fmt('This is my %s', deps.location));
         },
-        d = new SimpleComponent(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err, r) {
@@ -226,7 +226,7 @@ describe('ComponentCreator', function () {
         base = function () {
           throw new Error('an intentional mistake');
         },
-        d = new SimpleComponent(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err) {
@@ -244,7 +244,7 @@ describe('ComponentCreator', function () {
         base = function (deps, cb) {
           cb(new Error('an intentional mistake'));
         },
-        d = new SimpleComponent(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err) {
@@ -261,7 +261,7 @@ describe('ComponentCreator', function () {
     it('provides a default implementation of the initialize function', function () {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function () {
             expect(this).to.be.equal(base);     // initializer to be called in the scope of component
             return this.toLowerCase();
@@ -277,7 +277,7 @@ describe('ComponentCreator', function () {
     it('should call the specified sync initializer with this as the base', function () {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function () {
             expect(this).to.be.equal(base);     // initializer to be called in the scope of component
             return this.toLowerCase();
@@ -296,7 +296,7 @@ describe('ComponentCreator', function () {
         deps = {
           location: 'home'
         },
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           dependencies: ['location'],
           initializer: function (deps) {
             expect(deps.location).to.be.equal('home');
@@ -314,7 +314,7 @@ describe('ComponentCreator', function () {
     it('should call the specified async initializer with this as the base', function (done) {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function (deps, cb) {
             expect(this).to.be.equal(base);     // initializer to be called in the scope of base value
             cb(null, this.toLowerCase());
@@ -334,7 +334,7 @@ describe('ComponentCreator', function () {
         deps = {
           location: 'home'
         },
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           dependencies: ['location'],
           initializer: function (deps, cb) {
             expect(deps.location).to.be.equal('home');
@@ -353,7 +353,7 @@ describe('ComponentCreator', function () {
     it('should return base value if sync initializer does not return any value', function () {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function () {
             return null;
           }
@@ -368,7 +368,7 @@ describe('ComponentCreator', function () {
     it('should return base value if async initializer does not return any value', function (done) {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function (deps, cb) {
             cb(null, null);
           }
@@ -384,7 +384,7 @@ describe('ComponentCreator', function () {
     it('should not invoke initializer if not specified and return base value', function (done) {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base),
+        d = new SimpleComponentDefinition(n, base),
         c = new ComponentCreator(d);
 
       c.initialize(base, function (err, r) {
@@ -396,7 +396,7 @@ describe('ComponentCreator', function () {
     it('should invoke callback with error if sync initializer throws an error', function () {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function () {
             throw new Error('an intentional mistake');
           }
@@ -411,7 +411,7 @@ describe('ComponentCreator', function () {
     it('should invoke callback with error if async initializer sends an error', function (done) {
       var n = 'myComponent',
         base = 'This is my message',
-        d = new SimpleComponent(n, base, {
+        d = new SimpleComponentDefinition(n, base, {
           initializer: function (deps, cb) {
             cb(new Error('an accidental mistake'));
           }
