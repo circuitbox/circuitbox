@@ -71,5 +71,24 @@ describe('Utilities', function () {
       });
 
     });
+
+    it('should skip all non-functions in the specified list of functions', function () {
+      var cxt = 'foo bar',
+          fxs = _.times(10, function () { return sinon.spy(); }),
+          bf;
+
+      fxs.concat(['This is not a function']);
+
+      bf = bindAllTo(cxt, fxs);
+
+      expect(bf.length).to.be.equal(10);
+
+      async.waterfall(bf, function () {
+        _.each(fxs, function (fx) {
+          fx.calledOn(cxt);
+        });
+      });
+
+    });
   });
 });
