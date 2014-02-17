@@ -43,12 +43,26 @@ describe('SimpleComponentCreator', function () {
         fmt: fmt,
         location: 'home'
       },
-      c = new SimpleComponent(n, v, { dependencies: ['utils', 'location'] }),
+      c = new SimpleComponent(n, v, { dependencies: ['fmt', 'location'] }),
       cc = new SimpleComponentCreator(c, deps);
 
     cc.create(function (err, r) {
       expect(err).to.be.null;
       expect(r).to.be.equal('This is my home');
+      done();
+    });
+  });
+
+  it('should invoke callback with error if base value creation threw an error', function (done) {
+    var n = 'myComponent',
+      v = function () {
+        throw new Error('accidental mistake');
+      },
+      c = new SimpleComponent(n, v),
+      cc = new SimpleComponentCreator(c);
+
+    cc.create(function (err) {
+      expect(err.message).to.be.equal('accidental mistake');
       done();
     });
   });
@@ -67,6 +81,27 @@ describe('SimpleComponentCreator', function () {
       done();
     });
 
+  });
+
+  it('should invoke callback with error if initializer threw an error', function (done) {
+    var n = 'myComponent',
+      v = function (deps) {
+        return deps.fmt('This is my %s', deps.location);
+      },
+      deps = {
+        fmt: fmt,
+        location: 'home'
+      },
+      izr = function () {
+        throw new Error('accidental mistake');
+      },
+      c = new SimpleComponent(n, v, { dependencies: ['fmt', 'location'], initializer: izr }),
+      cc = new SimpleComponentCreator(c, deps);
+
+    cc.create(function (err) {
+      expect(err.message).to.be.equal('accidental mistake');
+      done();
+    });
   });
 
 });
