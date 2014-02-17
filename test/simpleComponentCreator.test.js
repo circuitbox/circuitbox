@@ -8,7 +8,7 @@
 
 var expect = require('chai').expect,
     sinon = require('sinon'),
-    fmt = require('util').format,
+    fmt = require('../lib/utils').fmt,
     ComponentDefinition = require('../lib/componentDefinition'),
     SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator'),

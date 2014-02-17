@@ -8,7 +8,7 @@
 
 var context = describe,
     expect = require('chai').expect,
-    fmt = require('util').format,
+    fmt = require('../lib/utils').fmt,
     SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator');
 
@@ -25,7 +25,7 @@ describe('ComponentCreator', function () {
         return deps.fmt.sprintf('This is my %s', deps.location);
       },
       d = new SimpleComponentDefinition(n, base, {
-        dependencies: ['utils', 'location']
+        dependencies: ['u', 'location']
       }),
       c = new ComponentCreator(d, deps);
 
@@ -170,7 +170,7 @@ describe('ComponentCreator', function () {
           return deps.fmt('This is my %s', deps.location);
         },
         d = new SimpleComponentDefinition(n, base, {
-          dependencies: ['utils', 'location']
+          dependencies: ['u', 'location']
         }),
         c = new ComponentCreator(d, deps);
 
@@ -206,7 +206,7 @@ describe('ComponentCreator', function () {
         base = function (deps, cb) {
           cb(null, deps.fmt('This is my %s', deps.location));
         },
-        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['u', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err, r) {
@@ -226,7 +226,7 @@ describe('ComponentCreator', function () {
         base = function () {
           throw new Error('an intentional mistake');
         },
-        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['u', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err) {
@@ -244,7 +244,7 @@ describe('ComponentCreator', function () {
         base = function (deps, cb) {
           cb(new Error('an intentional mistake'));
         },
-        d = new SimpleComponentDefinition(n, base, { dependencies: ['utils', 'location'] }),
+        d = new SimpleComponentDefinition(n, base, { dependencies: ['u', 'location'] }),
         c = new ComponentCreator(d, deps);
 
       c.buildBase(base, function (err) {

@@ -7,7 +7,7 @@
 'use strict';
 
 var expect = require('chai').expect,
-    fmt = require('util').format,
+    fmt = require('../lib/utils').fmt,
     ComponentDefinition = require('../lib/componentDefinition'),
     ModuleComponentDefinition = require('../lib/moduleComponentDefinition'),
     ComponentCreator = require('../lib/componentCreator'),
