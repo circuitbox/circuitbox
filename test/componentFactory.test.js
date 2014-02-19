@@ -160,4 +160,50 @@ describe('ComponentFactory', function () {
 
   });
 
+  it('should invoke the callback with an error if the creation of a component failed', function (done) {
+    var n = 'message',
+        location = 'Bangalore',
+        lcd = new SimpleComponentDefinition('location', location, { scope: 'prototype' }),
+        mcd = new SimpleComponentDefinition(n, function () {
+          throw new Error('intentional mistake');
+        }, { scope: 'prototype', dependencies: ['location'] }),
+        cf = new ComponentFactory(registryApi);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['location', 'message']).once();
+    mr.expects('dependencyListFor').withArgs('location').returns(['location']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('find').withArgs('location').returns(lcd).once();
+
+    cf.create('message', function (err) {
+      expect(err.message).to.be.equal('intentional mistake');
+      done();
+    });
+
+  });
+
+  it('should invoke specified callback if the require component\'s dependency throws error', function (done) {
+    var n = 'message',
+        message = 'This is my %s',
+        lcd = new SimpleComponentDefinition('location', function () {
+          throw new Error('intentional mistake');
+        }, { scope: 'prototype' }),
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          return fmt(message, deps.location);
+        }, { scope: 'prototype', dependencies: ['location'] }),
+        cf = new ComponentFactory(registryApi);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['location', 'message']).once();
+    mr.expects('dependencyListFor').withArgs('location').returns(['location']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('find').withArgs('location').returns(lcd).once();
+
+    cf.create('message', function (err) {
+      expect(err.message).to.be.equal('intentional mistake');
+      done();
+    });
+
+  });
+
 });
