@@ -182,7 +182,7 @@ describe('ComponentFactory', function () {
 
   });
 
-  it('should invoke specified callback if the require component\'s dependency throws error', function (done) {
+  it('should invoke specified callback with error if the require component\'s dependency throws error', function (done) {
     var n = 'message',
         message = 'This is my %s',
         lcd = new SimpleComponentDefinition('location', function () {
@@ -201,6 +201,32 @@ describe('ComponentFactory', function () {
 
     cf.create('message', function (err) {
       expect(err.message).to.be.equal('intentional mistake');
+      done();
+    });
+
+  });
+
+  it('should invoke specified callback with error if no suitable ComponentCreator registered for ComponentDefinition', function (done) {
+    var n = 'message',
+        message = 'This is my %s',
+        lcd = new SimpleComponentDefinition('location', function () {
+          throw new Error('intentional mistake');
+        }, { scope: 'prototype' }),
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          return fmt(message, deps.location);
+        }, { scope: 'prototype', dependencies: ['location'] }),
+        cf = new ComponentFactory(registryApi);
+
+    ComponentCreatorFactory._reset();
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['location', 'message']).once();
+    mr.expects('dependencyListFor').withArgs('location').returns(['location']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('find').withArgs('location').returns(lcd).once();
+
+    cf.create('message', function (err) {
+      expect(err.message).to.be.equal('no registered ComponentCreator for component type SimpleComponentDefinition');
       done();
     });
 
