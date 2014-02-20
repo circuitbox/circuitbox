@@ -35,15 +35,31 @@ describe('ComponentFactory', function () {
     ComponentCreatorFactory._reset();
   });
 
-  it('should assemble target component and return to specified callback', function (done) {
+  it('should assemble target component specified as the component name and return to specified callback', function (done) {
     var n = 'myComponent',
       v = 'This is my message',
       cf = new ComponentFactory(registryApi);
 
-    mr.expects('dependencyListFor').withArgs('myComponent').returns([n]).once();
+    mr.expects('dependencyListFor').withArgs(n).returns([n]).once();
     mr.expects('find').withArgs(n).returns(new SimpleComponentDefinition(n, v, { scope: 'prototype' })).once();
 
     cf.create(n, function (err, r) {
+      expect(err).to.be.null;
+      expect(r).to.be.equal(v);
+      done();
+    });
+
+  });
+
+  it('should assemble target component specified as a ComponentDefinition and return to specified callback', function (done) {
+    var n = 'myComponent',
+      v = 'This is my message',
+      cf = new ComponentFactory(registryApi),
+      d = new SimpleComponentDefinition(n, v, { scope: 'prototype' });
+
+    mr.expects('dependencyListFor').withArgs(n).returns([n]).once();
+
+    cf.create(d, function (err, r) {
       expect(err).to.be.null;
       expect(r).to.be.equal(v);
       done();
@@ -82,6 +98,7 @@ describe('ComponentFactory', function () {
     var n = 'message',
         cf = new ComponentFactory(registryApi);
 
+    mr.expects('find').withArgs(n).returns(new SimpleComponentDefinition(n, 'ff', { scope: 'prototype' })).once();
     mr.expects('dependencyListFor').withArgs(n).throws(new Error('Cannot create a the component "message" due to unsatisfied dependencies: location')).once();
 
     cf.create(n, function (err) {
