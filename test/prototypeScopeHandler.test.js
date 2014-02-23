@@ -65,4 +65,19 @@ describe('PrototypeScopeHandler', function () {
     });
   });
 
+  it('should invoke callback with error if component creator throws error', function (done) {
+    var psh = new PrototypeScopeHandler(cf);
+
+    r.registerModule(function (reg) {
+      reg.for('foo').use(function () {
+        throw new Error('intentional mistake');
+      }).scopedAs('prototype');
+    });
+
+    psh.resolve(r.find('foo'), function (err) {
+      expect(err.message).to.be.equal('intentional mistake');
+      done();
+    });
+  });
+
 });
