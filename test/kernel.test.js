@@ -6,9 +6,18 @@
 
 'use strict';
 
-var expect = require('chai').expect,
+var _ = require('underscore'),
+    context = describe,
+    expect = require('chai').expect,
     sinon = require('sinon'),
-    Kernel = require('../lib/kernel');
+    Kernel = require('../lib/kernel'),
+    SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
+    ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory'),
+    SimpleComponentDefinitionBuilder = require('../lib/simpleComponentDefinitionBuilder'),
+    SimpleComponentCreator = require('../lib/simpleComponentCreator'),
+    ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
+    SingletonScopeHandler = require('../lib/singletonScopeHandler'),
+    ScopeHandlerFactory = require('../lib/scopeHandlerFactory');
 
 describe('Kernel', function () {
   /*jshint newcap: false*/
@@ -90,6 +99,102 @@ describe('Kernel', function () {
 
       done();
     });
+  });
+
+  context('when a component is required', function () {
+
+    beforeEach(function () {
+      ComponentDefinitionBuilderFactory.registerBuilder('use', SimpleComponentDefinitionBuilder);
+      ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
+      ScopeHandlerFactory.registerScopeHandler('singleton', SingletonScopeHandler);
+    });
+
+    afterEach(function () {
+      _.each([
+        ComponentDefinitionBuilderFactory,
+        ComponentCreatorFactory,
+        ScopeHandlerFactory
+      ], function (f) {
+        f._reset();
+      });
+    });
+
+    it('should invoke the specified callback with the component when requested', function (done) {
+      var n = 'message',
+          v = 'The quick brown fox jumped over the lazy dog';
+
+      Kernel('myKernel', {
+        modules: [
+          function (r) {
+            r.for(n).use(v);
+          }
+        ]
+      }).then(function (k) {
+        k.get(n, function (err, r) {
+          expect(r).to.be.equal(v);
+          done();
+        });
+      });
+
+    });
+
+    it('should invoke the specified callback with an error when requested component creation throws error', function (done) {
+      var n = 'message';
+
+      Kernel('myKernel', {
+        modules: [
+          function (r) {
+            r.for(n).use(function () {
+              throw new Error('intentional mistake');
+            });
+          }
+        ]
+      }).then(function (k) {
+        k.get(n, function (err) {
+          expect(err.message).to.be.equal('intentional mistake');
+          done();
+        });
+      });
+
+    });
+
+    it('should promise to provide a component when requested and fulfill it', function (done) {
+      var n = 'message',
+          v = 'The quick brown fox jumped over the lazy dog';
+
+      Kernel('myKernel', {
+        modules: [
+          function (r) {
+            r.for(n).use(v);
+          }
+        ]
+      }).then(function (k) {
+        k.get(n).then(function (r) {
+          expect(r).to.be.equal(v);
+          done();
+        });
+      });
+    });
+
+    it('should promise to provide a component when requested and reject it if component creation fails', function (done) {
+      var n = 'message';
+
+      Kernel('myKernel', {
+        modules: [
+          function (r) {
+            r.for(n).use(function () {
+              throw new Error('intentional mistake');
+            });
+          }
+        ]
+      }).then(function (k) {
+        k.get(n).then(function () {}, function (err) {
+          expect(err.message).to.be.equal('intentional mistake');
+          done();
+        });
+      });
+    });
+
   });
 
 });
