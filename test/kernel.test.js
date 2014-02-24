@@ -158,6 +158,16 @@ describe('Kernel', function () {
 
     });
 
+    it('should invoke the specified callback with an error when requested component is not registered', function (done) {
+      Kernel('myKernel').then(function (k) {
+        k.get('message', function (err) {
+          expect(err.message).to.be.equal('No definition found for component \'message\'');
+          done();
+        });
+      });
+
+    });
+
     it('should promise to provide a component when requested and fulfill it', function (done) {
       var n = 'message',
           v = 'The quick brown fox jumped over the lazy dog';
