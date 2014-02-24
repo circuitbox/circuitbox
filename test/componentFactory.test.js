@@ -16,7 +16,9 @@ var expect = require('chai').expect,
   SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
   SimpleComponentCreator = require('../lib/simpleComponentCreator'),
   ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
-  ComponentFactory = require('../lib/componentFactory');
+  ComponentFactory = require('../lib/componentFactory'),
+  PrototypeScopeHandler = require('../lib/prototypeScopeHandler'),
+  ScopeHandlerFactory = require('../lib/scopeHandlerFactory');
 
 describe('ComponentFactory', function () {
   /*jshint expr: true*/
@@ -24,6 +26,7 @@ describe('ComponentFactory', function () {
 
   beforeEach(function () {
     ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
+    ScopeHandlerFactory.registerScopeHandler('prototype', PrototypeScopeHandler);
 
     mr = sinon.mock(registryApi);
   });
@@ -33,6 +36,7 @@ describe('ComponentFactory', function () {
     mr.restore();
 
     ComponentCreatorFactory._reset();
+    ScopeHandlerFactory._reset();
   });
 
   it('should assemble target component specified as the component name and return to specified callback', function (done) {
