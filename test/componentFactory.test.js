@@ -205,8 +205,6 @@ describe('ComponentFactory', function () {
 
   it('should invoke the callback with an error if the creation of a component failed when a dependency was not registered', function (done) {
     var n = 'message',
-//        location = 'Bangalore',
-//        lcd = new SimpleComponentDefinition('location', location, { scope: 'prototype' }),
         mcd = new SimpleComponentDefinition(n, function () {
           throw new Error('intentional mistake');
         }, { scope: 'prototype', dependencies: ['location'] }),
