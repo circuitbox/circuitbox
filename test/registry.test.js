@@ -27,7 +27,25 @@ describe('Registry', function () {
     expect(m.getCall(0).args[0].for).to.be.a('function');
   });
 
-  it('should register specified module and build component defintions', function () {
+  it('should load and call the module passing a registry to register components if module specified as module-id', function () {
+    var r = new Registry(),
+        aModule = require('./fixtures/aModule');
+
+    r.registerModule('./test/fixtures/aModule');
+
+    expect(aModule.calledOnce).to.be.true;
+    expect(aModule.getCall(0).args[0].for).to.be.a('function');
+  });
+
+  it('should throw error if an attempt is made to register a module specified as a non-function or non-string', function () {
+    var r = new Registry();
+
+    expect(function () {
+      r.registerModule(5387);
+    }).to.throw('a module must be a function or a module-id string');
+  });
+
+  it('should register specified module and build component definitions', function () {
     var r = new Registry();
 
     ComponentDefinitionBuilderFactory.registerBuilder('use', SimpleComponentDefinitionBuilder);
