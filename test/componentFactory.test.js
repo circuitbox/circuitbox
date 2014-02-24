@@ -203,6 +203,27 @@ describe('ComponentFactory', function () {
 
   });
 
+  it('should invoke the callback with an error if the creation of a component failed when a dependency was not registered', function (done) {
+    var n = 'message',
+//        location = 'Bangalore',
+//        lcd = new SimpleComponentDefinition('location', location, { scope: 'prototype' }),
+        mcd = new SimpleComponentDefinition(n, function () {
+          throw new Error('intentional mistake');
+        }, { scope: 'prototype', dependencies: ['location'] }),
+        cf = new ComponentFactory(registryApi);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['location', 'message']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('find').withArgs('location').throws(new Error('not registered')).once();
+
+    cf.create('message', function (err) {
+      expect(err.message).to.be.equal('not registered');
+      done();
+    });
+
+  });
+
   it('should invoke specified callback with error if the require component\'s dependency throws error', function (done) {
     var n = 'message',
         message = 'This is my %s',
