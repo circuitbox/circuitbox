@@ -86,4 +86,32 @@ describe('circuitbox', function () {
     });
   });
 
+  it('should load a specified binding module passing it a binder and create a new circuitbox and invoke the callback', function (done) {
+    /*jshint expr: true*/
+
+    circuitbox.withBindings('./test/fixtures/aBinding').create(function () {
+      done();
+    });
+
+  });
+
+  it('should load a specified binding module passing it a binder and create a new circuitbox and fulfill a promise', function (done) {
+    /*jshint expr: true*/
+
+    circuitbox.withBindings('./test/fixtures/aBinding').create().then(function () {
+      done();
+    });
+
+  });
+
+  it('should prefix binding module id with "circuitbox-", then load it by passing it a binder and create a new circuitbox', function (done) {
+    /*jshint expr: true*/
+
+    circuitbox.withBindings('express').create().then(function () {}, function (err) {
+      expect(err.message).to.be.equal('Cannot find module \'circuitbox-express\'');
+      done();
+    });
+
+  });
+
 });
