@@ -1,3 +1,9 @@
+/*!
+ * circuitbox
+ * Copyright(c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 var circuitbox = require('../../lib');
@@ -15,7 +21,7 @@ circuitbox.create({
       registry.for('subscriber').requires('./eventSubscriber').dependsOn('console', 'bus');
     }
   ]
-}).done(function (cbox) {
+}).then(function (cbox) {
   
   // get a subscriber
   cbox.get('subscriber', function (err, subscriber) {

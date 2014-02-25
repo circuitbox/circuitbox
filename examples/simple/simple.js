@@ -1,3 +1,9 @@
+/*!
+ * circuitbox
+ * Copyright(c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 // our simple message source
@@ -29,10 +35,10 @@ circuitbox.create({
         .dependsOn('messageSource');
     }
   ]
-}).done(function (cbx) {
+}).then(function (cbx) {
   
   // get the message printer and print a message
-  cbx.get('messagePrinter').done(function (printer) {
+  cbx.get('messagePrinter').then(function (printer) {
     printer.print();
   }, function (err) {
     console.log('Could not recieve a printer', err);
