@@ -21,7 +21,7 @@ gulp.task('test', ['lint'], function (done) {
   var mocha = tasks.mocha;
 
   gulp.src(['./test/**/*.js', '!./test/fixtures/*'])
-//    .pipe(plumber())
+    .pipe(plumber())
     .pipe(mocha({reporter: 'spec'}))
     .on('end', done);
 });
