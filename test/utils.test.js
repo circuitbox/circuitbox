@@ -16,6 +16,30 @@ describe('Utilities', function () {
 
   var utils = require('../lib/utils');
 
+  describe('#arrgs()', function () {
+
+    function shell() {
+      return utils.arrgs(arguments);
+    }
+
+    it('should return empty array if called with no arguments', function () {
+      expect(shell()).to.be.eql([]);
+    });
+
+    it('should return array with single item if called with single arguments', function () {
+      expect(shell('foo')).to.be.eql(['foo']);
+    });
+
+    it('should return array with all argument items passed to function', function () {
+      expect(shell('foo', 'bar')).to.be.eql(['foo', 'bar']);
+    });
+
+    it('should return array with all items passed as array to function', function () {
+      expect(shell(['foo', 'bar'])).to.be.eql(['foo', 'bar']);
+    });
+
+  });
+
   describe('#normalizeModulePath()', function () {
     var originalCwd,
         normalizeModulePath = utils.normalizeModulePath;
