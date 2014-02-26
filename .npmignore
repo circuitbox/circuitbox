@@ -1,5 +1,9 @@
 support
 test
 Makefile
+spec/
+docs/
+examples/
+coverage/
 *.sublime-*
 .idea/
