@@ -98,6 +98,23 @@ describe('ComponentFactory', function () {
 
   });
 
+  it('should inject process.env to components via the dependencies field without explicit dependency', function (done) {
+    var n = 'target',
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          return deps.env;
+        }, { scope: 'prototype' }),
+        cf = new ComponentFactory(registryApi);
+
+    mr.expects('dependencyListFor').withArgs(n).returns([n]).once();
+    mr.expects('find').withArgs(n).returns(mcd).once();
+
+    cf.create(n, function (err, r) {
+      expect(r).to.be.equal(process.env);
+      done();
+    });
+
+  });
+
   it('should throw error if a dependency is undefined for a specified component', function (done) {
     var n = 'message',
         cf = new ComponentFactory(registryApi);
