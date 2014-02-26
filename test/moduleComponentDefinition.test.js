@@ -8,11 +8,23 @@
 
 var expect = require('chai').expect,
     sinon = require('sinon'),
+    path = require('path'),
+    fmt = require('util').format,
     ComponentDefinition = require('../lib/componentDefinition'),
     ModuleComponentDefinition = require('../lib/moduleComponentDefinition');
 
 describe('ModuleComponentDefinition', function () {
   /*jshint expr: false*/
+
+  beforeEach(function () {
+    global.__cbx = {
+      _basePath: __dirname
+    };
+  });
+
+  afterEach(function () {
+    global.__cbx = undefined;
+  });
 
   it('should not be possible to create without a module-id', function () {
 
@@ -31,30 +43,17 @@ describe('ModuleComponentDefinition', function () {
 
   });
 
-  it('should return the module-id normalized to process.cwd()', function () {
-    var originalCwd = process.cwd;
-
-    process.cwd = sinon.stub().returns('/foo/bar');
-
-    var c = new ModuleComponentDefinition('myComponent', './foo');
-
-    expect(c.moduleId).to.be.equal('/foo/bar/foo');
-
-    process.cwd = originalCwd;
+  it('should return the module-id normalized to global base path', function () {
+    expect(new ModuleComponentDefinition('myComponent', './foo').moduleId).to.be.equal(path.join(__dirname, './foo'));
   });
 
   it('should load the module ', function () {
-    var originalCwd = process.cwd;
-
-    process.cwd = sinon.stub().returns('/foo/bar');
-
-    var c = new ModuleComponentDefinition('myComponent', './foo');
+    var c = new ModuleComponentDefinition('myComponent', './foo'),
+        ep = path.join(__dirname, './foo');
 
     expect(function () {
       c.load();
-    }).to.throw('Cannot find module \'/foo/bar/foo\'');
-
-    process.cwd = originalCwd;
+    }).to.throw(fmt('Cannot find module \'%s\'', ep));
   });
 
 });

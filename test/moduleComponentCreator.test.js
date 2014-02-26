@@ -16,13 +16,23 @@ var expect = require('chai').expect,
 describe('ModuleComponentCreator', function () {
   /*jshint expr: true*/
 
+  beforeEach(function () {
+    global.__cbx = {
+      _basePath: __dirname
+    };
+  });
+
+  afterEach(function () {
+    global.__cbx = undefined;
+  });
+
   it('should inherit ComponentCreator', function () {
     expect(ModuleComponentCreator.super_).to.be.equal(ComponentCreator);
   });
 
   it('should assemble non-function component and pass to specified callback', function (done) {
     var n = 'myComponent',
-        c = new ModuleComponentDefinition(n, './test/fixtures/stringComponent'),
+        c = new ModuleComponentDefinition(n, './fixtures/stringComponent'),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err, r) {
@@ -52,7 +62,7 @@ describe('ModuleComponentCreator', function () {
         fmt: fmt,
         name: 'Homer Simpson'
       },
-      c = new ModuleComponentDefinition(n, './test/fixtures/helloMessageComposer', { dependencies: ['fmt', 'name'] }),
+      c = new ModuleComponentDefinition(n, './fixtures/helloMessageComposer', { dependencies: ['fmt', 'name'] }),
       cc = new ModuleComponentCreator(c, deps);
 
     cc.create(function (err, r) {
@@ -64,7 +74,7 @@ describe('ModuleComponentCreator', function () {
 
   it('should assemble component, initialize it with initializer and pass component to specified callback', function (done) {
     var n = 'myComponent',
-      c = new ModuleComponentDefinition(n, './test/fixtures/objectComponent', {
+      c = new ModuleComponentDefinition(n, './fixtures/objectComponent', {
         initializer: function () {
           return this.firstName + ' ' + this.lastName;
         }
@@ -81,7 +91,7 @@ describe('ModuleComponentCreator', function () {
 
   it('should invoke callback with error if base value creation threw an error', function (done) {
     var n = 'myComponent',
-        c = new ModuleComponentDefinition(n, './test/fixtures/errorThrower'),
+        c = new ModuleComponentDefinition(n, './fixtures/errorThrower'),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err) {
@@ -95,7 +105,7 @@ describe('ModuleComponentCreator', function () {
         izr = function () {
           throw new Error('accidental mistake');
         },
-        c = new ModuleComponentDefinition(n, './test/fixtures/stringComponent', { initializer: izr }),
+        c = new ModuleComponentDefinition(n, './fixtures/stringComponent', { initializer: izr }),
         cc = new ModuleComponentCreator(c);
 
     cc.create(function (err) {
