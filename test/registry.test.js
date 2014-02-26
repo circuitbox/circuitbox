@@ -17,6 +17,16 @@ var context = describe,
 describe('Registry', function () {
   /*jshint expr: true*/
 
+  beforeEach(function () {
+    global.__cbx = {
+      _basePath: __dirname
+    };
+  });
+
+  afterEach(function () {
+    global.__cbx = undefined;
+  });
+
   it('should call the module passing a registry to register components', function () {
     var r = new Registry(),
         m = sinon.spy();
@@ -31,7 +41,7 @@ describe('Registry', function () {
     var r = new Registry(),
         aModule = require('./fixtures/aModule');
 
-    r.registerModule('./test/fixtures/aModule');
+    r.registerModule('./fixtures/aModule');
 
     expect(aModule.calledOnce).to.be.true;
     expect(aModule.getCall(0).args[0].for).to.be.a('function');
