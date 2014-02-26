@@ -35,7 +35,7 @@ circuitbox.create({
       setTimeout(function () {
         publisher.publish('The quick brown fox jumped over the lazy dog!');
       }, 5000);
-       
+
     });
 
   });
