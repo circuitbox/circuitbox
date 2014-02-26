@@ -248,7 +248,7 @@ Great, so far so good. Now we have defined all our components to `circuitbox`, s
 
 `circuitbox` provides 2 styles of asynchronous constructs, the [callback](http://book.mixu.net/node/ch7.html) style and the promises style. The `create` method on `circuitbox` not only takes the component configuration, you can optionally specify a callback function as the second parameter. This callback function takes 2 parameter an `err` parameter and the `circuitbox` parameter. The former is provided if there was an error initializing the configuration and creating a container. The latter is a fully initialized `circuitbox` DI container which can be used to request components.
 
-The above code snippet demonstrates the [promise](http://promises-aplus.github.io/promises-spec/) style of asynchronous constructs. `circuitbox` uses the [when.js](https://github.com/cujojs/when) library for implementing promises. If the `create` method is not provided a callback, it triggers an initialization of the DI container and returns a promise object. We chain onto the promise object and call the `done` method which recieves a fully initialized `circuitbox` container.
+The above code snippet demonstrates the [promise](http://promises-aplus.github.io/promises-spec/) style of asynchronous constructs. `circuitbox` uses the [Q](https://github.com/kriskowal/q) library for implementing promises. If the `create` method is not provided a callback, it triggers an initialization of the DI container and returns a promise object. We chain onto the promise object and call the `done` method which receives a fully initialized `circuitbox` container.
 
 Regardless of the style you prefer to use, once you have a instance of `circuitbox` container, you can call the `get` method passing the name of the component you require. Like the `create` method, the `get` method also takes an optional callback which is called when the requested component is created and initialized. As demonstrated above, the `get` method also returns a promise object in the absence of a callback argument.
 
@@ -270,11 +270,13 @@ module.exports = function CreditCardProcessor (processor, transactionLog) {
 So what are the next set of features on the project?
 
 - Support for aliasing components with additional names
-- Bindings to popular libraries. These however, may be published as separate libraries. I am considering  libraries such as:
-  -  express - In progress. See [circuitbox-express](https://github.com/oddjobsman/circuitbox-express)
+- Support for the browser - via [browserify](http://browserify.org/)
+- Bindings to popular libraries. These however, will be published as separate libraries. I am considering  libraries such as:
+  -  express - In progress. See [circuitbox-express](https://github.com/circuitbox/circuitbox-express)
+  -  redis - In progress. See [circuitbox-redis](https://github.com/circuitbox/circuitbox-redis)
   -  mongoose
   -  mysql
-  -  redis
+
 
 Head over to the [waffle.io](https://waffle.io/circuitbox/circuitbox) page - [![Stories in Ready](https://badge.waffle.io/circuitbox/circuitbox.png?label=ready)](https://waffle.io/circuitbox/circuitbox) for a better view of things to come.
 
@@ -282,7 +284,7 @@ Head over to the [waffle.io](https://waffle.io/circuitbox/circuitbox) page - [![
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Follow the [coding conventions](http://github.com/oddjobsman/circuitbox/wiki/Coding-Conventions)
+3. Follow the [coding conventions](http://github.com/circuitbox/circuitbox/wiki/Coding-Conventions)
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create new Pull Request
