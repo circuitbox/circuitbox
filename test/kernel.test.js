@@ -17,11 +17,28 @@ var _ = require('underscore'),
     SimpleComponentCreator = require('../lib/simpleComponentCreator'),
     ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
     SingletonScopeHandler = require('../lib/singletonScopeHandler'),
-    ScopeHandlerFactory = require('../lib/scopeHandlerFactory');
+    ScopeHandlerFactory = require('../lib/scopeHandlerFactory'),
+    EventEmitter = require('events').EventEmitter;
 
 describe('Kernel', function () {
   /*jshint newcap: false*/
   /*jshint expr: true*/
+
+  beforeEach(function () {
+    ComponentDefinitionBuilderFactory.registerBuilder('use', SimpleComponentDefinitionBuilder);
+    ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
+    ScopeHandlerFactory.registerScopeHandler('singleton', SingletonScopeHandler);
+  });
+
+  afterEach(function () {
+    _.each([
+      ComponentDefinitionBuilderFactory,
+      ComponentCreatorFactory,
+      ScopeHandlerFactory
+    ], function (f) {
+      f._reset();
+    });
+  });
 
   it('should invoke callback once created', function () {
     var cb = sinon.spy();
@@ -102,22 +119,6 @@ describe('Kernel', function () {
   });
 
   context('when a component is required', function () {
-
-    beforeEach(function () {
-      ComponentDefinitionBuilderFactory.registerBuilder('use', SimpleComponentDefinitionBuilder);
-      ComponentCreatorFactory.registerCreator(SimpleComponentDefinition, SimpleComponentCreator);
-      ScopeHandlerFactory.registerScopeHandler('singleton', SingletonScopeHandler);
-    });
-
-    afterEach(function () {
-      _.each([
-        ComponentDefinitionBuilderFactory,
-        ComponentCreatorFactory,
-        ScopeHandlerFactory
-      ], function (f) {
-        f._reset();
-      });
-    });
 
     it('should invoke the specified callback with the component when requested', function (done) {
       var n = 'message',
@@ -200,6 +201,15 @@ describe('Kernel', function () {
       }).then(function (k) {
         k.get(n).then(function () {}, function (err) {
           expect(err.message).to.be.equal('intentional mistake');
+          done();
+        });
+      });
+    });
+
+    it('should load CoreModule at the time of creation even if no modules are specified', function (done) {
+      Kernel('myKernel').then(function (k) {
+        k.get('bus').then(function (bus) {
+          expect(bus).to.be.an.instanceof(EventEmitter);
           done();
         });
       });
