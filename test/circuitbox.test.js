@@ -71,6 +71,14 @@ describe('circuitbox', function () {
     });
   });
 
+  it('should record the parent module path when created', function (done) {
+    circuitbox.create('myKernel', function (err, k) {
+      expect(global.__cbx._basePath).to.be.equal(__dirname);
+      expect(k.name).to.be.equal('myKernel');
+      done();
+    });
+  });
+
   it('should be able to create a new Circuitbox with specified bindings', function (done) {
     var modA = sinon.spy(),
         modB = sinon.spy();
@@ -89,7 +97,7 @@ describe('circuitbox', function () {
   it('should load a specified binding module passing it a binder and create a new circuitbox and invoke the callback', function (done) {
     /*jshint expr: true*/
 
-    circuitbox.withBindings('./test/fixtures/aBinding').create(function () {
+    circuitbox.withBindings('./fixtures/aBinding').create(function () {
       done();
     });
 
@@ -98,7 +106,7 @@ describe('circuitbox', function () {
   it('should load a specified binding module passing it a binder and create a new circuitbox and fulfill a promise', function (done) {
     /*jshint expr: true*/
 
-    circuitbox.withBindings('./test/fixtures/aBinding').create().then(function () {
+    circuitbox.withBindings('./fixtures/aBinding').create().then(function () {
       done();
     });
 
