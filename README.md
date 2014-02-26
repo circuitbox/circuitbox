@@ -73,10 +73,10 @@ circuitbox.create({
         .dependsOn('messageSource');
     }
   ]
-}).done(function (cbx) {
+}).then(function (cbx) {
   
   // get the message printer and print a message
-  cbx.get('messagePrinter').done(function (printer) {
+  cbx.get('messagePrinter').then(function (printer) {
     printer.print();
   }, function (err) {
     console.log('Could not recieve a printer');
@@ -212,10 +212,10 @@ circuitbox.create({
         .dependsOn('messageSource');
     }
   ]
-}).done(function (cbx) {
+}).then(function (cbx) {
 
   // get the message printer and print a message
-  cbx.get('messagePrinter').done(function (printer) {
+  cbx.get('messagePrinter').then(function (printer) {
     printer.print();
   }, function (err) {
     console.log('Could not recieve a printer');
@@ -276,7 +276,7 @@ So what are the next set of features on the project?
   -  mysql
   -  redis
 
-Head over to the [waffle.io](https://waffle.io/oddjobsman/circuitbox) page for a better view of things to come.
+Head over to the [waffle.io](https://waffle.io/circuitbox/circuitbox) page - [![Stories in Ready](https://badge.waffle.io/circuitbox/circuitbox.png?label=ready)](https://waffle.io/circuitbox/circuitbox) for a better view of things to come.
 
 ## Contributing
 
