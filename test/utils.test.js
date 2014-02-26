@@ -55,21 +55,34 @@ describe('Utilities', function () {
       process.cwd = originalCwd;
     });
 
+    it('should relativize path to specified base path if relative to base path', function () {
+      expect(normalizeModulePath('./voo', '/moo/bar')).to.be.equal('/moo/bar/voo');
+    });
+
+    it('should relativize path to specified base path if relative to base path\'s parent directory', function () {
+      expect(normalizeModulePath('../voo', '/moo/bar')).to.be.equal('/moo/voo');
+    });
+
+    it('should relativize path to specified base path if relative to root directory', function () {
+      expect(normalizeModulePath('/voo', '/moo/bar')).to.be.equal('/moo/bar/voo');
+    });
+
     it('should return module ID as-is if absolute', function () {
       expect(normalizeModulePath('foo')).to.be.equal('foo');
     });
 
-    it('shoulrn path relativized to process.cwd() if relative to current directory', function () {
+    it('should relativize path to process.cwd() if relative to current directory', function () {
       expect(normalizeModulePath('./voo')).to.be.equal('/foo/bar/voo');
     });
 
-    it('shoulrn path relativized to process.cwd() if relative to parent directory', function () {
+    it('should relativize path to process.cwd() if relative to parent directory', function () {
       expect(normalizeModulePath('../voo')).to.be.equal('/foo/voo');
     });
 
-    it('shoulrn path relativized to process.cwd() if relative to module root directory', function () {
+    it('should relativize path process.cwd() if relative to module root directory', function () {
       expect(normalizeModulePath('/voo')).to.be.equal('/foo/bar/voo');
     });
+
   });
 
   describe('#bindAllTo()', function () {
