@@ -7,6 +7,7 @@
 'use strict';
 
 var _ = require('underscore'),
+    path = require('path'),
     async = require('async'),
     expect = require('chai').expect,
     sinon = require('sinon');
@@ -49,37 +50,45 @@ describe('Utilities', function () {
       process.cwd = function () {
         return '/foo/bar';
       };
+
+      global.__cbx = {
+        _basePath: __dirname
+      };
     });
 
     afterEach(function () {
       process.cwd = originalCwd;
-    });
-
-    it('should relativize path to specified base path if relative to base path', function () {
-      expect(normalizeModulePath('./voo', '/moo/bar')).to.be.equal('/moo/bar/voo');
-    });
-
-    it('should relativize path to specified base path if relative to base path\'s parent directory', function () {
-      expect(normalizeModulePath('../voo', '/moo/bar')).to.be.equal('/moo/voo');
-    });
-
-    it('should relativize path to specified base path if relative to root directory', function () {
-      expect(normalizeModulePath('/voo', '/moo/bar')).to.be.equal('/moo/bar/voo');
+      global.__cbx = undefined;
     });
 
     it('should return module ID as-is if absolute', function () {
       expect(normalizeModulePath('foo')).to.be.equal('foo');
     });
 
+    it('should relativize path to global base path if relative to base path', function () {
+      expect(normalizeModulePath('./voo')).to.be.equal(path.join(__dirname, './voo'));
+    });
+
+    it('should relativize path to global base path if relative to base path\'s parent directory', function () {
+      expect(normalizeModulePath('../voo')).to.be.equal(path.join(__dirname, '../voo'));
+    });
+
+    it('should relativize path to global base path if relative to root directory', function () {
+      expect(normalizeModulePath('/voo')).to.be.equal(path.join(__dirname, '/voo'));
+    });
+
     it('should relativize path to process.cwd() if relative to current directory', function () {
+      global.__cbx = undefined;
       expect(normalizeModulePath('./voo')).to.be.equal('/foo/bar/voo');
     });
 
     it('should relativize path to process.cwd() if relative to parent directory', function () {
+      global.__cbx = undefined;
       expect(normalizeModulePath('../voo')).to.be.equal('/foo/voo');
     });
 
     it('should relativize path process.cwd() if relative to module root directory', function () {
+      global.__cbx = undefined;
       expect(normalizeModulePath('/voo')).to.be.equal('/foo/bar/voo');
     });
 

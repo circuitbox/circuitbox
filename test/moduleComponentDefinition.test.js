@@ -7,7 +7,6 @@
 'use strict';
 
 var expect = require('chai').expect,
-    sinon = require('sinon'),
     path = require('path'),
     fmt = require('util').format,
     ComponentDefinition = require('../lib/componentDefinition'),
