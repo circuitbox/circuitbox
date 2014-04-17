@@ -1,6 +1,6 @@
 {
   "name": "circuitbox",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.1",
   "description": "A dependency-injection framework for node.js",
   "main": "./lib/index.js",
   "homepage": "http://circuitbox.oddjobsman.me",
