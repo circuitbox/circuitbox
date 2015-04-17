@@ -14,6 +14,16 @@ var expect = require('chai').expect,
 
 describe('ModuleComponentDefinitionBuilder', function () {
 
+  beforeEach(function () {
+    global.__cbx = {
+      _basePath: __dirname
+    };
+  });
+
+  afterEach(function () {
+    global.__cbx = undefined;
+  });
+
   it('inherits ComponentDefinitionBuilder', function () {
     expect(ModuleComponentDefinitionBuilder.super_).to.be.equal(ComponentDefinitionBuilder);
   });
@@ -37,7 +47,7 @@ describe('ModuleComponentDefinitionBuilder', function () {
     expect(d.scope).to.be.equal('prototype');
     expect(d.initializer).to.be.equal(i);
     expect(d.dependencies).to.be.eql(deps);
-    expect(d.moduleId).to.be.equal('/foo/bar/foo');
+    expect(d.moduleId).to.be.equal(__dirname + '/foo');
 
     process.cwd = originalCwd;
   });
