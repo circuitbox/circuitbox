@@ -2,10 +2,10 @@
 
 A dependency injection framework for node.js. It does true dependency injection and also supports asynchronous creation and initialization of components.
 
-[![NPM version](https://badge.fury.io/js/circuitbox.png)](http://badge.fury.io/js/circuitbox)
-[![build status](https://secure.travis-ci.org/circuitbox/circuitbox.png)](http://travis-ci.org/circuitbox/circuitbox)
-[![dependency status](https://david-dm.org/circuitbox/circuitbox.png)](https://david-dm.org/circuitbox/circuitbox)
-[![Coverage Status](https://coveralls.io/repos/circuitbox/circuitbox/badge.png?branch=master)](https://coveralls.io/r/circuitbox/circuitbox?branch=master)
+[![NPM version](https://img.shields.io/npm/v/circuitbox.svg)](https://www.npmjs.com/package/circuitbox)
+[![build status](https://img.shields.io/travis/circuitbox/circuitbox.svg)](http://travis-ci.org/circuitbox/circuitbox)
+[![dependency status](https://img.shields.io/david/circuitbox/circuitbox.svg)](https://david-dm.org/circuitbox/circuitbox)
+[![Coverage Status](https://img.shields.io/coveralls/circuitbox/circuitbox.svg)](https://coveralls.io/r/circuitbox/circuitbox?branch=master)
 
 [![NPM](https://nodei.co/npm/circuitbox.png?stars=true&downloads=true)](https://nodei.co/npm/circuitbox/)
 
@@ -74,7 +74,7 @@ circuitbox.create({
     }
   ]
 }).then(function (cbx) {
-  
+
   // get the message printer and print a message
   cbx.get('messagePrinter').then(function (printer) {
     printer.print();
