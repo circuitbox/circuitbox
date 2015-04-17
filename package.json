@@ -9,7 +9,7 @@
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "engines": {
-    "node": ">=0.9"
+    "node": ">=0.10"
   },
   "repository": {
     "type": "git",
@@ -20,29 +20,32 @@
     "di",
     "dependency injection"
   ],
-  "author": "Circuitbox Team",
+  "author": "Ranganath Kini <codematix@codematix.me>",
+  "contributors": [
+    "intuitivcloud Engineering <engineering@intuitivcloud.com"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/circuitbox/circuitbox/issues"
   },
   "dependencies": {
-    "async": "^0.7.0",
-    "q": "^1.0.1",
-    "underscore": "^1.6.0"
+    "async": "^0.9.0",
+    "lodash": "^3.7.0",
+    "q": "^1.2.0"
   },
   "devDependencies": {
-    "chai": "^1.9.1",
-    "coveralls": "^2.10.0",
-    "gulp": "^3.6.1",
-    "gulp-jshint": "^1.5.3",
-    "gulp-load-plugins": "^0.5.0",
-    "gulp-mocha": "^0.4.1",
-    "gulp-plumber": "^0.6.1",
-    "gulp-sloc": "~1.0.3",
-    "istanbul": "^0.2.7",
-    "jshint-stylish": "^0.1.5",
-    "mocha": "^1.18.2",
-    "mocha-lcov-reporter": "0.0.1",
-    "sinon": "^1.9.1"
+    "chai": "^2.2.0",
+    "coveralls": "^2.11.2",
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.10.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-mocha": "^2.0.1",
+    "gulp-plumber": "^1.0.0",
+    "gulp-sloc": "^1.0.4",
+    "istanbul": "^0.3.13",
+    "jshint-stylish": "^1.0.1",
+    "mocha": "^2.2.4",
+    "mocha-lcov-reporter": "0.0.2",
+    "sinon": "^1.14.1"
   }
 }

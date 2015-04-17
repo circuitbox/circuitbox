@@ -6,7 +6,7 @@
 
 'use strict';
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     expect = require('chai').expect,
     sinon = require('sinon'),
     circuitbox = require('../lib'),

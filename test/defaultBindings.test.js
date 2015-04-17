@@ -8,12 +8,12 @@
 
 var r = require,
     sinon = r('sinon'),
-  DefaultBindings = r('../lib/defaultBindings'),
-  binderApi = {
-    registerDefinitionBuilder: function () {},
-    registerComponentCreator: function () {},
-    registerScopeHandler: function () {}
-  };
+    DefaultBindings = r('../lib/defaultBindings'),
+    binderApi = {
+      registerDefinitionBuilder: function () {},
+      registerComponentCreator: function () {},
+      registerScopeHandler: function () {}
+    };
 
 describe('DefaultBindings', function () {
   /*jshint expr: true*/
