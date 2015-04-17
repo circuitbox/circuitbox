@@ -1,6 +1,7 @@
 /*!
  * circuitbox
- * Copyright(c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
+ * Copyright (c) 2014-2015 Ranganath Kini <codematix@codematix.me>
+ * Copyright (c) 2015 intuitivcloud Systems <engineering@intuitivcloud.com>
  * MIT Licensed
  */
 
@@ -13,7 +14,7 @@ circuitbox.create({
     function (registry) {
       // yes, the console itself can be registered as a component
       registry.for('console').use(global.console);
-      
+
       // our component which publishes events
       registry.for('publisher').requires('./eventPublisher').dependsOn('bus');
 
@@ -22,7 +23,7 @@ circuitbox.create({
     }
   ]
 }).then(function (cbox) {
-  
+
   // get a subscriber
   cbox.get('subscriber', function (err, subscriber) {
     subscriber.start();   // start subscription to events
