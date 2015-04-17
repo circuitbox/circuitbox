@@ -1,6 +1,7 @@
 /*!
  * circuitbox
- * Copyright(c) 2013 Ranganath Kini <oddjobsman@ranganathkini.com>
+ * Copyright (c) 2014-2015 Ranganath Kini <codematix@codematix.me>
+ * Copyright (c) 2015 intuitivcloud Engineering <engineering@intuitivcloud.com>
  * MIT Licensed
  */
 
