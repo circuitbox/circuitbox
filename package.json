@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "homepage": "http://circuitbox.oddjobsman.me",
   "scripts": {
-    "test": "node_modules/.bin/gulp ci",
+    "test": "make",
     "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
   "engines": {
@@ -36,13 +36,8 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "coveralls": "^2.11.2",
-    "gulp": "^3.8.11",
-    "gulp-jshint": "^1.10.0",
-    "gulp-load-plugins": "^0.10.0",
-    "gulp-mocha": "^2.0.1",
-    "gulp-plumber": "^1.0.0",
-    "gulp-sloc": "^1.0.4",
     "istanbul": "^0.3.13",
+    "jshint": "^2.7.0",
     "jshint-stylish": "^1.0.1",
     "mocha": "^2.2.4",
     "mocha-lcov-reporter": "0.0.2",
