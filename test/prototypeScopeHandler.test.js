@@ -6,7 +6,7 @@
 
 'use strict';
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     expect = require('chai').expect,
     PrototypeScopeHandler = require('../lib/prototypeScopeHandler'),
     ScopeHandler = require('../lib/scopeHandler'),

@@ -6,7 +6,7 @@
 
 'use strict';
 
-var _ = require('underscore'),
+var _ = require('lodash'),
     expect = require('chai').expect,
     SingletonScopeHandler = require('../lib/singletonScopeHandler'),
     ScopeHandler = require('../lib/scopeHandler'),
