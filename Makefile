@@ -13,7 +13,7 @@ MOCHA_OPTS=-u bdd -b
 
 all: lint test
 
-lint: $(LIB)
+lint: $(LIB) $(TESTS)
 	@$(BIN)/jshint --reporter=$(REPORTER) -c ./.jshintrc $?
 
 test: $(TESTS)
