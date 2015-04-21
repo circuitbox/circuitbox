@@ -43,6 +43,13 @@ describe('ModuleComponentDefinition', function () {
 
   });
 
+  it('should have type as core.module', function () {
+    var c = new ModuleComponentDefinition('myComponent', 'foo');
+
+    expect(c.type).to.be.equal('core.module');
+
+  });
+
   it('should return the module-id normalized to global base path', function () {
     expect(new ModuleComponentDefinition('myComponent', './foo').moduleId).to.be.equal(path.join(__dirname, './foo'));
   });

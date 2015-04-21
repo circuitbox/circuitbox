@@ -31,6 +31,12 @@ describe('SimpleComponentDefinition', function () {
 
   });
 
+  it('should have a type core.simple', function () {
+    var c = new SimpleComponentDefinition('myComponent', 'foo');
+
+    expect(c.type).to.be.equal('core.simple');
+  });
+
   it('should have the specified value', function () {
     var v = {};
     var c = new SimpleComponentDefinition('myComponent', v);
