@@ -35,6 +35,20 @@ describe('SelectorFactory', function () {
     }).to.throw('Expression "a:" is not a valid selector expression');
   });
 
+  it('should extract and return the name from the specified selector expression', function () {
+    expect(SelectorFactory.extractSelectorName('a:b:c')).to.be.eql('a');
+  });
+
+  it('should return expression as-is when extracting name if it is not a valid selector expression', function () {
+    expect(SelectorFactory.extractSelectorName('a')).to.be.eql('a');
+  });
+
+  it('should throw error if attempt made to parse an invalid selector expression', function () {
+    expect(function () {
+      SelectorFactory.parse('a:');
+    }).to.throw('Expression "a:" is not a valid selector expression');
+  });
+
   context('registering selectors', function () {
 
     afterEach(function () {
