@@ -6,7 +6,7 @@ var _ = require('lodash'),
     ModuleComponentDefinition = require('../lib/moduleComponentDefinition'),
     defaultSelectors = require('../lib/defaultSelectors');
 
-describe.only('Default Selectors', function () {
+describe('Default Selectors', function () {
   var components;
 
   before(function () {
