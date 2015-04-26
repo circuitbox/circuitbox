@@ -168,10 +168,11 @@ describe('Registry', function () {
       expect(numbers[1].name).to.be.eql('unluckyNumber');
     });
 
-    it('should throw error if no component definitions matched the specified selector', function () {
-      expect(function () {
-        r.findBySelector(function () { return false; });
-      }).to.throw('No definitions found matching selector');
+    it('should return empty array if no component definitions matched the specified selector', function () {
+      var deps = r.findBySelector(function () { return false; });
+
+      expect(deps).to.be.an.array;
+      expect(deps).to.be.empty;
     });
 
   });
