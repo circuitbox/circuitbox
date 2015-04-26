@@ -11,6 +11,7 @@ var expect = require('chai').expect,
     ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory'),
     ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
     ScopeHandlerFactory = require('../lib/scopeHandlerFactory'),
+    SelectorFactory = require('../lib/selectorFactory'),
     Binder = require('../lib/binder');
 
 describe('Binder', function () {
@@ -25,6 +26,10 @@ describe('Binder', function () {
 
   it('should expose the #registerScopeHandler method of ScopeHandlerFactory to the bindings', function () {
     expect(Binder.registerScopeHandler).to.be.equal(ScopeHandlerFactory.registerScopeHandler);
+  });
+
+  it('should expose the #registerSelector method of SelectorFactory to the bindings', function () {
+    expect(Binder.registerSelector).to.be.equal(SelectorFactory.registerSelector);
   });
 
 });
