@@ -12,14 +12,16 @@ var expect = require('chai').expect,
   sinon = require('sinon'),
   registryApi = {
     dependencyListFor: function () {},
-    find: function () {}
+    find: function () {},
+    findBySelector: function () {}
   },
   SimpleComponentDefinition = require('../lib/simpleComponentDefinition'),
   SimpleComponentCreator = require('../lib/simpleComponentCreator'),
   ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
   ComponentFactory = require('../lib/componentFactory'),
   PrototypeScopeHandler = require('../lib/prototypeScopeHandler'),
-  ScopeHandlerFactory = require('../lib/scopeHandlerFactory');
+  ScopeHandlerFactory = require('../lib/scopeHandlerFactory'),
+  SelectorFactory = require('../lib/selectorFactory');
 
 describe('ComponentFactory', function () {
   /*jshint expr: true*/
@@ -38,6 +40,7 @@ describe('ComponentFactory', function () {
 
     ComponentCreatorFactory._reset();
     ScopeHandlerFactory._reset();
+    SelectorFactory._reset();
   });
 
   it('should assemble target component specified as the component name and return to specified callback', function (done) {
@@ -285,6 +288,117 @@ describe('ComponentFactory', function () {
 
     cf.create('message', function (err) {
       expect(err.message).to.be.equal('no registered ComponentCreator for component type SimpleComponentDefinition');
+      done();
+    });
+
+  });
+
+  it('should assemble target component with selector based dependencies and return to specified callback', function (done) {
+    var n = 'message',
+        firstName = 'John',
+        lastName = 'Doe',
+        message = 'Hello my name is %s %s',
+        fncd = new SimpleComponentDefinition('firstName', firstName, { scope: 'prototype' }),
+        lncd = new SimpleComponentDefinition('lastName', lastName, { scope: 'prototype' }),
+        selectorFn = function (pat, cd) {
+          var name = cd.name;
+          return name === 'lastName' || name === 'firstName';
+        },
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          return fmt(message, deps.names.firstName, deps.names.lastName);
+        }, { scope: 'prototype', dependencies: ['names:foo:*'] }),
+        cf = new ComponentFactory(registryApi);
+
+    SelectorFactory.registerSelector('foo', selectorFn);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['names:foo:*', 'message']).once();
+    mr.expects('dependencyListFor').withArgs('firstName').returns(['firstName']).once();
+    mr.expects('dependencyListFor').withArgs('lastName').returns(['lastName']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('findBySelector').withArgs(sinon.match.func).returns([ fncd, lncd ]).once();
+    mr.expects('find').withArgs('firstName').returns(fncd).once();
+    mr.expects('find').withArgs('lastName').returns(lncd).once();
+
+    cf.create('message', function (err, r) {
+      if (err) {
+        done(err);
+        return;
+      }
+      expect(r).to.be.equal('Hello my name is John Doe');
+      done();
+    });
+
+  });
+
+  it('should not invoke callback with error if no selector based dependencies were found', function (done) {
+    var n = 'message',
+        message = 'Hello my name is %s %s',
+        selectorFn = function (pat, cd) {
+          var name = cd.name;
+          return name === 'lastName' || name === 'firstName';
+        },
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          return fmt(message, deps.names.firstName, deps.names.lastName);
+        }, { scope: 'prototype', dependencies: ['names:foo:*'] }),
+        cf = new ComponentFactory(registryApi);
+
+    SelectorFactory.registerSelector('foo', selectorFn);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['names:foo:*', 'message']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('findBySelector').withArgs(sinon.match.func).returns([]).once();
+
+    cf.create('message', function (err, r) {
+      if (err) {
+        done(err);
+        return;
+      }
+      expect(r).to.be.equal('Hello my name is undefined undefined');
+      done();
+    });
+
+  });
+
+  it('should assemble target component with mix of simple and selector based dependencies and return to specified callback', function (done) {
+    var n = 'message',
+        location = 'Timbuctoo',
+        firstName = 'John',
+        lastName = 'Doe',
+        message = 'Hello my name is %s %s. I\'m from %s',
+        fncd = new SimpleComponentDefinition('firstName', firstName, { scope: 'prototype' }),
+        lncd = new SimpleComponentDefinition('lastName', lastName, { scope: 'prototype' }),
+        lcd = new SimpleComponentDefinition('location', location, { scope: 'prototype' }),
+        selectorFn = function (pat, cd) {
+          var name = cd.name;
+          return name === 'lastName' || name === 'firstName';
+        },
+        mcd = new SimpleComponentDefinition(n, function (deps) {
+          var names = deps.names;
+          return fmt(message, names.firstName, names.lastName, deps.location);
+        }, { scope: 'prototype', dependencies: ['names:foo:*', 'location'] }),
+        cf = new ComponentFactory(registryApi);
+
+    SelectorFactory.registerSelector('foo', selectorFn);
+
+    mr.expects('dependencyListFor').withArgs('message').returns(['names:foo:*', 'location', 'message']).once();
+    mr.expects('dependencyListFor').withArgs('firstName').returns(['firstName']).once();
+    mr.expects('dependencyListFor').withArgs('lastName').returns(['lastName']).once();
+    mr.expects('dependencyListFor').withArgs('location').returns(['location']).once();
+
+    mr.expects('find').withArgs(n).returns(mcd).once();
+    mr.expects('findBySelector').withArgs(sinon.match.func).returns([ fncd, lncd ]).once();
+    mr.expects('find').withArgs('firstName').returns(fncd).once();
+    mr.expects('find').withArgs('lastName').returns(lncd).once();
+    mr.expects('find').withArgs('location').returns(lcd).once();
+
+    cf.create('message', function (err, r) {
+      if (err) {
+        done(err);
+        return;
+      }
+      expect(r).to.be.equal('Hello my name is John Doe. I\'m from Timbuctoo');
       done();
     });
 
