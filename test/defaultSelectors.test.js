@@ -6,20 +6,24 @@ var _ = require('lodash'),
     ModuleComponentDefinition = require('../lib/moduleComponentDefinition'),
     defaultSelectors = require('../lib/defaultSelectors');
 
-describe('Default Selectors', function () {
-  var components = [
-    new SimpleComponentDefinition('a', 'Foo'),
-    new SimpleComponentDefinition('b', 'Bar'),
+describe.only('Default Selectors', function () {
+  var components;
 
-    new SimpleComponentDefinition('evenNumber', 2),
-    new SimpleComponentDefinition('oddNumber', 1),
+  before(function () {
+    components = [
+      new SimpleComponentDefinition('a', 'Foo'),
+      new SimpleComponentDefinition('b', 'Bar'),
 
-    new SimpleComponentDefinition('GET /foo/bar', 'Get Foo-Bar'),
-    new SimpleComponentDefinition('POST /foo/bar', 'Post Foo-Bar'),
+      new SimpleComponentDefinition('evenNumber', 2),
+      new SimpleComponentDefinition('oddNumber', 1),
 
-    new ModuleComponentDefinition('express', './foo'),
-    new ModuleComponentDefinition('nimrod', './nimrod')
-  ];
+      new SimpleComponentDefinition('GET /foo/bar', 'Get Foo-Bar'),
+      new SimpleComponentDefinition('POST /foo/bar', 'Post Foo-Bar'),
+
+      new ModuleComponentDefinition('express', 'foo'),
+      new ModuleComponentDefinition('nimrod', 'nimrod')
+    ];
+  });
 
   describe('Type Selector', function () {
     var sel = defaultSelectors.type;
