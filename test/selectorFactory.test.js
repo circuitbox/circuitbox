@@ -44,7 +44,7 @@ describe('SelectorFactory', function () {
   context('registering selectors', function () {
 
     afterEach(function () {
-      SelectorFactory.reset();
+      SelectorFactory._reset();
     });
 
     it('should register a specified selector function with the specified name', function () {
@@ -99,9 +99,49 @@ describe('SelectorFactory', function () {
       
     });
 
+    it('should return selector for specified expression object which takes componentDefinition as parameter', function () {
+      var selectorExpr = {
+            name: 'values',
+            selector: 'foo',
+            pattern: '1-10'
+          },
+          dummyComponentDefinition = { name: 'watchamacallit' },
+          selector;
+
+      SelectorFactory.registerSelector('foo', function (pat, cd) {
+        expect(pat).to.be.equal('1-10');
+        expect(cd).to.be.equal(dummyComponentDefinition);
+      });
+
+      // get the selector for an expression
+      selector = SelectorFactory.selectorFor(selectorExpr);
+
+      expect(selector).to.be.a('function');
+
+      // invoke the selector with a dummy component definition
+      selector(dummyComponentDefinition);
+
+    });
+
     it('should throw error if no selectors are registered for the specified selector expression', function () {
       expect(function () {
         SelectorFactory.selectorFor('values:foo:1-10');
+      }).to.throw('No selector registered with name "foo"');
+    });
+
+    it('should throw error the specified selector expression object is not valid', function () {
+      expect(function () {
+        SelectorFactory.selectorFor({});
+      }).to.throw('Not a valid selector expression object');
+    });
+
+    it('should throw error if no selectors are registered for the specified selector expression object', function () {
+      expect(function () {
+        SelectorFactory.selectorFor({
+          name: 'values',
+          selector: 'foo',
+          pattern: '1-10'
+        });
       }).to.throw('No selector registered with name "foo"');
     });
     
