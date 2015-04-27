@@ -28,6 +28,13 @@ describe('ComponentDefinition', function () {
     expect(c.name).to.be.equal(n);
   });
 
+  it('should have type as core.base', function () {
+    var n = 'myComponent',
+        c = new ComponentDefinition(n);
+
+    expect(c.type).to.be.equal('core.base');
+  });
+
   it('should be created with a singleton scope by default if no scope is specified', function () {
     var c = new ComponentDefinition('myComponent');
 

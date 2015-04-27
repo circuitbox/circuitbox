@@ -135,6 +135,8 @@ describe('Registry', function () {
 
       r.registerModule(function (reg) {
         reg.for('myComponent').use('This is myComponent');
+        reg.for('luckyNumber').use(10);
+        reg.for('unluckyNumber').use(20);
       });
 
     });
@@ -154,6 +156,23 @@ describe('Registry', function () {
       expect(function () {
         r.find('unregisteredComponent');
       }).to.throw('No definition found for component \'unregisteredComponent\'');
+    });
+
+    it('should retrieve a list of definitions that match the specified selector', function () {
+      var numbers = r.findBySelector(function (def) {
+        return typeof def.value === 'number';
+      });
+
+      expect(numbers).to.have.lengthOf(2);
+      expect(numbers[0].name).to.be.eql('luckyNumber');
+      expect(numbers[1].name).to.be.eql('unluckyNumber');
+    });
+
+    it('should return empty array if no component definitions matched the specified selector', function () {
+      var deps = r.findBySelector(function () { return false; });
+
+      expect(deps).to.be.an.array;
+      expect(deps).to.be.empty;
     });
 
   });

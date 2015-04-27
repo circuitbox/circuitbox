@@ -13,7 +13,8 @@ var _ = require('lodash'),
     circuitbox = require('../lib'),
     ComponentDefinitionBuilderFactory = require('../lib/componentDefinitionBuilderFactory'),
     ComponentCreatorFactory = require('../lib/componentCreatorFactory'),
-    ScopeHandlerFactory = require('../lib/scopeHandlerFactory');
+    ScopeHandlerFactory = require('../lib/scopeHandlerFactory'),
+    SelectorFactory = require('../lib/selectorFactory');
 
 describe('circuitbox', function () {
   /*jshint expr: true*/
@@ -22,7 +23,8 @@ describe('circuitbox', function () {
     _.each([
       ComponentDefinitionBuilderFactory,
       ComponentCreatorFactory,
-      ScopeHandlerFactory
+      ScopeHandlerFactory,
+      SelectorFactory
     ], function (f) {
       f._reset();
     });
