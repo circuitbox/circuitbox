@@ -1,3 +1,10 @@
+/*!
+ * circuitbox
+ * Copyright (c) 2014-2015 Ranganath Kini <codematix@codematix.me>
+ * Copyright (c) 2015 intuitivcloud Engineering <engineering@intuitivcloud.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 // require circuitbox
@@ -9,8 +16,7 @@ circuitbox.create({
   modules: [
     function (registry) {
       // define the message printer - does a module.require internally
-      registry.for('messagePrinter').requires('./consoleMessagePrinter')
-        .dependsOn('messageSource');
+      registry.for('messagePrinter').requires('./consoleMessagePrinter');
 
       registry.for('helloCommand').use(function (deps) {
         return function (p) {
