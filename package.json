@@ -6,7 +6,7 @@
   "homepage": "http://circuitbox.oddjobsman.me",
   "scripts": {
     "test": "make",
-    "coveralls": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec && cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js"
   },
   "engines": {
     "node": ">=0.10"
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "chai": "^2.2.0",
+    "codecov.io": "^0.1.1",
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.13",
     "jshint": "^2.7.0",
